@@ -2,9 +2,9 @@ import '../styles/globals.css'
 import { AppProps } from 'next/app'
 import { Provider } from 'next-auth/client'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <Provider session={pageProps.session}>
+    <Provider session={session}>
       <Component {...pageProps} />
     </Provider>
   )
