@@ -1,6 +1,6 @@
-import NextAuth from 'next-auth';
-import { NextApiRequest, NextApiResponse } from 'next-auth/internals/utils';
-import Providers from 'next-auth/providers';
+import NextAuth from 'next-auth'
+import { NextApiRequest, NextApiResponse } from 'next-auth/internals/utils'
+import Providers from 'next-auth/providers'
 
 const options = {
     providers: [
