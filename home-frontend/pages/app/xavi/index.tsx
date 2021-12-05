@@ -1,7 +1,13 @@
-import { useSession, signIn, signOut } from "next-auth/client"
+import { useSession, signIn, signOut } from 'next-auth/client'
+import { BoxLoading } from 'react-loadingg';
 
 export default function HomePage() {
-    const [ session, loading ] = useSession()
+    const [ session, isLoading ] = useSession()
+
+    while (isLoading) {
+        return <BoxLoading />
+    }
+
     return (
         <>
             {
