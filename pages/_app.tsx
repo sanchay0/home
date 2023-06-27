@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <>
       <Head>
-        <title>Hello!</title>
+        <title>Home</title>
       </Head>
       <Component {...pageProps} />
       <Analytics />
