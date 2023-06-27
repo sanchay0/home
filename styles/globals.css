@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  font-family: 'Inter', sans-serif;
+  --home-fonts-default: var(--font-family);
+  --home-fonts-mono: Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
+  --scrollbarWidth: 0px;
+  --lvw: calc(1lvw - var(--scrollbarWidth) / 100);
+  --full-width: calc(var(--lvw) * 100);
+  --tw-bg-opacity: 1;
+}
+@supports (font-variation-settings: normal) {
+  :root {
+    font-family: 'Inter', sans-serif;
+    --home-fonts-default: var(--font-family);
+    --home-fonts-mono: Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
+    --scrollbarWidth: 0px;
+    --lvw: calc(1lvw - var(--scrollbarWidth) / 100);
+    --full-width: calc(var(--lvw) * 100);
+    --tw-bg-opacity: 1;
+    --background-color: rgb(255 255 255/var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    --home-colors-gray1: rgb(115 115 115/var(--tw-text-opacity));
+  }
+}
+
 html {
   height: 100%;
 }
@@ -9,32 +33,22 @@ html {
 body {
   height:100%;
   margin: 0px;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-a:link {
-  text-decoration: inherit;
-  color: inherit;
-  padding-bottom: 3px;
-  cursor: pointer;
-}
-
-a:visited {
-  text-decoration: inherit;
-  color: inherit;
-  padding-bottom: 3px;
-  cursor: pointer;
+  font-family: var(--home-fonts-default);
+  line-height: inherit;
+  color: var(--home-colors-gray1);
+  overflow-x: hidden;
+  font-weight: 300;
+  font-size: .875rem;
+  line-height: 1.5rem;
+  background-color: var(--background-color);
 }
 
 i {
   margin-right: 20px;
-  margin-left: 15px;
-  font-size: 20px;
   cursor: pointer;
+}
+
+.after\:content-\[\'_\2197\'\]:after {
+  --tw-content: " \2197";
+  content: var(--tw-content);
 }

@@ -12,6 +12,8 @@ class MyDocument extends Document {
         <Head>
             <link href="https://fonts.googleapis.com/css?family=Kanit:600&display=swap" rel="stylesheet" />
             <link href="https://fonts.googleapis.com/css?family=Lato:300,400&display=swap" rel="stylesheet" />
+            <link rel="preconnect" href="https://rsms.me/" />
+            <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" crossOrigin="anonymous" />
         </Head>
         <body>

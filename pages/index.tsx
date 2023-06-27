@@ -1,69 +1,48 @@
-import React, { useRef } from 'react'
-import { Parallax, ParallaxLayer, IParallax } from '@react-spring/parallax'
-import styles from '../styles/styles.module.css'
-
-interface PageProps {
-  offset: number,
-  gradient: string,
-  onClick: () => void,
-  caption: string,
-  first: string,
-  second: string,
-}
-
-const Page = ({ offset, gradient, onClick, caption, first, second }: PageProps) => (
-  <>
-    <ParallaxLayer offset={offset} speed={0.2} onClick={onClick}>
-      <div className={styles.slopeBegin} />
-    </ParallaxLayer>
-
-    <ParallaxLayer offset={offset} speed={0.6} onClick={onClick}>
-      <div className={`${styles.slopeEnd} ${styles[gradient]}`} />
-    </ParallaxLayer>
-
-    <ParallaxLayer className={`${styles.text} ${styles.number}`} offset={offset} speed={0.3}>
-      <span className="md:text-30xl sm:text-25xl text-14xl">0{offset + 1}</span>
-    </ParallaxLayer>
-
-    <ParallaxLayer className={`${styles.text}`} offset={offset} speed={0.4}>
-      {/* BIO */}
-      <div className="grid grid-cols-1 md:pl-80 sm:pl-64 pl-32">
-        <p className="md:text-xl sm:text-lg text-base text-white pb-1">{caption}</p>
-        <span className={`${styles.stripe} ${styles[gradient]}`} />
-        <p className="md:text-5xl sm:text-4xl text-3xl text-white pt-6">{first}</p>
-        <p className="md:text-lg sm:text-base text-sm text-white pt-3">{second}</p>
-      </div>
-    </ParallaxLayer>
-  </>
-)
+import Footer  from '../components/Footer'
+import Header from '../components/Header'
+import Image from 'next/image'
+import React from 'react'
 
 export default function App() {
-  const parallax = useRef<IParallax>(null)
 
-  const scroll = (to: number) => {
-    if (parallax.current) {
-      parallax.current.scrollTo(to)
-    }
-  }
-
-  const Footer = () => (
-    <div className={`${styles.footer}`}>
-      <p>
-        <a title="Resume" href="https://sanchay.s3.us-east-2.amazonaws.com/resume.pdf" target="_blank" rel="noopener noreferrer"><i className="fas fa-file-alt"></i></a>
-        <a title="Github" href="https://www.github.com/sanchay0/" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
-        <a title="LinkedIn" href="https://www.linkedin.com/in/javeria2/" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
-        <a title="Twitter" href="https://twitter.com/sanchayjaveria" target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter"></i></a>
-      </p>
-    </div>
-  )
+  const headerLinks = [
+    { href: '/blog', label: 'Blog' },
+    { href: '/contact', label: 'Contact' },
+  ];
 
   return (
-    <div style={{ background: '#dfdfdf' }}>
-      <Parallax className={styles.container} ref={parallax} pages={1}>
-        <Page offset={0} gradient="tomato" onClick={() => {}} caption="I am 👋" first="Sanchay Javeria" second="Software Engineer at Pinterest" />
-      </Parallax>
-      <Footer />
+    <div>
+      <main className="flex-1 overflow-y-auto">
+        <Header links={headerLinks} />
+        <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
+          <div className="mx-auto max-w-xl">
+            <div className="md:flex md:items-center md:justify-between md:space-x-5">
+              <div className="flex items-center space-x-5">
+                <div className="flex-shrink-0">
+                  <div className="relative">
+                    <div className="rounded-full border border-white/10 h-16 lg:h-24 lg:w-24 w-16">
+                      <Image alt="image" width={100} height={100} src="/black.svg" />
+                    </div>
+                    <span aria-hidden="true" className="rounded-full absolute inset-0 shadow-inner"></span>
+                  </div>
+                </div>
+                <div className="pt-1.5">
+                  <h1 className="dark:text-white text-black lg:text-xl">Sanchay Javeria</h1>
+                  <p className="text-neutral-500 font-light text-sm">Software Engineer in San Francisco</p>
+                </div>
+              </div>
+            </div>
+            <div className="font-light text-sm mt-20">
+              <p className="text-black">About</p>
+              <div className="text-neutral-500 dark:text-neutral-400 mt-3 space-y-3">
+                <p>For the past 4 years, I have been working on high performance and scalable distributed data systems at Pinterest. I worked on introducing <a className="duration-200 hover:no-underline underline" href="https://medium.com/pinterest-engineering/interactive-querying-with-apache-spark-sql-at-pinterest-2a3eaf60ac1b" title="blog">Spark SQL as the primary compute engine</a>, and these days I work on the <a className="duration-200 hover:no-underline underline" href="https://medium.com/pinterest-engineering/powering-pinterest-ads-analytics-with-apache-druid-51aa6ffb97c1" title="blog">Ads reporting infrastructure</a> powering the Pinterest Ads Manager.</p><p>I specialize in building scalable and reliable data-intensive applications, with a love for solving complex problems. Quality is my No. 1 constraint – always, and I strive to be a thinker-doer.</p>
+                <p>Outside of work, I&apos;m very passionate about value and <a className="duration-200 hover:no-underline underline" href="https://en.wikipedia.org/wiki/Event-driven_investing" title="wiki">event-driven investing</a>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </main>
     </div>
   )
 }
-
