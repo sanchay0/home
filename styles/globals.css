@@ -52,3 +52,7 @@ i {
   --tw-content: " \2197";
   content: var(--tw-content);
 }
+
+#nprogress .bar {
+  background: #000 !important;
+}

@@ -8,10 +8,10 @@ import 'nprogress/nprogress.css'
 import Router from 'next/router'
 import { useEffect } from 'react'
 
+NProgress.configure({showSpinner: false})
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
 Router.events.on('routeChangeError', () => NProgress.done())
-
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   useEffect(() => {
