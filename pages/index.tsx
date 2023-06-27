@@ -53,7 +53,6 @@ export default function App() {
         <a title="Github" href="https://www.github.com/sanchay0/" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
         <a title="LinkedIn" href="https://www.linkedin.com/in/javeria2/" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
         <a title="Twitter" href="https://twitter.com/sanchayjaveria" target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter"></i></a>
-        <a title="Instagram" href="https://www.instagram.com/sanchayjaveria" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
       </p>
     </div>
   )
@@ -61,7 +60,7 @@ export default function App() {
   return (
     <div style={{ background: '#dfdfdf' }}>
       <Parallax className={styles.container} ref={parallax} pages={1}>
-        <Page offset={0} gradient="pink" onClick={() => {}} caption="I am 👋" first="Sanchay Javeria" second="Software Engineer at Pinterest" />
+        <Page offset={0} gradient="tomato" onClick={() => {}} caption="I am 👋" first="Sanchay Javeria" second="Software Engineer at Pinterest" />
       </Parallax>
       <Footer />
     </div>
