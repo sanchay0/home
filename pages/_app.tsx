@@ -23,8 +23,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   }, []);
 
   const headerLinks = pageProps?.headerLinks || [
-    { href: '/blog', label: 'Blog' },
     { href: '/', label: 'About' },
+    { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contact' },
   ];
 

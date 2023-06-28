@@ -32,13 +32,4 @@ const App = () => {
   )
 }
 
-App.getInitialProps = () => {
-  const headerLinks = [
-    { href: '/blog', label: 'Blog' },
-    { href: '/contact', label: 'Contact' },
-  ];
-
-  return { headerLinks };
-}
-
 export default App;

@@ -49,13 +49,4 @@ const Blog = () => {
     )
 }
 
-Blog.getInitialProps = () => {
-    const headerLinks = [
-        { href: '/', label: 'About' },
-        { href: '/contact', label: 'Contact' },
-    ];
-    
-    return { headerLinks };
-}
-
 export default Blog;

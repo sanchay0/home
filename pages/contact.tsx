@@ -7,13 +7,4 @@ const HomePage = () => {
     )
 }
 
-HomePage.getInitialProps = () => {
-    const headerLinks = [
-        { href: '/', label: 'About' },
-        { href: '/blog', label: 'Blog' },
-      ];
-
-    return { headerLinks };
-}
-
 export default HomePage;
