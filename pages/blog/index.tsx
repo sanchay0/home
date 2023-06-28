@@ -3,6 +3,7 @@ import { db } from '../../firebase/clientApp'
 import { Fragment } from 'react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { calculateReadingTime } from '../blog/[id]'
 
 const Blog = () => {
     const [data, setData] = useState(null)
@@ -34,7 +35,7 @@ const Blog = () => {
                                         <p className="dark:text-neutral-400 text-neutral-400">{formatDate(entry.created_at.toDate())}</p>
                                         <div className="md:col-span-2 w-full">
                                             <p className="dark:text-white text-black duration-200 hover:no-underline underline"><Link href={`/blog/${entry.id}`}>{entry.title}</Link></p>
-                                            <p>{entry.duration} minute read</p>
+                                            <p>{calculateReadingTime(entry.content)} minute read</p>
                                         </div>
                                     </Fragment>
                                 )) : <></>
