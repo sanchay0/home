@@ -1,23 +1,25 @@
 import { collection, getDocs } from 'firebase/firestore'
+import { calculateReadingTime } from '../blog/[id]'
 import { db } from '../../firebase/clientApp'
 import { Fragment } from 'react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { calculateReadingTime } from '../blog/[id]'
+import { useQuery } from 'react-query'
+import Custom404 from '../404'
 
 const Blog = () => {
-    const [data, setData] = useState(null)
+    
+    const fetchBlogs = async () => {
+        const response  = await getDocs(collection(db, "blogs"))
+        return response.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+    }
 
-    useEffect(() => {
-        const blogs = async () => {
-            const response  = await getDocs(collection(db, "blogs"))
-            setData(response.docs)
-        }
-
-        blogs()
-    }, [])
+    const { data, isLoading, isError } = useQuery('blogs', fetchBlogs)
 
     const formatDate = (date) => `${(date.getMonth() + 1).toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear()}`
+
+    if (isError) {
+        return <Custom404></Custom404>
+    }
 
     return (
         <div className="mx-auto max-w-xl">
@@ -30,15 +32,15 @@ const Blog = () => {
                     {
                         <div className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500">
                             {
-                                data ? data.map(blog => ({id: blog.id, ...blog.data()})).map(entry => (
-                                    <Fragment key={entry.id}>
-                                        <p className="dark:text-neutral-400 text-neutral-400">{formatDate(entry.created_at.toDate())}</p>
+                                isLoading ? <></> : data.map(blog => (
+                                    <Fragment key={blog.id}>
+                                        <p className="dark:text-neutral-400 text-neutral-400">{formatDate(blog.created_at.toDate())}</p>
                                         <div className="md:col-span-2 w-full">
-                                            <p className="dark:text-white text-black duration-200 hover:no-underline underline"><Link href={`/blog/${entry.id}`}>{entry.title}</Link></p>
-                                            <p>{calculateReadingTime(entry.content)} minute read</p>
+                                            <p className="dark:text-white text-black duration-200 hover:no-underline underline"><Link href={`/blog/${blog.id}`}>{blog.title}</Link></p>
+                                            <p>{calculateReadingTime(blog.content)} minute read</p>
                                         </div>
                                     </Fragment>
-                                )) : <></>
+                                ))
                             }
                         </div>
                     }

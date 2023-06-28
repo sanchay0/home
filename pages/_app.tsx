@@ -7,8 +7,10 @@ import Header from '../components/Header'
 import mailgo from 'mailgo'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import Router from 'next/router'
 import { useEffect } from 'react'
+
 
 NProgress.configure({showSpinner: false})
 Router.events.on('routeChangeStart', () => NProgress.start())
@@ -20,13 +22,15 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     mailgo({
       dark: true,
     });
-  }, []);
+  }, [])
+
+  const queryClient = new QueryClient()
 
   const headerLinks = pageProps?.headerLinks || [
     { href: '/', label: 'About' },
     { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contact' },
-  ];
+  ]
 
   return (
     <>
@@ -36,7 +40,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         </Head>
         <Header links={headerLinks} />
         <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
-          <Component {...pageProps} />
+          <QueryClientProvider client={queryClient}>
+            <Component {...pageProps} />
+          </QueryClientProvider>
         </div>
         <Footer />
         <Analytics />

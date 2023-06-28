@@ -1,7 +1,8 @@
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../firebase/clientApp'
-import { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
+import Custom404 from '../404'
 
 export const calculateReadingTime = (text) => {
     const words = text.trim().split(/\s+/); // Split the text into words
@@ -11,27 +12,26 @@ export const calculateReadingTime = (text) => {
 }
 
 export default function Post() {
-    const [post, setPost] = useState(null)
     const router = useRouter();
     const { id } = router.query;
 
-    useEffect(() => {
+    const fetchPost = async () => {
         const q = doc(db, "blogs", `${id}`)
-        const fetchPost = async () => {
-            const response  = await getDoc(q)
-            if (response.exists) {
-                setPost(response.data())
-            }
+        const response  = await getDoc(q)
+        if (response.exists) {
+            return response.data()
         }
+    }
 
-        if (id) {
-            fetchPost()
-        }
-    }, [id])
+    const { data: post, isLoading, isError } = useQuery(['post', id], fetchPost)
+
+    if (isError) {
+        return <Custom404></Custom404>
+    }
 
     return (
         <>
-        { post ? 
+        { isLoading || !post ? <></> :
         <div className="mx-auto max-w-xl">
             <div className="font-light text-sm mt-16">
                 <p className="text-black">{post.title}</p>
@@ -42,7 +42,7 @@ export default function Post() {
                 <p>{post.content}</p>
                 </div>
             </div>
-        </div> : <></>
+        </div>
         }
         </>
     );
