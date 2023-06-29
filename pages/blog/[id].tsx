@@ -1,29 +1,14 @@
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '../../firebase/clientApp'
 import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
 import Custom404 from '../404'
+import { calculateReadingTime } from '../../utils/helpers'
+import { fetchBlog } from '../../utils/api';
 
-export const calculateReadingTime = (text) => {
-    const words = text.trim().split(/\s+/); // Split the text into words
-    const wordCount = words.length;
-    const readingTimeInMinutes = Math.ceil(wordCount / 238); // Divide word count by average reading speed and round up
-    return readingTimeInMinutes;
-}
-
-export default function Post() {
+export default function Blog() {
     const router = useRouter();
     const { id } = router.query;
 
-    const fetchPost = async () => {
-        const q = doc(db, "blogs", `${id}`)
-        const response  = await getDoc(q)
-        if (response.exists) {
-            return response.data()
-        }
-    }
-
-    const { data: post, isLoading, isError } = useQuery(['post', id], fetchPost)
+    const { data: post, isLoading, isError } = useQuery(['post', id], () => fetchBlog(id))
 
     if (isError) {
         return <Custom404></Custom404>

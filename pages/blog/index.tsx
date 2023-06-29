@@ -1,21 +1,13 @@
-import { collection, getDocs } from 'firebase/firestore'
-import { calculateReadingTime } from '../blog/[id]'
+import { calculateReadingTime, formatDate } from '../../utils/helpers'
 import { db } from '../../firebase/clientApp'
 import { Fragment } from 'react'
 import Link from 'next/link'
 import { useQuery } from 'react-query'
 import Custom404 from '../404'
+import { fetchBlogs } from '../../utils/api'
 
-const Blog = () => {
-    
-    const fetchBlogs = async () => {
-        const response  = await getDocs(collection(db, "blogs"))
-        return response.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-    }
-
+const Blogs = () => {
     const { data, isLoading, isError } = useQuery('blogs', fetchBlogs)
-
-    const formatDate = (date) => `${(date.getMonth() + 1).toString().padStart(2, "0")}.${date.getDate().toString().padStart(2, "0")}.${date.getFullYear()}`
 
     if (isError) {
         return <Custom404></Custom404>
@@ -24,9 +16,10 @@ const Blog = () => {
     return (
         <div className="mx-auto max-w-xl">
             <div className="font-light text-sm mt-16">
-                <p className="text-black">
-                    Blog
-                </p>
+                <div className="flex justify-between">
+                    <p className="text-black">Blog</p>
+                    <Link href="/rss.xml"><a title="RSS feed" className="hover:text-black transition-colors duration-300" target="_blank" rel="noopener noreferrer"><i className="fas fa-rss"></i></a></Link>
+                </div>
                 <div className="text-neutral-500 dark:text-neutral-400 mt-3 space-y-3">
                     <div className="grid gap-6 mt-3">
                     {
@@ -51,4 +44,4 @@ const Blog = () => {
     )
 }
 
-export default Blog;
+export default Blogs;
