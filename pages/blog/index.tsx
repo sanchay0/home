@@ -44,4 +44,9 @@ const Blogs = () => {
     )
 }
 
+{/* <div className="mt-1">
+<span className="bg-gray-100 text-gray-800 text-xs font-extralight px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">Dark</span>
+<span className="bg-gray-100 text-gray-800 text-xs font-extralight ml-1 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">tech</span>
+</div> */}
+
 export default Blogs;
