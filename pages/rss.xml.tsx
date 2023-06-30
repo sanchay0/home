@@ -26,7 +26,9 @@ export async function getServerSideProps({ res }) {
       title: post.title,
       id: `${site_url}/blog/${post.id}`,
       link: `${site_url}/blog/${post.id}`,
+      content: post.content,
       date: post.created_at.toDate(),
+      // TODO: add cateogry from tags
      });
     });
 
