@@ -1,17 +1,19 @@
 import { calculateReadingTime, formatDate } from '../../utils/helpers'
-import { db } from '../../firebase/clientApp'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useQuery } from 'react-query'
-import Custom404 from '../404'
 import { fetchBlogs } from '../../utils/api'
 
 const Blogs = () => {
-    const { data, isLoading, isError } = useQuery('blogs', fetchBlogs)
+    const [data, setData] = useState(null)
 
-    if (isError) {
-        return <Custom404></Custom404>
-    }
+    useEffect(() => {
+        const getData = async () => {
+            const fetchedBlogs = await fetchBlogs()
+            setData(fetchedBlogs)
+        }
+
+        getData()
+    }, [])
 
     return (
         <div className="mx-auto max-w-xl">
@@ -25,7 +27,7 @@ const Blogs = () => {
                     {
                         <div className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500">
                             {
-                                isLoading ? <></> : data.map(blog => (
+                                data ? data.map((doc) => ({ id: doc.id, ...doc.data() })).map(blog => (
                                     <Fragment key={blog.id}>
                                         <p className="dark:text-neutral-400 text-neutral-400">{formatDate(blog.created_at.toDate())}</p>
                                         <div className="md:col-span-2 w-full">
@@ -33,7 +35,7 @@ const Blogs = () => {
                                             <p>{calculateReadingTime(blog.content)} minute read</p>
                                         </div>
                                     </Fragment>
-                                ))
+                                )) : <></>
                             }
                         </div>
                     }

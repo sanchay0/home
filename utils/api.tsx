@@ -5,7 +5,7 @@ import { db } from './../firebase/clientApp'
 
 export const fetchBlogs = async () => {
     const response  = await getDocs(collection(db, "blogs"))
-    return response.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+    return response.docs
 }
 
 export const fetchBlog = async (id) => {

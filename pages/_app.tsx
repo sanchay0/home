@@ -7,7 +7,6 @@ import Header from '../components/Header'
 import mailgo from 'mailgo'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import Router from 'next/router'
 import { useEffect } from 'react'
 
@@ -24,8 +23,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     });
   }, [])
 
-  const queryClient = new QueryClient()
-
   const headerLinks = pageProps?.headerLinks || [
     { href: '/', label: 'About' },
     { href: '/blog', label: 'Blog' },
@@ -40,9 +37,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         </Head>
         <Header links={headerLinks} />
         <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
-          <QueryClientProvider client={queryClient}>
-            <Component {...pageProps} />
-          </QueryClientProvider>
+          <Component {...pageProps} />
         </div>
         <Footer />
         <Analytics />

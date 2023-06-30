@@ -2,8 +2,8 @@ import { Feed } from 'feed'
 import { fetchBlogs } from '../utils/api'
 
 export async function getServerSideProps({ res }) {
-    const allPosts = await fetchBlogs();
-    const site_url = process.env.URL;
+    const allPosts = await fetchBlogs()
+    const site_url = process.env.URL
 
     const feedOptions = {
         title: 'Sanchay\'s blog posts | RSS Feed',
@@ -17,11 +17,16 @@ export async function getServerSideProps({ res }) {
         feedLinks: {
             rss2: `${site_url}/rss.xml`,
         },
-    };
+    }
 
-    const feed = new Feed(feedOptions);
+    const feed = new Feed(feedOptions)
 
-    allPosts.forEach((post) => {
+    allPosts.map((doc) => ({ 
+        id: doc.id, 
+        title: doc.data().title, 
+        content: doc.data().content, 
+        created_at: doc.data().created_at 
+    })).map((post) => {
      feed.addItem({
       title: post.title,
       id: `${site_url}/blog/${post.id}`,
@@ -29,17 +34,17 @@ export async function getServerSideProps({ res }) {
       content: post.content,
       date: post.created_at.toDate(),
       // TODO: add cateogry from tags
-     });
-    });
+     })
+    })
 
-    const xmlContent = feed.atom1();
+    const xmlContent = feed.atom1()
 
-    res.setHeader('Content-Type', 'text/xml');
+    res.setHeader('Content-Type', 'text/xml')
 
-    res.write(xmlContent);
-    res.end();
+    res.write(xmlContent)
+    res.end()
 
-    return { props: {} };
+    return { props: {} }
 }
 
 export default function RssXmlPage() {
