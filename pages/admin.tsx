@@ -1,29 +1,34 @@
-import { GetServerSideProps, NextPage } from "next";
-import React from "react";
+import { GetServerSideProps, NextPage } from "next"
+import React from "react"
+import Custom404 from './404'
 
 type Props = {
-  ip: string;
-};
+  ip: string
+}
 
 const SSRPage: NextPage<Props> = ({ ip }) => {
-  return <div>IP: {ip}</div>;
-};
+    if (ip == process.env.ADMIN_IP) {
+        return <div>This div is visible to certain IP addresses.</div>
+      } else {
+        return <Custom404 />
+      }
+}
 
-export default SSRPage;
+export default SSRPage
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  let ip = req.headers["x-real-ip"];
+  let ip = req.headers["x-real-ip"]
   if (!ip) {
-    const forwardedFor = req.headers["x-forwarded-for"];
+    const forwardedFor = req.headers["x-forwarded-for"]
     if (Array.isArray(forwardedFor)) {
-      ip = forwardedFor.at(0);
+      ip = forwardedFor.at(0)
     } else {
-      ip = forwardedFor?.split(",").at(0) ?? "Unknown";
+      ip = forwardedFor?.split(",").at(0) ?? "Unknown"
     }
   }
   return {
     props: {
       ip,
     },
-  };
-};
+  }
+}
