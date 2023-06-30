@@ -7,7 +7,9 @@ type Props = {
 }
 
 const SSRPage: NextPage<Props> = ({ ip }) => {
-    if (ip == process.env.ADMIN_IP) {
+    console.log(ip)
+    console.log(process.env.ADMIN_IP)
+    if (ip === process.env.ADMIN_IP) {
         return <div>This div is visible to certain IP addresses.</div>
       } else {
         return <Custom404 />
