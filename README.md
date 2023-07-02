@@ -1,1 +1,20 @@
-![stack](https://user-images.githubusercontent.com/16950123/144739537-208d8ff0-55b9-4bb4-9141-b170b5c4aff6.png)
+# Personal Blog
+
+## TODO
+
+- add tags to posts
+    - add category to rss feed from tags
+- add tags to blog page
+- add ability to make likes and comments
+- add email subscription option 
+- add markdown admin support to make posts
+- add redis cache, use nextjs-redis
+- edit photo and publish
+
+tags:
+```
+<div className="mt-1">
+<span className="bg-gray-100 text-gray-800 text-xs font-extralight px-2.5 py-0.5 rounded">Dark</span>
+<span className="bg-gray-100 text-gray-800 text-xs font-extralight ml-1 px-2.5 py-0.5 rounded">tech</span>
+</div>
+```

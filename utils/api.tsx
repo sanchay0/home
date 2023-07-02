@@ -1,17 +1,91 @@
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
 import { db } from './../firebase/clientApp'
 
 // ========= Blogs ========= //
 
-export const fetchBlogs = async () => {
+export async function fetchBlogs(): Promise<IPost[]> {
     const response  = await getDocs(collection(db, "blogs"))
-    return response.docs
+    const posts = response.docs.map((doc) => {
+        const data = doc.data()
+        return {
+          id: doc.id,
+          title: data.title,
+          author: data.author,
+          content: data.content,
+          created_at: data.created_at.toDate(),
+          updated_at: data.updated_at ? data.updated_at.toDate() : undefined,
+        }
+      })
+    
+      return posts
 }
 
-export const fetchBlog = async (id) => {
+export async function fetchBlog(id: string | string[]): Promise<IPost> {
     const q = doc(db, "blogs", `${id}`)
-    const response  = await getDoc(q)
+    const response = await getDoc(q)
+
     if (response.exists) {
-        return response.data()
+        const data = response.data()
+        const mappedData: IPost = {
+            id: `${id}`,
+            title: data.title,
+            author: data.author,
+            content: data.content,
+            created_at: data.created_at.toDate(),
+            updated_at: data.updated_at ? data.updated_at.toDate() : undefined,
+            // TODO: fetch tags
+        }
+        return mappedData
+    } else {
+        throw new Error(`Blog with ID ${id} does not exist.`)
     }
+}
+
+// ========= Likes ========= //
+
+export async function fetchLikes(blogId: string | string[]): Promise<ILike[]> {
+    const likesRef = collection(db, "likes")
+    const blogRef = doc(db, "blogs", `${blogId}`)
+    const q = query(likesRef, where("post_id", "==", blogRef))
+    const response = await getDocs(q)
+    const likes = response.docs.map((doc) => {
+        const data = doc.data()
+        return {
+            time: (data.created_at.toDate()).getTime(),
+            name: data.name,
+        }
+    })
+
+    return likes
+}
+
+// ========= Comments ========= //
+
+export async function fetchComments(blogId: string | string[]): Promise<IComment[]> {
+    const commentsRef = collection(db, "comments")
+    const blogRef = doc(db, "blogs", `${blogId}`)
+    const q = query(commentsRef, where("post_id", "==", blogRef))
+    const response = await getDocs(q)
+
+    const comments = await Promise.all(
+        response.docs.map(async (doc) => {
+            const repliesRef = collection(doc.ref, "replies")
+            const repliesSnapshot = await getDocs(repliesRef)
+            const replies: ICommentRoot[] = repliesSnapshot.docs.map((replyDoc) => ({
+                id: replyDoc.id,
+                name: replyDoc.data().name,
+                content: replyDoc.data().content,
+                time: (replyDoc.data().created_at.toDate()).getTime(),
+            }))
+            const data = doc.data()
+            return {
+                id: doc.id,
+                name: data.name,
+                content: data.content,
+                time: (data.created_at.toDate()).getTime(),
+                replies: replies,
+            }
+    }))
+
+    return comments
 }

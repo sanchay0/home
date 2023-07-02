@@ -1,8 +1,8 @@
-import { getAnalytics, isSupported } from 'firebase/analytics'
-import { getFirestore } from 'firebase/firestore'
-import { initializeApp } from 'firebase/app'
+import { Analytics, getAnalytics, isSupported } from 'firebase/analytics'
+import { Firestore, getFirestore } from 'firebase/firestore'
+import { FirebaseApp, FirebaseOptions, initializeApp } from 'firebase/app'
 
-const firebaseConfig = {
+const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -13,9 +13,9 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig)
-const analytics = isSupported().then(yes => yes ? getAnalytics(app) : null)
-const db = getFirestore(app)
+const app: FirebaseApp = initializeApp(firebaseConfig)
+const analytics: Promise<Analytics> = isSupported().then(yes => yes ? getAnalytics(app) : null)
+const db: Firestore = getFirestore(app)
 
 export {
     app, 
