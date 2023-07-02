@@ -16,7 +16,7 @@ const useCollapseState = (initialState = false) => {
 
 type Props = {
     comment: IComment
-  }
+}
 
 function Comment({ comment }: Props) {
     const { collapsed, toggleCollapse } = useCollapseState(false)
