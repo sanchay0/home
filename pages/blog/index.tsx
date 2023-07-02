@@ -34,7 +34,7 @@ export default function Blogs() {
                                 <div key={post.id} className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500">
                                     <p className="text-neutral-400">{formatDate(post.created_at)}</p>
                                     <div className="md:col-span-2 w-full">
-                                        <p className="text-black duration-200 hover:no-underline underline"><Link href={`/blog/${post.id}`}>{post.title}</Link></p>
+                                        <Link href={`/blog/${post.id}`}><span className="text-black cursor-pointer duration-200 hover:no-underline underline">{post.title}</span></Link>
                                         <p>{calculateReadingTime(post.content)} minute read</p>
                                     </div>
                                 </div>
