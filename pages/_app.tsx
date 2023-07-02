@@ -19,8 +19,8 @@ Router.events.on('routeChangeError', () => NProgress.done())
 function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   useEffect(() => {
     mailgo({
-      dark: true,
-    });
+      showFooter: false,
+    })
   }, [])
 
   const headerLinks: IHeader[] = pageProps?.headerLinks || [
