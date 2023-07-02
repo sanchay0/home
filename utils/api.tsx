@@ -1,14 +1,14 @@
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
-import { db } from './../firebase/clientApp'
+import { db } from "../firebase/clientApp"
 
 // ========= Blogs ========= //
 
 export async function fetchBlogs(): Promise<IPost[]> {
     const response  = await getDocs(collection(db, "blogs"))
-    const posts = response.docs.map((doc) => {
-        const data = doc.data()
+    const posts = response.docs.map((post) => {
+        const data = post.data()
         return {
-          id: doc.id,
+          id: post.id,
           title: data.title,
           author: data.author,
           content: data.content,
@@ -36,9 +36,9 @@ export async function fetchBlog(id: string | string[]): Promise<IPost> {
             // TODO: fetch tags
         }
         return mappedData
-    } else {
-        throw new Error(`Blog with ID ${id} does not exist.`)
     }
+    throw new Error(`Blog with ID ${id} does not exist.`)
+    
 }
 
 // ========= Likes ========= //
@@ -48,8 +48,8 @@ export async function fetchLikes(blogId: string | string[]): Promise<ILike[]> {
     const blogRef = doc(db, "blogs", `${blogId}`)
     const q = query(likesRef, where("post_id", "==", blogRef))
     const response = await getDocs(q)
-    const likes = response.docs.map((doc) => {
-        const data = doc.data()
+    const likes = response.docs.map((like) => {
+        const data = like.data()
         return {
             time: (data.created_at.toDate()).getTime(),
             name: data.name,
@@ -68,8 +68,8 @@ export async function fetchComments(blogId: string | string[]): Promise<IComment
     const response = await getDocs(q)
 
     const comments = await Promise.all(
-        response.docs.map(async (doc) => {
-            const repliesRef = collection(doc.ref, "replies")
+        response.docs.map(async (comment) => {
+            const repliesRef = collection(comment.ref, "replies")
             const repliesSnapshot = await getDocs(repliesRef)
             const replies: ICommentRoot[] = repliesSnapshot.docs.map((replyDoc) => ({
                 id: replyDoc.id,
@@ -77,13 +77,13 @@ export async function fetchComments(blogId: string | string[]): Promise<IComment
                 content: replyDoc.data().content,
                 time: (replyDoc.data().created_at.toDate()).getTime(),
             }))
-            const data = doc.data()
+            const data = comment.data()
             return {
-                id: doc.id,
+                id: comment.id,
                 name: data.name,
                 content: data.content,
                 time: (data.created_at.toDate()).getTime(),
-                replies: replies,
+                replies,
             }
     }))
 
