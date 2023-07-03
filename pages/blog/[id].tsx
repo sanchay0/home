@@ -37,11 +37,11 @@ function Comment({ comment }: Props) {
                     {collapsed ? 
                         <i className="fas fa-caret-right mr-2" /> : 
                         <i className="fas fa-caret-down mr-2" />} 
-                        <span className="hover:no-underline underline">Replies</span>
+                        <span className="hover:no-underline font-light text-black underline">Replies</span>
                     </button>
                 </div> : null
             }
-            {!collapsed &&
+            {!collapsed && comment.replies &&
                 comment.replies.map(reply => (
                     <article key={reply.id} className="p-6 pb-0 ml-6 lg:ml-6">
                         <footer className="flex justify-between items-center">
@@ -63,7 +63,7 @@ function Comment({ comment }: Props) {
                     placeholder="Write a comment" />
                     <div className="flex mt-4 items-center">
                         <button type="button"
-                            className="flex items-center text-sm text-gray-500 duration-200 hover:no-underline underline">
+                            className="flex font-light text-black items-center text-sm duration-200 hover:no-underline underline">
                             Post Reply
                         </button>
                     </div>
@@ -71,7 +71,7 @@ function Comment({ comment }: Props) {
             }
             <div className="flex mt-2 items-center">
                 <button type="button" tabIndex={0} onClick={toggleCollapseButton}
-                    className="flex items-center text-sm text-gray-500 duration-200 hover:no-underline underline">
+                    className="flex font-light text-black items-center text-sm duration-200 hover:no-underline underline">
                     Reply
                 </button>
             </div>
@@ -174,7 +174,7 @@ export default function Blog() {
                     placeholder="Write a comment" />
                     <div className="flex mt-4 items-center">
                         <button type="button"
-                            className="flex items-center text-sm text-gray-500 duration-200 hover:no-underline underline">
+                            className="flex font-light text-black items-center text-sm duration-200 hover:no-underline underline">
                             Post
                         </button>
                     </div>
