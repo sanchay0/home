@@ -5,6 +5,7 @@
 - add tags to posts
     - add category to rss feed from tags
 - add tags to blog page
+- add ability to click on a tag and view posts by tag
 - add ability to make likes and comments
 - add email subscription option 
 - add markdown admin support to make posts
