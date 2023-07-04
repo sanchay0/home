@@ -9,18 +9,22 @@ interface HeaderProps {
     links?: IHeader[];
 }
 
-interface ITag {
-    id: string;
-    name: string;
-}
-
-interface IPost {
+interface IPostRoot {
     id: string;
     title: string;
     author: string;
     content: string;
     created_at: Date;
     updated_at?: Date;
+}
+
+interface ITag {
+    id: string;
+    name: string;
+    posts?: IPostRoot[];
+}
+
+interface IPost extends IPostRoot {
     tags?: ITag[];
 }
 

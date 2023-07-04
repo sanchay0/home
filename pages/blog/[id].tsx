@@ -152,11 +152,11 @@ export default function Blog() {
                     <span>{`${comments.length} comment(s)`}</span>
                     <div className="flex items-center">
                         <button type="button"
-                        className={`cursor-pointer hover:text-black transition-colors duration-300 ${liked ? 'text-black font-normal' : ''}`}
+                        className={`cursor-pointer transition-colors duration-300 ${liked ? 'text-black font-medium' : ''}`}
                         onClick={registerLike}
                         tabIndex={0}
                         >
-                            <i className="fa fa-thumbs-up mr-2" aria-hidden="true" />
+                            <i className={`${liked ? 'fas' : 'far'} fa-thumbs-up mr-2`} aria-hidden="true" />
                             <span>Like</span>
                         </button>
                         <span className="mr-2 ml-2">•</span>
