@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
 import { fetchBlog, fetchComments, fetchLikes } from '../../utils/api'
 
@@ -91,8 +92,10 @@ export default function Blog() {
     useEffect(() => {
         const getPost = async () => {
             try {
-                const fetchedData: IPost = await fetchBlog(id)
-                setPost(fetchedData)
+                if (id) {
+                    const fetchedData: IPost = await fetchBlog(id)
+                    setPost(fetchedData)
+                }
             } catch (error) {
                 // eslint-disable-next-line no-console
                 console.log(error)
@@ -137,7 +140,7 @@ export default function Blog() {
     }
 
     return (
-        <div className="mx-auto max-w-xl">
+        <>
             { post ?
                 <div className="font-light text-sm mt-16">
                     <p className="text-black">{post.title}</p>
@@ -147,8 +150,21 @@ export default function Blog() {
                     </div>
                 </div> : null
             }
+            <div className="flex mt-8">
+            { post && post.tags && <>
+                <span className="mr-2">Labels:</span>
+                {post.tags.map(tag => (
+                    <span key={tag.id} className="bg-gray-100 text-black text-xs px-3 py-1 rounded">
+                        <Link href={`/blog/tags/${tag.id}`}>
+                            <span className="cursor-pointer duration-200 hover:no-underline underline">{tag.name}</span>
+                        </Link>
+                    </span>
+                ))}
+                </>
+            }
+            </div>
             { likes && comments ? 
-                <div className="flex justify-between items-center mt-16">
+                <div className="flex justify-between items-center mt-8">
                     <span>{`${comments.length} comment(s)`}</span>
                     <div className="flex items-center">
                         <button type="button"
@@ -182,6 +198,6 @@ export default function Blog() {
                     { comments.map(comment => <Comment key={comment.id} comment={comment} />)}
                 </div> : null
             }
-        </div>
+        </>
     )
 }

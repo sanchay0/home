@@ -2,8 +2,7 @@
 
 ## TODO
 
-- add tags to posts
-    - add category to rss feed from tags
+- add category to rss feed from tags
 - add tags to blog page
 - add ability to click on a tag and view posts by tag
 - add ability to make likes and comments

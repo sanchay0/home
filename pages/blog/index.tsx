@@ -21,26 +21,24 @@ export default function Blogs() {
     }, [])
 
     return (
-        <div className="mx-auto max-w-xl">
-            <div className="font-light text-sm mt-16">
-                <div className="flex justify-between">
-                    <p className="text-black">Blog</p>
-                    <Link href="/rss.xml"><i className="fas fa-rss hover:text-black transition-colors duration-300" /></Link>
-                </div>
-                <div className="text-neutral-500 mt-3 space-y-3">
-                    <div className="grid gap-6 mt-3">
-                        {
-                            data ? data.map(post => (
-                                <div key={post.id} className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500">
-                                    <p className="text-neutral-400">{formatDate(post.created_at)}</p>
-                                    <div className="md:col-span-2 w-full">
-                                        <Link href={`/blog/${post.id}`}><span className="text-black cursor-pointer duration-200 hover:no-underline underline">{post.title}</span></Link>
-                                        <p>{calculateReadingTime(post.content)} minute read</p>
-                                    </div>
+        <div className="font-light text-sm mt-16">
+            <div className="flex justify-between">
+                <p className="text-black">Blog</p>
+                <Link href="/rss.xml"><i className="fas fa-rss hover:text-black transition-colors duration-300" /></Link>
+            </div>
+            <div className="text-neutral-500 mt-3 space-y-3">
+                <div className="grid gap-6 mt-3">
+                    {
+                        data ? data.map(post => (
+                            <div key={post.id} className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500">
+                                <p className="text-neutral-400">{formatDate(post.created_at)}</p>
+                                <div className="md:col-span-2 w-full">
+                                    <Link href={`/blog/${post.id}`}><span className="text-black cursor-pointer duration-200 hover:no-underline underline">{post.title}</span></Link>
+                                    <p>{calculateReadingTime(post.content)} minute read</p>
                                 </div>
-                            )) : null
-                        }
-                    </div>
+                            </div>
+                        )) : null
+                    }
                 </div>
             </div>
         </div>

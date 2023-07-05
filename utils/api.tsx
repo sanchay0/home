@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
+import { DocumentReference, collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
 import { db } from "../firebase/clientApp"
 
 // ========= Blogs ========= //
@@ -21,11 +21,27 @@ export async function fetchBlogs(): Promise<IPost[]> {
 }
 
 export async function fetchBlog(id: string | string[]): Promise<IPost> {
-    const q = doc(db, "blogs", `${id}`)
+    const q = doc(db, 'blogs', `${id}`)
     const response = await getDoc(q)
+    let tags: ITag[]
 
-    if (response.exists) {
+    if (response.exists()) {
         const data = response.data()
+        const tagRefs: DocumentReference[] = data.tags
+        if (tagRefs) {
+            const tagPromises = tagRefs.map(async (ref) => {
+                const tag = await getDoc(ref)
+                if (tag.exists()) {
+                    return {
+                    id: tag.id,
+                    name: tag.data().name,
+                    }
+                }
+                throw new Error(`Tag does not exist.`)
+            })
+            tags = await Promise.all(tagPromises)
+        }
+
         const mappedData: IPost = {
             id: `${id}`,
             title: data.title,
@@ -33,12 +49,12 @@ export async function fetchBlog(id: string | string[]): Promise<IPost> {
             content: data.content,
             created_at: data.created_at.toDate(),
             updated_at: data.updated_at ? data.updated_at.toDate() : undefined,
-            // TODO: fetch tags
+            tags,
         }
         return mappedData
     }
+
     throw new Error(`Blog with ID ${id} does not exist.`)
-    
 }
 
 // ========= Likes ========= //

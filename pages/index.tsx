@@ -4,7 +4,7 @@ import React from 'react'
 export default function App() {
 
   return (
-    <div className="mx-auto max-w-xl">
+    <>
       <div className="md:flex md:items-center md:justify-between md:space-x-5">
         <div className="flex items-center space-x-5">
           <div className="flex-shrink-0">
@@ -28,6 +28,6 @@ export default function App() {
           <p>Outside of work, I&apos;m very passionate about <a className="duration-200 hover:no-underline underline" href="https://en.wikipedia.org/wiki/Special_situation" title="wiki" target="_blank" rel="noopener noreferrer">special situation</a> and <a className="duration-200 hover:no-underline underline" href="https://en.wikipedia.org/wiki/Event-driven_investing" title="wiki" target="_blank" rel="noopener noreferrer">event-driven investing</a>.</p>
         </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -36,7 +36,9 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
       </Head>
       <Header links={headerLinks} />
       <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
-        <Component {...pageProps} />
+        <div className="mx-auto max-w-xl">
+          <Component {...pageProps} />
+        </div>
       </div>
       <Footer />
       <Analytics />
