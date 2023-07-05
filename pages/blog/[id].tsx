@@ -155,7 +155,7 @@ export default function Blog() {
                 <span className="mr-2">Labels:</span>
                 {post.tags.map(tag => (
                     <span key={tag.id} className="bg-gray-100 text-black text-xs px-3 py-1 rounded mr-2">
-                        <Link href={`/blog/tags/${tag.id}`}>
+                        <Link href={`/blog/labels/${tag.id}`}>
                             <span className="cursor-pointer duration-200 hover:no-underline underline">{tag.name}</span>
                         </Link>
                     </span>

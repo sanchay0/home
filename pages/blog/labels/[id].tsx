@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Blogs from '..'
 import { fetchTag } from '../../../utils/api'
 
-export default function Tags() {
+export default function Labels() {
     const [tag, setTag] = useState<ITag>(null)
 
     const router = useRouter()

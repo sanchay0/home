@@ -2,10 +2,9 @@
 
 ## TODO
 
+- FIX HTML TAG NAMES AND USE GRIDS ON BLOG PAGE
 - Change title in `<Head>` of every page
 - add category to rss feed from tags
-- add tags to blog page
-    - FIX HTML TAGGING AND USE GRIDS ON ALL PAGES
 - add ability to make likes and comments
 - add email subscription option 
 - add markdown admin support to make posts (using [TinyMCE](https://www.tiny.cloud/docs/tinymce/6/basic-setup/))

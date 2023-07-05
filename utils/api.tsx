@@ -136,6 +136,19 @@ export async function fetchComments(blogId: string | string[]): Promise<IComment
 
 // ========= Tags ========= //
 
+export async function fetchTags(): Promise<ITag[]> {
+    const response  = await getDocs(collection(db, "tags"))
+    const tags = response.docs.map((tag) => {
+        const data = tag.data()
+        return {
+            id: tag.id,
+            name: data.name,
+        }
+      })
+
+    return tags
+}
+
 export async function fetchTag(tagId: string | string[]): Promise<ITag> {
     const q = doc(db, "tags", `${tagId}`)
     const response = await getDoc(q)
