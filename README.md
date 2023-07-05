@@ -5,7 +5,7 @@
 - Change title in `<Head>` of every page
 - add category to rss feed from tags
 - add tags to blog page
-- add ability to click on a tag and view posts by tag
+    - FIX HTML TAGGING AND USE GRIDS ON ALL PAGES
 - add ability to make likes and comments
 - add email subscription option 
 - add markdown admin support to make posts (using [TinyMCE](https://www.tiny.cloud/docs/tinymce/6/basic-setup/))

@@ -5,10 +5,6 @@ interface IHeader {
     label: string;
 }
 
-interface HeaderProps {
-    links?: IHeader[];
-}
-
 interface IPostRoot {
     id: string;
     title: string;
@@ -42,4 +38,12 @@ interface ICommentRoot {
 
 interface IComment extends ICommentRoot {
     replies?: ICommentRoot[];
+}
+
+interface HeaderProps {
+    links?: IHeader[];
+}
+
+interface BlogProps {
+    tag?: ITag;
 }

@@ -20,8 +20,36 @@ export async function fetchBlogs(): Promise<IPost[]> {
       return posts
 }
 
+export async function fetchBlogsByTag(tag: ITag): Promise<IPost[]> {
+    const q = doc(db, "tags", `${tag.id}`)
+    const response = await getDoc(q)
+    const blogRefs: DocumentReference[] = response.data().blogs
+    let blogs: IPost[]
+
+    if (blogRefs) {
+        const blogPromises = blogRefs.map(async (ref) => {
+            const blog = await getDoc(ref)
+            if (blog.exists()) {
+                const data = blog.data()
+                return {
+                    id: `${blog.id}`,
+                    title: data.title,
+                    author: data.author,
+                    content: data.content,
+                    created_at: data.created_at.toDate(),
+                    updated_at: data.updated_at ? data.updated_at.toDate() : undefined,
+                }
+            }
+            throw new Error(`Blog does not exist.`)
+        })
+        blogs = await Promise.all(blogPromises)
+        return blogs
+    }
+    throw new Error(`Tag ${tag.name} does not have any blogs.`)
+}
+
 export async function fetchBlog(id: string | string[]): Promise<IPost> {
-    const q = doc(db, 'blogs', `${id}`)
+    const q = doc(db, "blogs", `${id}`)
     const response = await getDoc(q)
     let tags: ITag[]
 
@@ -104,4 +132,21 @@ export async function fetchComments(blogId: string | string[]): Promise<IComment
     }))
 
     return comments
+}
+
+// ========= Tags ========= //
+
+export async function fetchTag(tagId: string | string[]): Promise<ITag> {
+    const q = doc(db, "tags", `${tagId}`)
+    const response = await getDoc(q)
+    
+    if (response.exists()) {
+        const data = response.data()
+
+        return {
+            id: response.id,
+            name: data.name,
+        }
+    }
+    throw new Error(`Tag with ${tagId} does not exist.`)
 }
