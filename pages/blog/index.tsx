@@ -1,23 +1,18 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { calculateReadingTime, formatDate } from '../../utils/helpers';
-import { fetchBlogs, fetchBlogsByTag } from '../../utils/api';
+import { fetchBlogs } from '../../utils/api';
 
-export default function Blogs({ tag }: BlogProps) {
+export default function Blogs() {
   const [sortedData, setSortedData] = useState<IPost[]>(null)
 //   const [tags, setTags] = useState<ITag[]>(null)
 
     useEffect(() => {
         const getData = async () => {
             try {
-                let fetchedBlogs: IPost[]
-                if (tag) {
-                    fetchedBlogs = await fetchBlogsByTag(tag)
-                } else {
-                    fetchedBlogs = await fetchBlogs()
-                    // const fetchedTags = await fetchTags()
-                    // setTags(fetchedTags)
-                }
+                const fetchedBlogs = await fetchBlogs()
+                // const fetchedTags = await fetchTags()
+                // setTags(fetchedTags)
 
                 const sortedBlogs = fetchedBlogs.sort(
                     (a, b) => b.created_at.getTime() - a.created_at.getTime()
@@ -31,27 +26,18 @@ export default function Blogs({ tag }: BlogProps) {
         }
 
         getData()
-    }, [tag])
+    }, [])
 
     return (
         <div className="grid gap-12 md:gap-24 mt-16">
             <div className="font-light text-sm">
                 <div className="flex justify-between">
                     <div>
-                    <span className="text-black">Blog</span>
-                    { tag && (
-                        <span className="bg-gray-100 text-black text-xs px-3 py-1 rounded ml-2">
-                            {tag.name}
-                        </span>
-                    )}
+                        <span className="text-black">Blog</span>
                     </div>
-                    <div>
-                    { !tag && (
-                        <Link href="/rss.xml">
-                            <i className="fas fa-rss hover:text-black transition-colors duration-300" />
-                        </Link>
-                    )}
-                    </div>
+                    <Link href="/rss.xml">
+                        <i className="fas fa-rss hover:text-black transition-colors duration-300" />
+                    </Link>
                 </div>
                 <div className="grid gap-6 mt-3">
                     { sortedData && sortedData.map((post) => (

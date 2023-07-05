@@ -20,8 +20,8 @@ export async function fetchBlogs(): Promise<IPost[]> {
       return posts
 }
 
-export async function fetchBlogsByTag(tag: ITag): Promise<IPost[]> {
-    const q = doc(db, "tags", `${tag.id}`)
+export async function fetchBlogsByTag(tagId: string | string[]): Promise<IPost[]> {
+    const q = doc(db, "tags", `${tagId}`)
     const response = await getDoc(q)
     const blogRefs: DocumentReference[] = response.data().blogs
     let blogs: IPost[]
@@ -45,7 +45,7 @@ export async function fetchBlogsByTag(tag: ITag): Promise<IPost[]> {
         blogs = await Promise.all(blogPromises)
         return blogs
     }
-    throw new Error(`Tag ${tag.name} does not have any blogs.`)
+    throw new Error(`Tag ID ${tagId} does not have any blogs.`)
 }
 
 export async function fetchBlog(id: string | string[]): Promise<IPost> {
