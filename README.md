@@ -2,7 +2,7 @@
 
 ## TODO
 
-- FIX HTML TAG NAMES AND USE GRIDS ON BLOG PAGE
+- Add tags in third grid column of blogs page
 - Change title in `<Head>` of every page
 - add category to rss feed from tags
 - add ability to make likes and comments
