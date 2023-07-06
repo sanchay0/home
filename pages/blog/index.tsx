@@ -6,6 +6,8 @@ import { fetchBlogs } from '../../utils/api'
 
 export default function Blogs() {
   const [sortedData, setSortedData] = useState<IPost[]>(null)
+  const [subscribed, setSubscribed] = useState(false)
+  const [inputValue, setInputValue] = useState('')
 //   const [tags, setTags] = useState<ITag[]>(null)
 
     useEffect(() => {
@@ -28,6 +30,22 @@ export default function Blogs() {
 
         getData()
     }, [])
+
+    const handleSubscribe = () => {
+        if (!subscribed) {
+            setSubscribed(true)
+        }
+        setInputValue('')
+        // TODO: add subscribe functionality
+        // use {merge: true} when setting the subscriber email in firestore
+        // also check if user is already subscribed
+    }
+
+    const handleInputChange = (e) => {
+        setSubscribed(false)
+        setInputValue(e.target.value)
+    }
+
 
     return (
         <>
@@ -63,6 +81,20 @@ export default function Blogs() {
                     ))}
                 </div>
             </div>
+            { sortedData && <div className="flex items-center">
+                <input
+                    id="post-reply"
+                    className="focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
+                    placeholder="To receive future updates in your inbox, enter your email"
+                    onChange={handleInputChange}
+                    value={inputValue} />
+                <button
+                    type="button"
+                    className={`flex whitespace-nowrap font-light text-black items-center text-sm duration-200 ${subscribed ? '' : 'underline hover:no-underline'} ml-2 mt-1`}
+                    onClick={handleSubscribe}>
+                    { subscribed ? 'Subscribed!' : 'Subscribe' }
+                </button>
+            </div> }
             {/* { !tag && tags && (
                 <div className="font-light text-sm">
                     <p className="text-black">Labels</p>

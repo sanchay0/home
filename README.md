@@ -2,9 +2,9 @@
 
 ## TODO
 
-- add ability to make likes and comments
-- add email subscription option
+- add ability to set likes and comments and subscription emails
 - add markdown admin support to make posts (using [TinyMCE](https://www.tiny.cloud/docs/tinymce/6/basic-setup/))
+    - when we make posts, need to make sure to send email to subscriber list via sendgrid
 - add redis cache, use nextjs-redis
 - edit photo and publish
 
