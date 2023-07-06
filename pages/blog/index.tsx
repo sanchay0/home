@@ -87,6 +87,7 @@ export default function Blogs() {
                     className="focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
                     placeholder="To receive future updates in your inbox, enter your email"
                     onChange={handleInputChange}
+                    autoComplete="off"
                     value={inputValue} />
                 <button
                     type="button"
