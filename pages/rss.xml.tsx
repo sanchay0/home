@@ -1,6 +1,7 @@
 import { Feed, FeedOptions } from 'feed'
 import { fetchBlogs } from '../utils/api'
 
+
 export async function getServerSideProps({ res }) {
     const allPosts: IPost[] = await fetchBlogs()
     const siteUrl: string = process.env.URL
@@ -8,6 +9,7 @@ export async function getServerSideProps({ res }) {
     const feedOptions: FeedOptions = {
         title: 'Sanchay\'s blog posts | RSS Feed',
         description: 'Welcome!',
+        language: 'en',
         id: siteUrl,
         link: siteUrl,
         image: `${siteUrl}/favicon.ico`,
@@ -17,20 +19,34 @@ export async function getServerSideProps({ res }) {
         feedLinks: {
             rss2: `${siteUrl}/rss.xml`,
         },
+        author: {
+            name: 'Sanchay Javeria',
+            email: 'sanchayjaveria@gmail.com',
+            link: 'https://sanchayjaveria.com/'
+        },
     }
 
     const feed: Feed = new Feed(feedOptions)
 
     allPosts.map((post: IPost) => {
+        const category = post.tags?.map((tag) => ({
+                name: tag.name,
+            })) || []
         feed.addItem({
             title: post.title,
             id: `${siteUrl}/blog/${post.id}`,
             link: `${siteUrl}/blog/${post.id}`,
             content: post.content,
             date: post.created_at,
-            // TODO: add cateogry from tags
+            author: [{
+                name: post.author,
+                email: 'sanchayjaveria@gmail.com',
+                link: 'https://sanchayjaveria.com/'
+            }],
+            published: post.created_at,
+            category,
         })
-        return post;
+        return post
     })
 
     const xmlContent: string = feed.atom1()

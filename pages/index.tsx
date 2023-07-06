@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Image from 'next/image'
 import React from 'react'
 
@@ -5,6 +6,9 @@ export default function App() {
 
   return (
     <>
+      <Head>
+        <title>Home</title>
+      </Head>
       <div className="md:flex md:items-center md:justify-between md:space-x-5">
         <div className="flex items-center space-x-5">
           <div className="flex-shrink-0">

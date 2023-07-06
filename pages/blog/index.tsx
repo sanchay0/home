@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { calculateReadingTime, formatDate } from '../../utils/helpers';
-import { fetchBlogs } from '../../utils/api';
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import Head from 'next/head'
+import { calculateReadingTime, formatDate } from '../../utils/helpers'
+import { fetchBlogs } from '../../utils/api'
 
 export default function Blogs() {
   const [sortedData, setSortedData] = useState<IPost[]>(null)
@@ -29,6 +30,10 @@ export default function Blogs() {
     }, [])
 
     return (
+        <>
+        <Head>
+            <title>Blog</title>
+        </Head>
         <div className="grid gap-12 md:gap-24 mt-16">
             <div className="font-light text-sm">
                 <div className="flex justify-between">
@@ -43,10 +48,10 @@ export default function Blogs() {
                     { sortedData && sortedData.map((post) => (
                         <div
                         key={post.id}
-                        className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500"
+                        className="grid grid-cols-3 items-start md:grid-cols-3 text-neutral-500"
                         >
                             <p className="text-neutral-400">{formatDate(post.created_at)}</p>
-                            <div className="md:col-span-2 w-full">
+                            <div className="md:col-span-1 w-full">
                                 <Link href={`/blog/${post.id}`}>
                                     <span className="text-black cursor-pointer duration-200 hover:no-underline underline">
                                     {post.title}
@@ -73,5 +78,6 @@ export default function Blogs() {
                 </div>
             )} */}
         </div>
+        </>
     )
 }

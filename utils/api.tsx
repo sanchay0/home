@@ -5,19 +5,39 @@ import { db } from "../firebase/clientApp"
 
 export async function fetchBlogs(): Promise<IPost[]> {
     const response  = await getDocs(collection(db, "blogs"))
-    const posts = response.docs.map((post) => {
-        const data = post.data()
-        return {
-          id: post.id,
-          title: data.title,
-          author: data.author,
-          content: data.content,
-          created_at: data.created_at.toDate(),
-          updated_at: data.updated_at ? data.updated_at.toDate() : undefined,
+    const posts = await Promise.all(
+        response.docs.map(async (post) => {
+            const data = post.data()
+            const tagRefs: DocumentReference[] = data.tags
+            let tags: ITag[]
+
+            if (tagRefs) {
+                const tagPromises = tagRefs.map(async (ref) => {
+                    const tag = await getDoc(ref)
+                    if (tag.exists()) {
+                        const tagData = tag.data()
+                        return {
+                            id: tag.id,
+                            name: tagData.name,
+                        }
+                    }
+                    throw new Error('Tag does not exist.')
+                })
+                tags = await Promise.all(tagPromises)
+            }
+            return {
+                id: post.id,
+                title: data.title,
+                author: data.author,
+                content: data.content,
+                created_at: data.created_at.toDate(),
+                updated_at: data.updated_at ? data.updated_at.toDate() : undefined,
+                tags,
+            }
         }
-      })
-    
-      return posts
+    ))
+
+    return posts
 }
 
 export async function fetchBlogsByTag(tagId: string | string[]): Promise<IPost[]> {

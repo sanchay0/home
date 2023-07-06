@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
 import { fetchBlog, fetchComments, fetchLikes } from '../../utils/api'
 
@@ -141,6 +142,9 @@ export default function Blog() {
 
     return (
         <>
+            <Head>
+                <title>{post ? post.title : "Sanchay's blog post"}</title>
+            </Head>
             { post ?
                 <div className="font-light text-sm mt-16">
                     <p className="text-black">{post.title}</p>

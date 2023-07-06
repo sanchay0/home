@@ -2,9 +2,6 @@
 
 ## TODO
 
-- Add tags in third grid column of blogs page
-- Change title in `<Head>` of every page
-- add category to rss feed from tags
 - add ability to make likes and comments
 - add email subscription option
 - add markdown admin support to make posts (using [TinyMCE](https://www.tiny.cloud/docs/tinymce/6/basic-setup/))

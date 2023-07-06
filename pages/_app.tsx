@@ -2,7 +2,6 @@ import '../styles/globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import { useEffect } from 'react'
 import { AppProps } from 'next/app'
-import Head from 'next/head'
 import Router from 'next/router'
 import mailgo from 'mailgo'
 import NProgress from 'nprogress'
@@ -31,9 +30,6 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
 
   return (
     <main className="flex-1 overflow-y-auto">
-      <Head>
-        <title>Home</title>
-      </Head>
       <Header links={headerLinks} />
       <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
         <div className="mx-auto max-w-xl">

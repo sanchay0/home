@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { fetchBlogsByTag, fetchTag } from '../../../utils/api'
 import { calculateReadingTime, formatDate } from '../../../utils/helpers'
@@ -36,6 +37,10 @@ export default function Labels() {
     }, [id])
 
     return (
+        <>
+        <Head>
+            <title>Blog - {tag ? tag.name : 'tag'}</title>
+        </Head>
         <div className="grid gap-12 md:gap-24 mt-16">
             <div className="font-light text-sm">
                 <div className="flex justify-between">
@@ -68,5 +73,6 @@ export default function Labels() {
                 </div>
             </div>
         </div>
+        </>
     )
 }
