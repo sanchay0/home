@@ -2,8 +2,12 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { GetServerSideProps } from 'next'
+import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore'
 import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
 import { fetchBlog, fetchComments, fetchLikes } from '../../utils/api'
+import { db } from '../../firebase/clientApp'
+
 
 // Custom hook to manage collapse state
 const useCollapseState = (initialState = false) => {
@@ -16,11 +20,15 @@ const useCollapseState = (initialState = false) => {
     return { collapsed, toggleCollapse }
 }
 
-type Props = {
+type CProps = {
     comment: IComment
 }
 
-function Comment({ comment }: Props) {
+type BProps = {
+    ip: string
+}
+
+function Comment({ comment }: CProps) {
     const { collapsed, toggleCollapse } = useCollapseState(false)
     const { collapsed: collapsedButton, toggleCollapse: toggleCollapseButton } = useCollapseState(true)
 
@@ -81,7 +89,7 @@ function Comment({ comment }: Props) {
     )
 }
 
-export default function Blog() {
+export default function Blog({ ip }: BProps) {
     const [post, setPost] = useState<IPost>(null)
     const [likes, setLikes] = useState<ILike[]>(null)
     const [liked, setLiked] = useState(false)
@@ -130,12 +138,22 @@ export default function Blog() {
         getComments()
     }, [id])
 
-    const registerLike = () => {
-      // TODO: set likes in firestore, get name from gmail login (add a hash to make it unique)
+    const registerLike = async () => {
       if (liked) {
-        setLikes((prevLikes) => prevLikes.filter((like) => like.name !== 'test'))
+        // remove like
+        const like = likes.find(l => l.name === ip)
+        if (like) {
+            await deleteDoc(doc(db, "likes", like.id))
+            setLikes((prevLikes) => prevLikes.filter(l => l.name !== ip))
+        }
       } else {
-        setLikes((prevLikes) => [...prevLikes, { name: 'test', time: (new Date()).getTime }])
+        const newLike: ILike = {
+            time: new Date(),
+            name: ip,
+            post_id: doc(db, "blogs", `${id}`)
+        }
+        const docRef = await addDoc(collection(db, "likes"), newLike)
+        setLikes((prevLikes) => [...prevLikes, { ...newLike, id: docRef.id }])
       }
       setLiked((prevIsLiked) => !prevIsLiked)
     }
@@ -204,4 +222,21 @@ export default function Blog() {
             }
         </>
     )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+    let ip = req.headers["x-real-ip"]
+    if (!ip) {
+      const forwardedFor = req.headers["x-forwarded-for"]
+      if (Array.isArray(forwardedFor)) {
+        ip = forwardedFor.at(0)
+      } else {
+        ip = forwardedFor?.split(",").at(0) ?? "Unknown"
+      }
+    }
+    return {
+      props: {
+        ip,
+      },
+    }
 }

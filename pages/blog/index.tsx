@@ -32,7 +32,7 @@ export default function Blogs() {
     }, [])
 
     const handleSubscribe = () => {
-        if (!subscribed) {
+        if (!subscribed && inputValue) {
             setSubscribed(true)
         }
         setInputValue('')

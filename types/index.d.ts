@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
+
 interface IHeader {
     href: string;
     label: string;
 }
 
 interface IPostRoot {
-    id: string;
+    id?: string;
     title: string;
     author: string;
     content: string;
@@ -15,7 +16,7 @@ interface IPostRoot {
 }
 
 interface ITag {
-    id: string;
+    id?: string;
     name: string;
     posts?: IPostRoot[];
 }
@@ -25,19 +26,23 @@ interface IPost extends IPostRoot {
 }
 
 interface ILike {
+    id?: string;
     time: timestamp;
     name: string;
+    post_id: DocumentReference;
 }
 
 interface ICommentRoot {
-    id: string;
+    id?: string;
     name: string;
     content: string;
     time: timestamp;
 }
 
 interface IComment extends ICommentRoot {
+    id?: string;
     replies?: ICommentRoot[];
+    post_id: DocumentReference;
 }
 
 interface HeaderProps {

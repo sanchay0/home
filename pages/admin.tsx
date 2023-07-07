@@ -1,5 +1,5 @@
-import { GetServerSideProps } from "next"
-import React from "react"
+import { GetServerSideProps } from 'next'
+import React from 'react'
 import Custom404 from './404'
 
 type Props = {

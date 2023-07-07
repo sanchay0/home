@@ -115,8 +115,10 @@ export async function fetchLikes(blogId: string | string[]): Promise<ILike[]> {
     const likes = response.docs.map((like) => {
         const data = like.data()
         return {
+            id: like.id,
             time: (data.created_at.toDate()).getTime(),
             name: data.name,
+            post_id: blogRef,
         }
     })
 
@@ -148,6 +150,7 @@ export async function fetchComments(blogId: string | string[]): Promise<IComment
                 content: data.content,
                 time: (data.created_at.toDate()).getTime(),
                 replies,
+                post_id: blogRef,
             }
     }))
 
