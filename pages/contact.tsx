@@ -28,18 +28,18 @@ export default function Contact() {
                         </div>
                     </div>
                     <div className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500">
-                        <div><p className="dark:text-neutral-400 text-neutral-400">Github</p></div>
-                        <div className="md:col-span-2 w-full">
-                            <p className="dark:text-white text-black">
-                            <a title="Github" className="text-black duration-200 hover:no-underline underline after:content-['_↗']" href="https://www.github.com/sanchay0/" target="_blank" rel="noopener noreferrer">sanchay0</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500">
                         <div><p className="dark:text-neutral-400 text-neutral-400">Resume</p></div>
                         <div className="md:col-span-2 w-full">
                             <p className="dark:text-white text-black">
                             <a title="Resume" className="text-black duration-200 hover:no-underline underline after:content-['_↗']" href="https://sanchay.s3.us-east-2.amazonaws.com/resume.pdf" target="_blank" rel="noopener noreferrer">sanchay_javeria</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500">
+                        <div><p className="dark:text-neutral-400 text-neutral-400">Github</p></div>
+                        <div className="md:col-span-2 w-full">
+                            <p className="dark:text-white text-black">
+                            <a title="Github" className="text-black duration-200 hover:no-underline underline after:content-['_↗']" href="https://www.github.com/sanchay0/" target="_blank" rel="noopener noreferrer">sanchay0</a>
                             </p>
                         </div>
                     </div>
