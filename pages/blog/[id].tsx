@@ -187,8 +187,10 @@ export default function Blog({ ip }: BProps) {
             </div>
             { likes && comments ? 
                 <div className="flex justify-between items-center mt-8">
-                    <span>{`${comments.length} comment(s)`}</span>
+                    <span>{ comments.length > 0 ? `${comments.length} comment(s)` : null}</span>
                     <div className="flex items-center">
+                        <span>{likes.length > 0 ? `${likes.length} like(s)` : null}</span>
+                        <span className="mr-2 ml-2">{likes.length > 0 ? "•" : null}</span>
                         <button type="button"
                         className={`cursor-pointer transition-colors duration-300 ${liked ? 'text-black font-medium' : ''}`}
                         onClick={registerLike}
@@ -197,8 +199,6 @@ export default function Blog({ ip }: BProps) {
                             <i className={`${liked ? 'fas' : 'far'} fa-thumbs-up mr-2`} aria-hidden="true" />
                             <span>Like</span>
                         </button>
-                        <span className="mr-2 ml-2">•</span>
-                        <span>{`${likes.length} like(s)`}</span>
                     </div>
                 </div> : null
             }

@@ -6,7 +6,6 @@ import Router from 'next/router'
 import mailgo from 'mailgo'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import Footer from '../components/Footer'
 import Header from '../components/Header'
 
 NProgress.configure({showSpinner: false})
@@ -36,7 +35,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
           <Component {...pageProps} />
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
       <Analytics />
     </main>
   )
