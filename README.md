@@ -2,6 +2,7 @@
 
 ## TODO
 
+- Explore moving everything to one page (??)
 - Fix firestore write permissions (add auth to app to add likes/comments/replies)
 - add ability to set comments and subscription emails
 - add markdown admin support to make posts (using [TinyMCE](https://www.tiny.cloud/docs/tinymce/6/basic-setup/))
