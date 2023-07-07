@@ -79,37 +79,38 @@ export default function Blogs() {
                             </div>
                         </div>
                     ))}
+                    { sortedData && 
+                    <div className="flex mt-12 md:mt-12 items-center justify-center">
+                        <input
+                            id="post-reply"
+                            className="focus:outline-none resize-none block p-2.5 w-3/4 border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
+                            placeholder="To receive future updates in your inbox, enter your email"
+                            onChange={handleInputChange}
+                            autoComplete="off"
+                            value={inputValue} />
+                        <button
+                            type="button"
+                            className={`flex whitespace-nowrap font-light text-black items-center text-sm duration-200 ${subscribed ? '' : 'underline hover:no-underline'} ml-2 mt-1`}
+                            onClick={handleSubscribe}>
+                            { subscribed ? 'Subscribed!' : 'Subscribe' }
+                        </button>
+                    </div> }
+                {/* { !tag && tags && (
+                    <div className="font-light text-sm">
+                        <p className="text-black">Labels</p>
+                        <div className="flex mt-3">
+                            {tags.map(t => (
+                                <span key={t.id} className="mr-2">
+                                    <Link href={`/blog/labels/${t.id}`}>
+                                        <span className="cursor-pointer duration-200 hover:no-underline underline">{t.name}</span>
+                                    </Link>
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                )} */}
                 </div>
             </div>
-            { sortedData && <div className="flex items-center">
-                <input
-                    id="post-reply"
-                    className="focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
-                    placeholder="To receive future updates in your inbox, enter your email"
-                    onChange={handleInputChange}
-                    autoComplete="off"
-                    value={inputValue} />
-                <button
-                    type="button"
-                    className={`flex whitespace-nowrap font-light text-black items-center text-sm duration-200 ${subscribed ? '' : 'underline hover:no-underline'} ml-2 mt-1`}
-                    onClick={handleSubscribe}>
-                    { subscribed ? 'Subscribed!' : 'Subscribe' }
-                </button>
-            </div> }
-            {/* { !tag && tags && (
-                <div className="font-light text-sm">
-                    <p className="text-black">Labels</p>
-                    <div className="flex mt-3">
-                        {tags.map(t => (
-                            <span key={t.id} className="mr-2">
-                                <Link href={`/blog/labels/${t.id}`}>
-                                    <span className="cursor-pointer duration-200 hover:no-underline underline">{t.name}</span>
-                                </Link>
-                            </span>
-                        ))}
-                    </div>
-                </div>
-            )} */}
         </div>
         </>
     )
