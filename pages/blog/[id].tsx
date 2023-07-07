@@ -204,19 +204,16 @@ export default function Blog({ ip }: BProps) {
             }
             {/* TODO: Add ability to write comments/replies to firestore; hook google signup */}
             { comments ? 
-                <div>
+                <div className="flex mt-4 items-center">
                     <textarea
                     id="post"
                     rows={1}
-                    className="focus:outline-none resize-none block p-2.5 w-full border-b border-gray-300 focus:border-gray-600 mt-2 placeholder-gray-400"
+                    className="focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
                     placeholder="Write a comment" />
-                    <div className="flex mt-4 items-center">
-                        <button type="button"
-                            className="flex font-light text-black items-center text-sm duration-200 hover:no-underline underline">
-                            Post
-                        </button>
-                    </div>
-
+                    <button type="button"
+                        className="flex font-light text-black items-center text-sm duration-200 hover:no-underline underline ml-5">
+                        Post
+                    </button>
                     { comments.map(comment => <Comment key={comment.id} comment={comment} />)}
                 </div> : null
             }
