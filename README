@@ -1,6 +1,7 @@
 Self-hosted personal blog.
 
-## TODO
+
+TODO:
 
 - add auth to like or comment
     - Fix firestore write permissions (add auth to app to add likes/comments/replies)
