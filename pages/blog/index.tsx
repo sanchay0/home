@@ -90,7 +90,7 @@ export default function Blogs() {
                             value={inputValue} />
                         <button
                             type="button"
-                            className={`flex whitespace-nowrap font-light text-black items-center text-sm duration-200 ${subscribed ? '' : 'underline hover:no-underline'} ml-2 mt-1`}
+                            className="bg-gray-100 hover:bg-gray-200 hover:text-gray-500 text-gray-400 text-sm px-4 py-2 duration-300 rounded-full ml-2"
                             onClick={handleSubscribe}>
                             { subscribed ? 'Subscribed!' : 'Subscribe' }
                         </button>

@@ -43,17 +43,17 @@ function Comment({ comment }: CProps) {
             <p className="mt-2">{comment.content}</p>
             {comment.replies && comment.replies.length > 0 ?
                 <div className="flex mt-2 items-center duration-200">
-                    <button type="button" tabIndex={0} onClick={toggleCollapse} className="flex items-center text-sm text-gray-500">
+                    <button type="button" tabIndex={0} onClick={toggleCollapse} className="text-sm px-2 py-1 ml-2">
                     {collapsed ? 
                         <i className="fas fa-caret-right mr-2" /> : 
                         <i className="fas fa-caret-down mr-2" />} 
-                        <span className="hover:no-underline font-light text-black underline">Replies</span>
+                        Replies
                     </button>
                 </div> : null
             }
             {!collapsed && comment.replies &&
                 comment.replies.map(reply => (
-                    <article key={reply.id} className="p-6 pb-0 ml-6 lg:ml-6">
+                    <article key={reply.id} className="pt-3 pb-3 pl-6 ml-6 lg:ml-6">
                         <footer className="flex justify-between items-center">
                             <div className="flex items-center">
                                 <p className="inline-flex items-center mr-3 text-sm text-gray-900">{reply.name}</p>
@@ -65,15 +65,15 @@ function Comment({ comment }: CProps) {
                 ))
             }
             {!collapsedButton &&
-                <div className="lg:ml-12">
+                <div className="flex lg:ml-12">
                     <textarea
-                    id="post-reply"
+                    id={`post-reply-${comment.id}`}
                     rows={1}
-                    className="focus:outline-none resize-none block p-2.5 w-full border-b border-gray-300 focus:border-gray-600 mt-2 placeholder-gray-400"
+                    className="focus:outline-none resize-none block p-2.5 w-3/4 border-b border-gray-300 focus:border-gray-600 mt-2 placeholder-gray-400"
                     placeholder="Write a comment" />
-                    <div className="flex mt-4 items-center">
+                    <div className="flex mt-4 items-center w-1/4">
                         <button type="button"
-                            className="flex font-light text-black items-center text-sm duration-200 hover:no-underline underline">
+                            className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
                             Post Reply
                         </button>
                     </div>
@@ -81,7 +81,7 @@ function Comment({ comment }: CProps) {
             }
             <div className="flex mt-2 items-center">
                 <button type="button" tabIndex={0} onClick={toggleCollapseButton}
-                    className="flex font-light text-black items-center text-sm duration-200 hover:no-underline underline">
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
                     Reply
                 </button>
             </div>
@@ -176,10 +176,8 @@ export default function Blog({ ip }: BProps) {
             { post && post.tags && <>
                 <span className="mr-2">Labels:</span>
                 {post.tags.map(tag => (
-                    <span key={tag.id} className="bg-gray-100 text-black text-xs px-3 py-1 rounded mr-2">
-                        <Link href={`/blog/labels/${tag.id}`}>
-                            <span className="cursor-pointer duration-200 hover:no-underline underline">{tag.name}</span>
-                        </Link>
+                    <span key={tag.id} className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-xs px-3 py-1 duration-200 rounded-full mr-2">
+                        <Link href={`/blog/labels/${tag.id}`}>{tag.name}</Link>
                     </span>
                 ))}
                 </>
@@ -192,7 +190,7 @@ export default function Blog({ ip }: BProps) {
                         <span>{likes.length > 0 ? `${likes.length} like(s)` : null}</span>
                         <span className="mr-2 ml-2">{likes.length > 0 ? "•" : null}</span>
                         <button type="button"
-                        className={`cursor-pointer transition-colors duration-300 ${liked ? 'text-black font-medium' : ''}`}
+                        className={`transition-colors duration-300 ${liked ? 'text-black font-medium' : ''}`}
                         onClick={registerLike}
                         tabIndex={0}
                         >
@@ -204,6 +202,7 @@ export default function Blog({ ip }: BProps) {
             }
             {/* TODO: Add ability to write comments/replies to firestore; hook google signup */}
             { comments ? 
+                <>
                 <div className="flex mt-4 items-center">
                     <textarea
                     id="post"
@@ -211,11 +210,12 @@ export default function Blog({ ip }: BProps) {
                     className="focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
                     placeholder="Write a comment" />
                     <button type="button"
-                        className="flex font-light text-black items-center text-sm duration-200 hover:no-underline underline ml-5">
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
                         Post
                     </button>
-                    { comments.map(comment => <Comment key={comment.id} comment={comment} />)}
-                </div> : null
+                </div>
+                { comments.map(comment => <Comment key={comment.id} comment={comment} />)}
+                </> : null
             }
         </>
     )

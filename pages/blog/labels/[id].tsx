@@ -47,7 +47,7 @@ export default function Labels() {
                     <div>
                     <span className="text-black">Blog</span>
                     { tag && (
-                        <span className="bg-gray-100 text-black text-xs px-3 py-1 rounded ml-2">
+                        <span className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-xs px-3 py-1 duration-200 rounded-full ml-2">
                             {tag.name}
                         </span>
                     )}
