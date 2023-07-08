@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
-import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore'
+import { doc } from 'firebase/firestore'
 import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
-import { fetchBlog, fetchComments, fetchLikes } from '../../utils/api'
+import { deleteLike, fetchBlog, fetchComments, fetchLikes, putLike } from '../../utils/api'
 import { db } from '../../firebase/clientApp'
 
 
@@ -143,7 +143,7 @@ export default function Blog({ ip }: BProps) {
         // remove like
         const like = likes.find(l => l.name === ip)
         if (like) {
-            await deleteDoc(doc(db, "likes", like.id))
+            deleteLike(like.id)
             setLikes((prevLikes) => prevLikes.filter(l => l.name !== ip))
         }
       } else {
@@ -152,8 +152,8 @@ export default function Blog({ ip }: BProps) {
             name: ip,
             post_id: doc(db, "blogs", `${id}`)
         }
-        const docRef = await addDoc(collection(db, "likes"), newLike)
-        setLikes((prevLikes) => [...prevLikes, { ...newLike, id: docRef.id }])
+        putLike(newLike)
+        setLikes((prevLikes) => [...prevLikes, { ...newLike }])
       }
       setLiked((prevIsLiked) => !prevIsLiked)
     }

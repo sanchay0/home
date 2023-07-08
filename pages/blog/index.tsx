@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { calculateReadingTime, formatDate, validateEmail } from '../../utils/helpers'
-import { fetchBlogs } from '../../utils/api'
+import { fetchBlogs, putSubscriberIfAbsent } from '../../utils/api'
 
 export default function Blogs() {
   const [sortedData, setSortedData] = useState<IPost[]>(null)
@@ -32,19 +32,20 @@ export default function Blogs() {
         getData()
     }, [])
 
-    const handleSubscribe = () => {
+    const handleSubscribe = async () => {
         if (!subscribed && inputValue) {
             if (!validateEmail(inputValue)) {
                 setIsValidEmail(false)
             } else {
                 setIsValidEmail(true)
+                const subscriber: ISubscriber = {
+                    email: inputValue,
+                }
+                putSubscriberIfAbsent(subscriber)
                 setSubscribed(true)
             }
         }
         setInputValue('')
-        // TODO: add subscribe functionality
-        // use {merge: true} when setting the subscriber email in firestore
-        // also check if user is already subscribed
     }
 
     const handleInputChange = (e) => {

@@ -1,4 +1,4 @@
-import { DocumentReference, collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
+import { DocumentReference, collection, addDoc, doc, getDoc, getDocs, deleteDoc, query, where } from 'firebase/firestore'
 import { db } from "../firebase/clientApp"
 
 // ========= Blogs ========= //
@@ -125,6 +125,14 @@ export async function fetchLikes(blogId: string | string[]): Promise<ILike[]> {
     return likes
 }
 
+export async function putLike(like: ILike) {
+    await addDoc(collection(db, "likes"), like)
+}
+
+export async function deleteLike(id: string) {
+    await deleteDoc(doc(db, "likes", id))
+}
+
 // ========= Comments ========= //
 
 export async function fetchComments(blogId: string | string[]): Promise<IComment[]> {
@@ -185,4 +193,15 @@ export async function fetchTag(tagId: string | string[]): Promise<ITag> {
         }
     }
     throw new Error(`Tag with ${tagId} does not exist.`)
+}
+
+// ========= Comments ========= //
+
+export async function putSubscriberIfAbsent(subscriber: ISubscriber) {
+    const subscriberRef = collection(db, "subscribers")
+    const q = query(subscriberRef, where("email", "==", subscriber.email))
+    const response = await getDocs(q)
+    if (response.empty) {
+        await addDoc(collection(db, "subscribers"), subscriber)
+    }
 }
