@@ -172,7 +172,7 @@ export default function Blog({ ip }: BProps) {
                     </div>
                 </div> : null
             }
-            <div className="flex mt-8">
+            <div className="flex mt-12">
             { post && post.tags && <>
                 <span className="mr-2">Labels:</span>
                 {post.tags.map(tag => (
