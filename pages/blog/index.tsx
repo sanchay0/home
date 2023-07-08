@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import { calculateReadingTime, formatDate } from '../../utils/helpers'
+import { calculateReadingTime, formatDate, validateEmail } from '../../utils/helpers'
 import { fetchBlogs } from '../../utils/api'
 
 export default function Blogs() {
   const [sortedData, setSortedData] = useState<IPost[]>(null)
   const [subscribed, setSubscribed] = useState(false)
   const [inputValue, setInputValue] = useState('')
+  const [isValidEmail, setIsValidEmail] = useState(true)
 //   const [tags, setTags] = useState<ITag[]>(null)
 
     useEffect(() => {
@@ -33,7 +34,12 @@ export default function Blogs() {
 
     const handleSubscribe = () => {
         if (!subscribed && inputValue) {
-            setSubscribed(true)
+            if (!validateEmail(inputValue)) {
+                setIsValidEmail(false)
+            } else {
+                setIsValidEmail(true)
+                setSubscribed(true)
+            }
         }
         setInputValue('')
         // TODO: add subscribe functionality
@@ -80,20 +86,23 @@ export default function Blogs() {
                         </div>
                     ))}
                     { sortedData && 
-                    <div className="flex mt-12 md:mt-12 items-center justify-center">
-                        <input
-                            id="post-reply"
-                            className="font-light focus:outline-none resize-none block p-2.5 w-3/4 border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
-                            placeholder="To receive future updates in your inbox, enter your email"
-                            onChange={handleInputChange}
-                            autoComplete="off"
-                            value={inputValue} />
-                        <button
-                            type="button"
-                            className="bg-gray-100 font-light hover:bg-gray-200 hover:text-gray-500 text-gray-400 text-sm px-4 py-2 duration-300 rounded-full ml-2"
-                            onClick={handleSubscribe}>
-                            { subscribed ? 'Subscribed!' : 'Subscribe' }
-                        </button>
+                    <div className="mt-12 md:mt-12 items-center justify-center">
+                        <div className="flex">
+                            <input
+                                id="post-reply"
+                                className="font-light focus:outline-none resize-none block p-2.5 w-3/4 border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
+                                placeholder="To receive future updates in your inbox, enter your email"
+                                onChange={handleInputChange}
+                                autoComplete="off"
+                                value={inputValue} />
+                            <button
+                                type="button"
+                                className="bg-gray-100 font-light hover:bg-gray-200 hover:text-gray-500 text-gray-400 text-sm px-4 py-2 duration-300 rounded-full ml-2"
+                                onClick={handleSubscribe}>
+                                { subscribed ? 'Subscribed!' : 'Subscribe' }
+                            </button>
+                        </div>
+                        <div className="text-sm mt-1 text-red-400">{ isValidEmail ? '' : 'Please enter a valid email' }</div>
                     </div> }
                 {/* { !tag && tags && (
                     <div className="font-light text-sm">

@@ -52,3 +52,8 @@ interface HeaderProps {
 interface BlogProps {
     tag?: ITag;
 }
+
+interface ISubscriber {
+    id?: string;
+    email: string;
+}
