@@ -43,7 +43,7 @@ function Comment({ comment }: CProps) {
             <p className="mt-2">{comment.content}</p>
             {comment.replies && comment.replies.length > 0 ?
                 <div className="flex mt-2 items-center duration-200">
-                    <button type="button" tabIndex={0} onClick={toggleCollapse} className="text-sm px-2 py-1 ml-2">
+                    <button type="button" tabIndex={0} onClick={toggleCollapse} className="font-light text-sm px-2 py-1 ml-2">
                     {collapsed ? 
                         <i className="fas fa-caret-right mr-2" /> : 
                         <i className="fas fa-caret-down mr-2" />} 
@@ -69,11 +69,11 @@ function Comment({ comment }: CProps) {
                     <textarea
                     id={`post-reply-${comment.id}`}
                     rows={1}
-                    className="focus:outline-none resize-none block p-2.5 w-3/4 border-b border-gray-300 focus:border-gray-600 mt-2 placeholder-gray-400"
+                    className="font-light focus:outline-none resize-none block p-2.5 w-3/4 border-b border-gray-300 focus:border-gray-600 mt-2 placeholder-gray-400"
                     placeholder="Write a comment" />
                     <div className="flex mt-4 items-center w-1/4">
                         <button type="button"
-                            className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
+                            className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
                             Post Reply
                         </button>
                     </div>
@@ -81,7 +81,7 @@ function Comment({ comment }: CProps) {
             }
             <div className="flex mt-2 items-center">
                 <button type="button" tabIndex={0} onClick={toggleCollapseButton}
-                    className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
+                    className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
                     Reply
                 </button>
             </div>
@@ -207,10 +207,10 @@ export default function Blog({ ip }: BProps) {
                     <textarea
                     id="post"
                     rows={1}
-                    className="focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
+                    className="font-light focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
                     placeholder="Write a comment" />
                     <button type="button"
-                        className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
+                        className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
                         Post
                     </button>
                 </div>

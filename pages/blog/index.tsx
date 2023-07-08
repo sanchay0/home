@@ -83,14 +83,14 @@ export default function Blogs() {
                     <div className="flex mt-12 md:mt-12 items-center justify-center">
                         <input
                             id="post-reply"
-                            className="focus:outline-none resize-none block p-2.5 w-3/4 border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
+                            className="font-light focus:outline-none resize-none block p-2.5 w-3/4 border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
                             placeholder="To receive future updates in your inbox, enter your email"
                             onChange={handleInputChange}
                             autoComplete="off"
                             value={inputValue} />
                         <button
                             type="button"
-                            className="bg-gray-100 hover:bg-gray-200 hover:text-gray-500 text-gray-400 text-sm px-4 py-2 duration-300 rounded-full ml-2"
+                            className="bg-gray-100 font-light hover:bg-gray-200 hover:text-gray-500 text-gray-400 text-sm px-4 py-2 duration-300 rounded-full ml-2"
                             onClick={handleSubscribe}>
                             { subscribed ? 'Subscribed!' : 'Subscribe' }
                         </button>
