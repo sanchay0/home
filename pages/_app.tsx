@@ -9,9 +9,6 @@ import 'nprogress/nprogress.css'
 import Header from '../components/Header'
 
 NProgress.configure({showSpinner: false})
-Router.events.on('routeChangeStart', () => NProgress.start())
-Router.events.on('routeChangeComplete', () => NProgress.done())
-Router.events.on('routeChangeError', () => NProgress.done())
 
 /* eslint-disable react/jsx-props-no-spreading */
 function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
@@ -19,6 +16,9 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
     mailgo({
       showFooter: false,
     })
+    Router.events.on('routeChangeStart', () => NProgress.start())
+    Router.events.on('routeChangeComplete', () => NProgress.done())
+    Router.events.on('routeChangeError', () => NProgress.done())
   }, [])
 
   const headerLinks: IHeader[] = pageProps?.headerLinks || [
