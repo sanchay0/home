@@ -9,19 +9,14 @@ export default function Blogs() {
   const [subscribed, setSubscribed] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [isValidEmail, setIsValidEmail] = useState(true)
-//   const [tags, setTags] = useState<ITag[]>(null)
 
     useEffect(() => {
         const getData = async () => {
             try {
                 const fetchedBlogs = await fetchBlogs()
-                // const fetchedTags = await fetchTags()
-                // setTags(fetchedTags)
-
                 const sortedBlogs = fetchedBlogs.sort(
                     (a, b) => b.created_at.getTime() - a.created_at.getTime()
                 )
-
                 setSortedData(sortedBlogs)
             } catch (error) {
                 // eslint-disable-next-line no-console
@@ -105,20 +100,6 @@ export default function Blogs() {
                         </div>
                         <div className="text-sm mt-1 text-red-400">{ isValidEmail ? '' : 'Please enter a valid email' }</div>
                     </div> }
-                {/* { !tag && tags && (
-                    <div className="font-light text-sm">
-                        <p className="text-black">Labels</p>
-                        <div className="flex mt-3">
-                            {tags.map(t => (
-                                <span key={t.id} className="mr-2">
-                                    <Link href={`/blog/labels/${t.id}`}>
-                                        <span className="cursor-pointer duration-200 hover:no-underline underline">{t.name}</span>
-                                    </Link>
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                )} */}
                 </div>
             </div>
         </div>

@@ -9,7 +9,6 @@ import { db } from '../../firebase/clientApp'
 import CustomTextarea from '../../components/CustomTextarea'
 import { login, useAuth } from '../../utils/authHandler'
 
-
 // Custom hook to manage collapse state
 const useCollapseState = (initialState = false) => {
     const [collapsed, setCollapsed] = useState(initialState)
