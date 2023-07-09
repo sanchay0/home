@@ -32,4 +32,8 @@ export const login = () => {
 
 export const logout = () => {
     signOut(auth)
+        .catch(error => {
+            // eslint-disable-next-line no-console
+            console.log(error)
+        })
 }
