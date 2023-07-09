@@ -30,8 +30,8 @@ export async function fetchBlogs(): Promise<IPost[]> {
                 title: data.title,
                 author: data.author,
                 content: data.content,
-                created_at: data.created_at.toDate(),
-                updated_at: data.updated_at ? data.updated_at.toDate() : undefined,
+                createdAt: data.createdAt.toDate(),
+                updatedAt: data.updatedAt ? data.updatedAt.toDate() : undefined,
                 tags,
             }
         }
@@ -56,8 +56,8 @@ export async function fetchBlogsByTag(tagId: string | string[]): Promise<IPost[]
                     title: data.title,
                     author: data.author,
                     content: data.content,
-                    created_at: data.created_at.toDate(),
-                    updated_at: data.updated_at ? data.updated_at.toDate() : undefined,
+                    createdAt: data.createdAt.toDate(),
+                    updatedAt: data.updatedAt ? data.updatedAt.toDate() : undefined,
                 }
             }
             throw new Error(`Blog does not exist.`)
@@ -95,8 +95,8 @@ export async function fetchBlog(id: string | string[]): Promise<IPost> {
             title: data.title,
             author: data.author,
             content: data.content,
-            created_at: data.created_at.toDate(),
-            updated_at: data.updated_at ? data.updated_at.toDate() : undefined,
+            createdAt: data.createdAt.toDate(),
+            updatedAt: data.updatedAt ? data.updatedAt.toDate() : undefined,
             tags,
         }
         return mappedData
@@ -110,15 +110,15 @@ export async function fetchBlog(id: string | string[]): Promise<IPost> {
 export async function fetchLikes(blogId: string | string[]): Promise<ILike[]> {
     const likesRef = collection(db, "likes")
     const blogRef = doc(db, "blogs", `${blogId}`)
-    const q = query(likesRef, where("post_id", "==", blogRef))
+    const q = query(likesRef, where("postId", "==", blogRef))
     const response = await getDocs(q)
     const likes = response.docs.map((like) => {
         const data = like.data()
         return {
             id: like.id,
-            created_at: (data.created_at.toDate()).getTime(),
+            createdAt: (data.createdAt.toDate()).getTime(),
             name: data.name,
-            post_id: blogRef,
+            postId: blogRef,
         }
     })
 
@@ -143,7 +143,7 @@ export async function deleteLike(id: string) {
 export async function fetchComments(blogId: string | string[]): Promise<IComment[]> {
     const commentsRef = collection(db, "comments")
     const blogRef = doc(db, "blogs", `${blogId}`)
-    const q = query(commentsRef, where("post_id", "==", blogRef))
+    const q = query(commentsRef, where("postId", "==", blogRef))
     const response = await getDocs(q)
 
     const comments = await Promise.all(
@@ -154,16 +154,16 @@ export async function fetchComments(blogId: string | string[]): Promise<IComment
                 id: replyDoc.id,
                 name: replyDoc.data().name,
                 content: replyDoc.data().content,
-                created_at: (replyDoc.data().created_at.toDate()).getTime(),
+                createdAt: (replyDoc.data().createdAt.toDate()).getTime(),
             }))
             const data = comment.data()
             return {
                 id: comment.id,
                 name: data.name,
                 content: data.content,
-                created_at: (data.created_at.toDate()).getTime(),
+                createdAt: (data.createdAt.toDate()).getTime(),
                 replies,
-                post_id: blogRef,
+                postId: blogRef,
             }
     }))
 

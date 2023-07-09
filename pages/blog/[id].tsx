@@ -2,9 +2,10 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { doc } from 'firebase/firestore'
 import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
-import { deleteLike, fetchBlog, fetchComments, fetchLikes, putLikeIfAbsent } from '../../utils/api'
+import { deleteLike, fetchBlog, fetchBlogs, fetchComments, fetchLikes, putLikeIfAbsent } from '../../utils/api'
 import { db } from '../../firebase/clientApp'
 import CustomTextarea from '../../components/CustomTextarea'
 import { login, useAuth } from '../../utils/authHandler'
@@ -22,6 +23,10 @@ const useCollapseState = (initialState = false) => {
 
 type CProps = {
     comment: IComment
+}
+
+type BProps = {
+    post: IPost
 }
 
 function Comment({ comment }: CProps) {
@@ -46,7 +51,7 @@ function Comment({ comment }: CProps) {
             <footer>
                 <div className="flex items-center">
                     <p className="inline-flex items-center mr-3 text-sm text-gray-900">{comment.name}</p>
-                    <p className="text-sm text-gray-600">{formatFirestoreDate(comment.created_at)}</p>
+                    <p className="text-sm text-gray-600">{formatFirestoreDate(comment.createdAt)}</p>
                 </div>
             </footer>
             <p className="mt-2">{comment.content}</p>
@@ -66,7 +71,7 @@ function Comment({ comment }: CProps) {
                         <footer className="flex justify-between items-center">
                             <div className="flex items-center">
                                 <p className="inline-flex items-center mr-3 text-sm text-gray-900">{reply.name}</p>
-                                <p className="text-sm text-gray-600">{formatFirestoreDate(reply.created_at)}</p>
+                                <p className="text-sm text-gray-600">{formatFirestoreDate(reply.createdAt)}</p>
                             </div>
                         </footer>
                         <p className="mt-2">{reply.content}</p>
@@ -96,9 +101,36 @@ function Comment({ comment }: CProps) {
     )
 }
 
-export default function Blog() {
+export const getStaticPaths: GetStaticPaths = async () => {
+    // Fetch the list of blogs
+    const blogs = await fetchBlogs()
+
+    // Generate the paths based on the blog IDs
+    const paths = blogs.map((blog) => ({
+        params: { id: blog.id.toString() },
+    }))
+
+    return {
+        paths,
+        fallback: false,
+    }
+}
+  
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    const id = params.id as string
+
+    // Fetch the specific blog post based on the ID
+    const blog = await fetchBlog(id)
+
+    return {
+        props: {
+        post: JSON.parse(JSON.stringify(blog)),
+        },
+    }
+}
+
+export default function Blog({ post }: BProps) {
     const currentUser = useAuth()
-    const [post, setPost] = useState<IPost>(null)
     const [likes, setLikes] = useState<ILike[]>(null)
     const [liked, setLiked] = useState(false)
     const [comments, setComments] = useState<IComment[]>(null)
@@ -109,17 +141,6 @@ export default function Blog() {
     const { id } = router.query
 
     useEffect(() => {
-        const getPost = async () => {
-            try {
-                if (id) {
-                    const fetchedData: IPost = await fetchBlog(id)
-                    setPost(fetchedData)
-                }
-            } catch (error) {
-                // eslint-disable-next-line no-console
-                console.log(error)
-            }
-        }
 
         const getLikes = async () => {
             try {
@@ -146,8 +167,7 @@ export default function Blog() {
                 console.log(error)
             }
         }
-      
-        getPost()
+
         getLikes()
         getComments()
     }, [id, currentUser])
@@ -176,9 +196,9 @@ export default function Blog() {
                 }
             } else {
                 const newLike: ILike = {
-                    created_at: new Date(),
+                    createdAt: new Date(),
                     name: currentUser.email,
-                    post_id: doc(db, "blogs", `${id}`)
+                    postId: doc(db, "blogs", `${id}`)
                 }
                 putLikeIfAbsent(newLike)
                 setLikes((prevLikes) => [...prevLikes, { ...newLike }])
@@ -197,7 +217,7 @@ export default function Blog() {
             { post ?
                 <div className="font-light text-sm mt-16">
                     <p className="text-black">{post.title}</p>
-                    <p className="mt-5">{post.created_at.toDateString()} <span className="mr-2 ml-2">/</span> {calculateReadingTime(post.content)} minute read</p>
+                    <p className="mt-5">{new Date(post.createdAt).toDateString()} <span className="mr-2 ml-2">/</span> {calculateReadingTime(post.content)} minute read</p>
                     <div className="text-neutral-500 mt-5 space-y-3">
                     <p>{post.content}</p>
                     </div>

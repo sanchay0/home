@@ -37,13 +37,13 @@ export async function getServerSideProps({ res }) {
             id: `${siteUrl}/blog/${post.id}`,
             link: `${siteUrl}/blog/${post.id}`,
             content: post.content,
-            date: post.created_at,
+            date: post.createdAt,
             author: [{
                 name: post.author,
                 email: 'sanchayjaveria@gmail.com',
                 link: 'https://sanchayjaveria.com/'
             }],
-            published: post.created_at,
+            published: post.createdAt,
             category,
         })
         return post

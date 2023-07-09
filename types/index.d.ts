@@ -11,8 +11,8 @@ interface IPostRoot {
     title: string;
     author: string;
     content: string;
-    created_at: Date;
-    updated_at?: Date;
+    createdAt: Date;
+    updatedAt?: Date;
 }
 
 interface ITag {
@@ -27,30 +27,26 @@ interface IPost extends IPostRoot {
 
 interface ILike {
     id?: string;
-    created_at: timestamp;
+    createdAt: timestamp;
     name: string;
-    post_id: DocumentReference;
+    postId: DocumentReference;
 }
 
 interface ICommentRoot {
     id?: string;
     name: string;
     content: string;
-    created_at: timestamp;
+    createdAt: timestamp;
 }
 
 interface IComment extends ICommentRoot {
     id?: string;
     replies?: ICommentRoot[];
-    post_id: DocumentReference;
+    postId: DocumentReference;
 }
 
 interface HeaderProps {
     links?: IHeader[];
-}
-
-interface BlogProps {
-    tag?: ITag;
 }
 
 interface ISubscriber {

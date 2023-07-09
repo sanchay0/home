@@ -23,7 +23,7 @@ export default function Labels() {
                 }
 
                 const sortedBlogs = fetchedBlogs.sort(
-                    (a, b) => b.created_at.getTime() - a.created_at.getTime()
+                    (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
                 )
 
                 setSortedData(sortedBlogs)
@@ -59,7 +59,7 @@ export default function Labels() {
                         key={post.id}
                         className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500"
                         >
-                            <p className="text-neutral-400">{formatDate(post.created_at)}</p>
+                            <p className="text-neutral-400">{formatDate(post.createdAt)}</p>
                             <div className="md:col-span-2 w-full">
                                 <Link href={`/blog/${post.id}`}>
                                     <span className="text-black cursor-pointer duration-200 hover:no-underline underline">

@@ -5,7 +5,7 @@
       "es6": true,
       "node": true
     },
-    "parser": "babel-eslint",
+    "parser": "@typescript-eslint/parser",
     "extends": [
       "eslint:recommended",
       "airbnb",
@@ -62,7 +62,9 @@
           "tsx": "never"
         }
       ],
-      "@typescript-eslint/no-unused-vars": "warn"
+      "@typescript-eslint/no-unused-vars": "warn",
+      "no-use-before-define": "off",
+      "@typescript-eslint/no-use-before-define": ["error"]
     },
     "overrides": [
         {

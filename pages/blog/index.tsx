@@ -12,7 +12,7 @@ export async function getServerSideProps() {
     try {
         const fetchedBlogs = await fetchBlogs()
         const sortedBlogs = fetchedBlogs.sort(
-            (a, b) => b.created_at.getTime() - a.created_at.getTime()
+            (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
         )
 
         return {
@@ -77,7 +77,7 @@ export default function Blogs({ sortedData }: BlogProps) {
                         key={post.id}
                         className="grid grid-cols-3 items-start md:grid-cols-3 text-neutral-500"
                         >
-                            <p className="text-neutral-400">{formatDate(new Date(post.created_at))}</p>
+                            <p className="text-neutral-400">{formatDate(new Date(post.createdAt))}</p>
                             <div className="md:col-span-1 w-full">
                                 <Link href={`/blog/${post.id}`}>
                                     <span className="text-black cursor-pointer duration-200 hover:no-underline underline">
