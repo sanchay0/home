@@ -1,31 +1,38 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { calculateReadingTime, formatDate, validateEmail } from '../../utils/helpers'
 import { fetchBlogs, putSubscriberIfAbsent } from '../../utils/api'
 
-export default function Blogs() {
-  const [sortedData, setSortedData] = useState<IPost[]>(null)
-  const [subscribed, setSubscribed] = useState(false)
-  const [inputValue, setInputValue] = useState('')
-  const [isValidEmail, setIsValidEmail] = useState(true)
+type BlogProps = {
+    sortedData: IPost[];
+}
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const fetchedBlogs = await fetchBlogs()
-                const sortedBlogs = fetchedBlogs.sort(
-                    (a, b) => b.created_at.getTime() - a.created_at.getTime()
-                )
-                setSortedData(sortedBlogs)
-            } catch (error) {
-                // eslint-disable-next-line no-console
-                console.log(error)
-            }
+export async function getServerSideProps() {
+    try {
+        const fetchedBlogs = await fetchBlogs()
+        const sortedBlogs = fetchedBlogs.sort(
+            (a, b) => b.created_at.getTime() - a.created_at.getTime()
+        )
+
+        return {
+            props: {
+                sortedData: JSON.parse(JSON.stringify(sortedBlogs)),
+            },
         }
+    } catch (error) {
+        return {
+            props: {
+                sortedData: [],
+            },
+        }
+    }
+}
 
-        getData()
-    }, [])
+export default function Blogs({ sortedData }: BlogProps) {
+    const [subscribed, setSubscribed] = useState(false)
+    const [inputValue, setInputValue] = useState('')
+    const [isValidEmail, setIsValidEmail] = useState(true)
 
     const handleSubscribe = async () => {
         if (!subscribed && inputValue) {
@@ -70,7 +77,7 @@ export default function Blogs() {
                         key={post.id}
                         className="grid grid-cols-3 items-start md:grid-cols-3 text-neutral-500"
                         >
-                            <p className="text-neutral-400">{formatDate(post.created_at)}</p>
+                            <p className="text-neutral-400">{formatDate(new Date(post.created_at))}</p>
                             <div className="md:col-span-1 w-full">
                                 <Link href={`/blog/${post.id}`}>
                                     <span className="text-black cursor-pointer duration-200 hover:no-underline underline">
