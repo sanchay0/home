@@ -116,7 +116,7 @@ export async function fetchLikes(blogId: string | string[]): Promise<ILike[]> {
         const data = like.data()
         return {
             id: like.id,
-            time: (data.created_at.toDate()).getTime(),
+            created_at: (data.created_at.toDate()).getTime(),
             name: data.name,
             post_id: blogRef,
         }
@@ -125,8 +125,13 @@ export async function fetchLikes(blogId: string | string[]): Promise<ILike[]> {
     return likes
 }
 
-export async function putLike(like: ILike) {
-    await addDoc(collection(db, "likes"), like)
+export async function putLikeIfAbsent(like: ILike) {
+    const likeRef = collection(db, "likes")
+    const q = query(likeRef, where("name", "==", like.name))
+    const response = await getDocs(q)
+    if (response.empty) {
+        await addDoc(collection(db, "likes"), like)
+    }
 }
 
 export async function deleteLike(id: string) {
@@ -149,14 +154,14 @@ export async function fetchComments(blogId: string | string[]): Promise<IComment
                 id: replyDoc.id,
                 name: replyDoc.data().name,
                 content: replyDoc.data().content,
-                time: (replyDoc.data().created_at.toDate()).getTime(),
+                created_at: (replyDoc.data().created_at.toDate()).getTime(),
             }))
             const data = comment.data()
             return {
                 id: comment.id,
                 name: data.name,
                 content: data.content,
-                time: (data.created_at.toDate()).getTime(),
+                created_at: (data.created_at.toDate()).getTime(),
                 replies,
                 post_id: blogRef,
             }

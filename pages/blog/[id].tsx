@@ -2,11 +2,12 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import { GetServerSideProps } from 'next'
 import { doc } from 'firebase/firestore'
 import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
-import { deleteLike, fetchBlog, fetchComments, fetchLikes, putLike } from '../../utils/api'
+import { deleteLike, fetchBlog, fetchComments, fetchLikes, putLikeIfAbsent } from '../../utils/api'
 import { db } from '../../firebase/clientApp'
+import CustomTextarea from '../../components/CustomTextarea'
+import { login, useAuth } from '../../utils/authHandler'
 
 
 // Custom hook to manage collapse state
@@ -24,20 +25,29 @@ type CProps = {
     comment: IComment
 }
 
-type BProps = {
-    ip: string
-}
-
 function Comment({ comment }: CProps) {
     const { collapsed, toggleCollapse } = useCollapseState(false)
     const { collapsed: collapsedButton, toggleCollapse: toggleCollapseButton } = useCollapseState(true)
+    const [userReply, setUserReply] = useState('')
+
+    const replyCallback = (value: string) => {
+        setUserReply(value)
+    }
+
+    const registerReply = async () => {
+        // TODO: write to firestore
+        if (userReply) {
+            // eslint-disable-next-line no-console
+            console.log(userReply)
+        }
+    }
 
     return (
         <article className="mt-8">
             <footer>
                 <div className="flex items-center">
                     <p className="inline-flex items-center mr-3 text-sm text-gray-900">{comment.name}</p>
-                    <p className="text-sm text-gray-600">{formatFirestoreDate(comment.time)}</p>
+                    <p className="text-sm text-gray-600">{formatFirestoreDate(comment.created_at)}</p>
                 </div>
             </footer>
             <p className="mt-2">{comment.content}</p>
@@ -57,7 +67,7 @@ function Comment({ comment }: CProps) {
                         <footer className="flex justify-between items-center">
                             <div className="flex items-center">
                                 <p className="inline-flex items-center mr-3 text-sm text-gray-900">{reply.name}</p>
-                                <p className="text-sm text-gray-600">{formatFirestoreDate(reply.time)}</p>
+                                <p className="text-sm text-gray-600">{formatFirestoreDate(reply.created_at)}</p>
                             </div>
                         </footer>
                         <p className="mt-2">{reply.content}</p>
@@ -66,14 +76,12 @@ function Comment({ comment }: CProps) {
             }
             {!collapsedButton &&
                 <div className="flex lg:ml-12">
-                    <textarea
-                    id={`post-reply-${comment.id}`}
-                    rows={1}
-                    className="font-light focus:outline-none resize-none block p-2.5 w-3/4 border-b border-gray-300 focus:border-gray-600 mt-2 placeholder-gray-400"
-                    placeholder="Write a comment" />
+                    <CustomTextarea id={`post-reply-${comment.id}`} width="w-3/4" callback={replyCallback} />
                     <div className="flex mt-4 items-center w-1/4">
                         <button type="button"
-                            className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
+                            className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2"
+                            onClick={registerReply}
+                            >
                             Post Reply
                         </button>
                     </div>
@@ -89,11 +97,14 @@ function Comment({ comment }: CProps) {
     )
 }
 
-export default function Blog({ ip }: BProps) {
+export default function Blog() {
+    const currentUser = useAuth()
     const [post, setPost] = useState<IPost>(null)
     const [likes, setLikes] = useState<ILike[]>(null)
     const [liked, setLiked] = useState(false)
     const [comments, setComments] = useState<IComment[]>(null)
+    const [userComment, setUserComment] = useState('')
+    const [shouldPrompt, setShouldPrompt] = useState(false)
 
     const router = useRouter()
     const { id } = router.query
@@ -114,6 +125,10 @@ export default function Blog({ ip }: BProps) {
         const getLikes = async () => {
             try {
                 const fetchedData: ILike[] = await fetchLikes(id)
+                if (currentUser) {
+                    const index = fetchedData.findIndex(l => l.name === currentUser.email)
+                    setLiked(index !== -1)
+                }
                 setLikes(fetchedData)
             } catch (error) {
                 setLikes([])
@@ -136,26 +151,43 @@ export default function Blog({ ip }: BProps) {
         getPost()
         getLikes()
         getComments()
-    }, [id])
+    }, [id, currentUser])
+
+    const commentCallback = (value: string) => {
+        setUserComment(value)
+    }
+
+    const registerComment = async () => {
+        // TODO: write to firestore
+        if (userComment) {
+            // eslint-disable-next-line no-console
+            console.log(userComment)
+        }
+    }
 
     const registerLike = async () => {
-      if (liked) {
-        // remove like
-        const like = likes.find(l => l.name === ip)
-        if (like) {
-            deleteLike(like.id)
-            setLikes((prevLikes) => prevLikes.filter(l => l.name !== ip))
+        if (currentUser) {
+            setShouldPrompt(false)
+            if (liked) {
+                // remove like
+                const like = likes.find(l => l.name === currentUser.email)
+                if (like) {
+                    deleteLike(like.id)
+                    setLikes((prevLikes) => prevLikes.filter(l => l.name !== currentUser.email))
+                }
+            } else {
+                const newLike: ILike = {
+                    created_at: new Date(),
+                    name: currentUser.email,
+                    post_id: doc(db, "blogs", `${id}`)
+                }
+                putLikeIfAbsent(newLike)
+                setLikes((prevLikes) => [...prevLikes, { ...newLike }])
+            }
+            setLiked((prevIsLiked) => !prevIsLiked)
+        } else {
+            setShouldPrompt(!shouldPrompt)
         }
-      } else {
-        const newLike: ILike = {
-            time: new Date(),
-            name: ip,
-            post_id: doc(db, "blogs", `${id}`)
-        }
-        putLike(newLike)
-        setLikes((prevLikes) => [...prevLikes, { ...newLike }])
-      }
-      setLiked((prevIsLiked) => !prevIsLiked)
     }
 
     return (
@@ -184,6 +216,7 @@ export default function Blog({ ip }: BProps) {
             }
             </div>
             { likes && comments ? 
+                <>
                 <div className="flex justify-between items-center mt-8">
                     <span>{ comments.length > 0 ? `${comments.length} comment(s)` : null}</span>
                     <div className="flex items-center">
@@ -198,19 +231,30 @@ export default function Blog({ ip }: BProps) {
                             <span>Like</span>
                         </button>
                     </div>
-                </div> : null
+                </div>
+                <div className="mt-2 text-center flex justify-end">
+                { shouldPrompt ? 
+                    <p className="text-xs">
+                    To avoid spam, please <button
+                    type="button"
+                    className="font-normal text-black items-center duration-200 hover:no-underline underline"
+                    onClick={() => login()}
+                    >
+                        login
+                        </button> with your google account.
+                    </p>
+                    : null }
+                </div>
+                </> : null
             }
-            {/* TODO: Add ability to write comments/replies to firestore; hook google signup */}
             { comments ? 
                 <>
-                <div className="flex mt-4 items-center">
-                    <textarea
-                    id="post"
-                    rows={1}
-                    className="font-light focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
-                    placeholder="Write a comment" />
+                <div className="flex mt-w items-center">
+                    <CustomTextarea id="post" width="w-full" callback={commentCallback} />
                     <button type="button"
-                        className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2">
+                        className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2"
+                        onClick={registerComment}
+                        >
                         Post
                     </button>
                 </div>
@@ -219,21 +263,4 @@ export default function Blog({ ip }: BProps) {
             }
         </>
     )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-    let ip = req.headers["x-real-ip"]
-    if (!ip) {
-      const forwardedFor = req.headers["x-forwarded-for"]
-      if (Array.isArray(forwardedFor)) {
-        ip = forwardedFor.at(0)
-      } else {
-        ip = forwardedFor?.split(",").at(0) ?? "Unknown"
-      }
-    }
-    return {
-      props: {
-        ip,
-      },
-    }
 }

@@ -27,7 +27,7 @@ interface IPost extends IPostRoot {
 
 interface ILike {
     id?: string;
-    time: timestamp;
+    created_at: timestamp;
     name: string;
     post_id: DocumentReference;
 }
@@ -36,7 +36,7 @@ interface ICommentRoot {
     id?: string;
     name: string;
     content: string;
-    time: timestamp;
+    created_at: timestamp;
 }
 
 interface IComment extends ICommentRoot {

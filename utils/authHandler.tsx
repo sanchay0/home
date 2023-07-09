@@ -1,0 +1,35 @@
+import { useEffect, useState } from 'react'
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
+import { auth } from '../firebase/clientApp'
+
+export const checkUserLoggedIn = (setIsLoggedIn) => {
+    onAuthStateChanged(auth, (user) => {
+        setIsLoggedIn(!!user)
+    })
+}
+
+export const useAuth = () => {
+    const [currentUser, setCurrentUser] = useState(null)
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user)
+        })
+
+        return () => unsubscribe()
+    }, [])
+
+    return currentUser
+}
+
+export const login = () => {
+    signInWithPopup(auth, new GoogleAuthProvider())
+        .catch(error => {
+            // eslint-disable-next-line no-console
+            console.log(error)
+        })
+}
+
+export const logout = () => {
+    signOut(auth)
+}
