@@ -60,7 +60,7 @@ export default function MyTextarea({ id, width, callback, value }: IProps) {
                 onMouseDown={handleLogin}
             >
                 login
-            </button> with your google account.
+            </button> with your Google account.
           </p>
         </div>
       )}
