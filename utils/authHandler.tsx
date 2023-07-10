@@ -23,7 +23,8 @@ export const useAuth = () => {
 }
 
 export const login = () => {
-    signInWithPopup(auth, new GoogleAuthProvider())
+    const provider = new GoogleAuthProvider()
+    signInWithPopup(auth, provider)
         .catch(error => {
             // eslint-disable-next-line no-console
             console.log(error)

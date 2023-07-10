@@ -125,13 +125,17 @@ export async function fetchLikes(blogId: string): Promise<ILike[]> {
     return likes
 }
 
-export async function putLikeIfAbsent(like: ILike): Promise<void> {
+export async function putLikeIfAbsent(like: ILike): Promise<string | void> {
     const likeRef = collection(db, "likes")
-    const q = query(likeRef, where("name", "==", like.name))
+    const q = query(likeRef,
+        where("postId", "==", like.postId),
+        where("name", "==", like.name))
     const response = await getDocs(q)
     if (response.empty) {
-        await addDoc(collection(db, "likes"), like)
+        const docRef = await addDoc(collection(db, "likes"), like)
+        return docRef.id
     }
+    return Promise.resolve()
 }
 
 export async function deleteLike(id: string): Promise<void> {

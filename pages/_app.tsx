@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import { useEffect } from 'react'
 import { AppProps } from 'next/app'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import mailgo from 'mailgo'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -27,15 +27,19 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
     { href: '/contact', label: 'Contact' },
   ]
 
+  const router = useRouter()
+  const currentPage = router.pathname
+
   return (
     <main className="flex-1 overflow-y-auto">
       <Header links={headerLinks} />
+      { currentPage !== "/admin" ? (
       <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
         <div className="mx-auto max-w-xl">
           <Component {...pageProps} />
         </div>
       </div>
-      {/* <Footer /> */}
+      ) : <Component {...pageProps} /> }
       <Analytics />
     </main>
   )

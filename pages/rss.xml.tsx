@@ -4,7 +4,7 @@ import { fetchBlogs } from '../utils/api'
 
 export async function getServerSideProps({ res }) {
     const allPosts: IPost[] = await fetchBlogs()
-    const siteUrl: string = process.env.URL
+    const siteUrl: string = process.env.NEXT_PUBLIC_URL
 
     const feedOptions: FeedOptions = {
         title: 'Sanchay\'s blog posts | RSS Feed',

@@ -216,8 +216,10 @@ export default function Blog({ post }: BProps) {
                     name: currentUser.email,
                     postId: doc(db, "blogs", `${id}`)
                 }
-                putLikeIfAbsent(newLike)
-                setLikes(prevLikes => [...prevLikes, { ...newLike }])
+                const newId = await putLikeIfAbsent(newLike)
+                if (newId) {
+                    setLikes(prevLikes => [...prevLikes, { id: newId, ...newLike }])
+                }
             }
             setLiked(prevIsLiked => !prevIsLiked)
         } else {
