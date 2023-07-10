@@ -28,7 +28,9 @@ type CProps = {
 }
 
 type BProps = {
-    post: IPost
+    post: IPost,
+    likes: ILike[],
+    comments: IComment[]
 }
 
 function Comment({ comment, currentUser }: CProps) {
@@ -130,20 +132,24 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const id = params.id as string
 
     // Fetch the specific blog post based on the ID
-    const blog = await fetchBlog(id)
+    const blog: IPost = await fetchBlog(id)
+    const likes: ILike[] = await fetchLikes(id)
+    const comments: IComment[] = await fetchComments(id)
 
     return {
         props: {
-        post: JSON.parse(JSON.stringify(blog)),
+            post: JSON.parse(JSON.stringify(blog)),
+            likes: JSON.parse(JSON.stringify(likes)),
+            comments: JSON.parse(JSON.stringify(comments)),
         },
     }
 }
 
-export default function Blog({ post }: BProps) {
+export default function Blog({ post, likes: postLikes, comments: postComments }: BProps) {
     const currentUser: User = useAuth()
-    const [likes, setLikes] = useState<ILike[]>(null)
+    const [likes, setLikes] = useState<ILike[]>(postLikes)
     const [liked, setLiked] = useState(false)
-    const [comments, setComments] = useState<IComment[]>(null)
+    const [comments, setComments] = useState<IComment[]>(postComments)
     const [userComment, setUserComment] = useState('')
     const [shouldPrompt, setShouldPrompt] = useState(false)
 
@@ -151,36 +157,11 @@ export default function Blog({ post }: BProps) {
     const { id } = router.query
 
     useEffect(() => {
-
-        const getLikes = async () => {
-            try {
-                const fetchedData: ILike[] = await fetchLikes(`${id}`)
-                if (currentUser) {
-                    const index = fetchedData.findIndex(l => l.name === currentUser.email)
-                    setLiked(index !== -1)
-                }
-                setLikes(fetchedData)
-            } catch (error) {
-                setLikes([])
-                // eslint-disable-next-line no-console
-                console.log(error)
-            }
+        if (likes && currentUser) {
+            const index = likes.findIndex(l => l.name === currentUser.email)
+            setLiked(index !== -1)
         }
-
-        const getComments = async () => {
-            try {
-                const fetchedData: IComment[] = await fetchComments(`${id}`)
-                setComments(fetchedData)
-            } catch (error) {
-                setComments([])
-                // eslint-disable-next-line no-console
-                console.log(error)
-            }
-        }
-
-        getLikes()
-        getComments()
-    }, [id, currentUser])
+    }, [likes, currentUser])
 
     const commentCallback = (value: string) => {
         setUserComment(value)
