@@ -3,7 +3,6 @@ Self-hosted personal blog.
 
 TODO:
 
-- add ability to set comments
 - add markdown admin support to make posts (using [TinyMCE](https://www.tiny.cloud/docs/tinymce/6/basic-setup/))
     - Send email to subscribers when we make posts
     - Add unsubscribe button to email
