@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
+import { GoogleAuthProvider, User, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
 import { auth } from '../firebase/clientApp'
 
 export const checkUserLoggedIn = (setIsLoggedIn) => {
@@ -9,7 +9,7 @@ export const checkUserLoggedIn = (setIsLoggedIn) => {
 }
 
 export const useAuth = () => {
-    const [currentUser, setCurrentUser] = useState(null)
+    const [currentUser, setCurrentUser] = useState<User>(null)
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {

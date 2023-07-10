@@ -4,9 +4,10 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { doc } from 'firebase/firestore'
-import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
-import { deleteLike, fetchBlog, fetchBlogs, fetchComments, fetchLikes, putLikeIfAbsent } from '../../utils/api'
+import { User } from 'firebase/auth'
 import { db } from '../../firebase/clientApp'
+import { deleteLike, fetchBlog, fetchBlogs, fetchComments, fetchLikes, putLikeIfAbsent, putComment, putReply } from '../../utils/api'
+import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
 import CustomTextarea from '../../components/CustomTextarea'
 import { login, useAuth } from '../../utils/authHandler'
 
@@ -22,27 +23,34 @@ const useCollapseState = (initialState = false) => {
 }
 
 type CProps = {
-    comment: IComment
+    comment: IComment,
+    currentUser: User
 }
 
 type BProps = {
     post: IPost
 }
 
-function Comment({ comment }: CProps) {
+function Comment({ comment, currentUser }: CProps) {
     const { collapsed, toggleCollapse } = useCollapseState(false)
     const { collapsed: collapsedButton, toggleCollapse: toggleCollapseButton } = useCollapseState(true)
     const [userReply, setUserReply] = useState('')
+    const [replies, setReplies] = useState<ICommentRoot[]>(comment.replies)
 
     const replyCallback = (value: string) => {
         setUserReply(value)
     }
 
     const registerReply = async () => {
-        // TODO: write to firestore
         if (userReply) {
-            // eslint-disable-next-line no-console
-            console.log(userReply)
+            const newReply: ICommentRoot = {
+                name: currentUser.displayName,
+                content: userReply,
+                createdAt: new Date(),
+            }
+            putReply(comment.id, newReply)
+            setReplies(prevReplies => [...prevReplies, { ...newReply }])
+            setUserReply('')
         }
     }
 
@@ -55,7 +63,7 @@ function Comment({ comment }: CProps) {
                 </div>
             </footer>
             <p className="mt-2">{comment.content}</p>
-            {comment.replies && comment.replies.length > 0 ?
+            {replies && replies.length > 0 ?
                 <div className="flex mt-2 items-center duration-200">
                     <button type="button" tabIndex={0} onClick={toggleCollapse} className="font-light text-sm px-2 py-1 ml-2">
                     {collapsed ? 
@@ -65,9 +73,11 @@ function Comment({ comment }: CProps) {
                     </button>
                 </div> : null
             }
-            {!collapsed && comment.replies &&
-                comment.replies.map(reply => (
-                    <article key={reply.id} className="pt-3 pb-3 pl-6 ml-6 lg:ml-6">
+            {!collapsed && replies &&
+                replies.sort(
+                    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+                ).map(reply => (
+                    <article key={`${comment.id}-${reply.id}`} className="pt-3 pb-3 pl-6 ml-6 lg:ml-6">
                         <footer className="flex justify-between items-center">
                             <div className="flex items-center">
                                 <p className="inline-flex items-center mr-3 text-sm text-gray-900">{reply.name}</p>
@@ -80,7 +90,7 @@ function Comment({ comment }: CProps) {
             }
             {!collapsedButton &&
                 <div className="flex lg:ml-12">
-                    <CustomTextarea id={`post-reply-${comment.id}`} width="w-3/4" callback={replyCallback} />
+                    <CustomTextarea id={`post-reply-${comment.id}`} width="w-3/4" callback={replyCallback} value={userReply} />
                     <div className="flex mt-4 items-center w-1/4">
                         <button type="button"
                             className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2"
@@ -130,7 +140,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 export default function Blog({ post }: BProps) {
-    const currentUser = useAuth()
+    const currentUser: User = useAuth()
     const [likes, setLikes] = useState<ILike[]>(null)
     const [liked, setLiked] = useState(false)
     const [comments, setComments] = useState<IComment[]>(null)
@@ -144,7 +154,7 @@ export default function Blog({ post }: BProps) {
 
         const getLikes = async () => {
             try {
-                const fetchedData: ILike[] = await fetchLikes(id)
+                const fetchedData: ILike[] = await fetchLikes(`${id}`)
                 if (currentUser) {
                     const index = fetchedData.findIndex(l => l.name === currentUser.email)
                     setLiked(index !== -1)
@@ -159,7 +169,7 @@ export default function Blog({ post }: BProps) {
 
         const getComments = async () => {
             try {
-                const fetchedData: IComment[] = await fetchComments(id)
+                const fetchedData: IComment[] = await fetchComments(`${id}`)
                 setComments(fetchedData)
             } catch (error) {
                 setComments([])
@@ -177,10 +187,16 @@ export default function Blog({ post }: BProps) {
     }
 
     const registerComment = async () => {
-        // TODO: write to firestore
         if (userComment) {
-            // eslint-disable-next-line no-console
-            console.log(userComment)
+            const newComment: IComment = {
+                content: userComment,
+                createdAt: new Date(),
+                name: currentUser.displayName,
+                postId: doc(db, "blogs", `${id}`)
+            }
+            putComment(newComment)
+            setComments(prevComments => [...prevComments, { ...newComment }])
+            setUserComment('')
         }
     }
 
@@ -192,7 +208,7 @@ export default function Blog({ post }: BProps) {
                 const like = likes.find(l => l.name === currentUser.email)
                 if (like) {
                     deleteLike(like.id)
-                    setLikes((prevLikes) => prevLikes.filter(l => l.name !== currentUser.email))
+                    setLikes(prevLikes => prevLikes.filter(l => l.name !== currentUser.email))
                 }
             } else {
                 const newLike: ILike = {
@@ -201,9 +217,9 @@ export default function Blog({ post }: BProps) {
                     postId: doc(db, "blogs", `${id}`)
                 }
                 putLikeIfAbsent(newLike)
-                setLikes((prevLikes) => [...prevLikes, { ...newLike }])
+                setLikes(prevLikes => [...prevLikes, { ...newLike }])
             }
-            setLiked((prevIsLiked) => !prevIsLiked)
+            setLiked(prevIsLiked => !prevIsLiked)
         } else {
             setShouldPrompt(!shouldPrompt)
         }
@@ -269,7 +285,7 @@ export default function Blog({ post }: BProps) {
             { comments ? 
                 <>
                 <div className="flex mt-w items-center">
-                    <CustomTextarea id="post" width="w-full" callback={commentCallback} />
+                    <CustomTextarea id="post" width="w-full" callback={commentCallback} value={userComment} />
                     <button type="button"
                         className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2"
                         onClick={registerComment}
@@ -277,7 +293,7 @@ export default function Blog({ post }: BProps) {
                         Post
                     </button>
                 </div>
-                { comments.map(comment => <Comment key={comment.id} comment={comment} />)}
+                { comments.map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)}
                 </> : null
             }
         </>

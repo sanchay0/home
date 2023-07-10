@@ -40,7 +40,7 @@ export async function fetchBlogs(): Promise<IPost[]> {
     return posts
 }
 
-export async function fetchBlogsByTag(tagId: string | string[]): Promise<IPost[]> {
+export async function fetchBlogsByTag(tagId: string): Promise<IPost[]> {
     const q = doc(db, "tags", `${tagId}`)
     const response = await getDoc(q)
     const blogRefs: DocumentReference[] = response.data().blogs
@@ -68,8 +68,8 @@ export async function fetchBlogsByTag(tagId: string | string[]): Promise<IPost[]
     throw new Error(`Tag ID ${tagId} does not have any blogs.`)
 }
 
-export async function fetchBlog(id: string | string[]): Promise<IPost> {
-    const q = doc(db, "blogs", `${id}`)
+export async function fetchBlog(id: string): Promise<IPost> {
+    const q = doc(db, "blogs", id)
     const response = await getDoc(q)
     let tags: ITag[]
 
@@ -91,7 +91,7 @@ export async function fetchBlog(id: string | string[]): Promise<IPost> {
         }
 
         const mappedData: IPost = {
-            id: `${id}`,
+            id,
             title: data.title,
             author: data.author,
             content: data.content,
@@ -107,7 +107,7 @@ export async function fetchBlog(id: string | string[]): Promise<IPost> {
 
 // ========= Likes ========= //
 
-export async function fetchLikes(blogId: string | string[]): Promise<ILike[]> {
+export async function fetchLikes(blogId: string): Promise<ILike[]> {
     const likesRef = collection(db, "likes")
     const blogRef = doc(db, "blogs", `${blogId}`)
     const q = query(likesRef, where("postId", "==", blogRef))
@@ -125,7 +125,7 @@ export async function fetchLikes(blogId: string | string[]): Promise<ILike[]> {
     return likes
 }
 
-export async function putLikeIfAbsent(like: ILike) {
+export async function putLikeIfAbsent(like: ILike): Promise<void> {
     const likeRef = collection(db, "likes")
     const q = query(likeRef, where("name", "==", like.name))
     const response = await getDocs(q)
@@ -134,13 +134,13 @@ export async function putLikeIfAbsent(like: ILike) {
     }
 }
 
-export async function deleteLike(id: string) {
+export async function deleteLike(id: string): Promise<void> {
     await deleteDoc(doc(db, "likes", id))
 }
 
 // ========= Comments ========= //
 
-export async function fetchComments(blogId: string | string[]): Promise<IComment[]> {
+export async function fetchComments(blogId: string): Promise<IComment[]> {
     const commentsRef = collection(db, "comments")
     const blogRef = doc(db, "blogs", `${blogId}`)
     const q = query(commentsRef, where("postId", "==", blogRef))
@@ -170,6 +170,16 @@ export async function fetchComments(blogId: string | string[]): Promise<IComment
     return comments
 }
 
+export async function putComment(comment: IComment): Promise<void> {
+    await addDoc(collection(db, "comments"), comment)
+}
+
+export async function putReply(commentId: string, reply: ICommentRoot): Promise<void> {
+    const commentRef = doc(db, "comments", commentId)
+    const replyRef = collection(commentRef, "replies")
+    await addDoc(replyRef, reply)
+}
+
 // ========= Tags ========= //
 
 export async function fetchTags(): Promise<ITag[]> {
@@ -185,7 +195,7 @@ export async function fetchTags(): Promise<ITag[]> {
     return tags
 }
 
-export async function fetchTag(tagId: string | string[]): Promise<ITag> {
+export async function fetchTag(tagId: string): Promise<ITag> {
     const q = doc(db, "tags", `${tagId}`)
     const response = await getDoc(q)
     

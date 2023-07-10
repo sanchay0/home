@@ -40,7 +40,6 @@ interface ICommentRoot {
 }
 
 interface IComment extends ICommentRoot {
-    id?: string;
     replies?: ICommentRoot[];
     postId: DocumentReference;
 }
