@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { GetStaticProps } from 'next'
 import { calculateReadingTime, formatDate, validateEmail } from '../../utils/helpers'
 import { fetchBlogs, putSubscriberIfAbsent } from '../../utils/api'
 
@@ -8,7 +9,7 @@ type BlogProps = {
     sortedData: IPost[];
 }
 
-export async function getServerSideProps() {
+export const getStaticProps: GetStaticProps = async () => {
     try {
         const fetchedBlogs = await fetchBlogs()
         const sortedBlogs = fetchedBlogs.sort(
