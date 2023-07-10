@@ -293,7 +293,9 @@ export default function Blog({ post }: BProps) {
                         Post
                     </button>
                 </div>
-                { comments.map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)}
+                { comments.sort(
+                    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+                ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)}
                 </> : null
             }
         </>

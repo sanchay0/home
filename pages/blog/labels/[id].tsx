@@ -17,8 +17,8 @@ export default function Labels() {
             try {
                 let fetchedBlogs: IPost[]
                 if (id) {
-                    fetchedBlogs = await fetchBlogsByTag(id)
-                    const fetchedTag: ITag = await fetchTag(id)
+                    fetchedBlogs = await fetchBlogsByTag(`${id}`)
+                    const fetchedTag: ITag = await fetchTag(`${id}`)
                     setTag(fetchedTag)
                 }
 
