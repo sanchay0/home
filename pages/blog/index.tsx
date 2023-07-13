@@ -78,8 +78,8 @@ export default function Blogs({ sortedData }: BlogProps) {
                         key={post.id}
                         className="grid grid-cols-3 items-start md:grid-cols-3 text-neutral-500"
                         >
-                            <p className="text-neutral-400">{formatDate(new Date(post.createdAt))}</p>
-                            <div className="md:col-span-1 w-full">
+                            <p className="col-span-1 text-neutral-400">{formatDate(new Date(post.createdAt))}</p>
+                            <div className="col-span-2 md:col-span-2 w-full">
                                 <Link href={`/blog/${post.id}`}>
                                     <span className="text-black cursor-pointer duration-200 hover:no-underline underline">
                                     {post.title}

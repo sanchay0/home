@@ -244,6 +244,7 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                         className={`transition-colors duration-300 ${liked ? 'text-black font-medium' : ''}`}
                         onClick={registerLike}
                         tabIndex={0}
+                        onBlur={() => setShouldPrompt(false)}
                         >
                             <i className={`${liked ? 'fas' : 'far'} fa-thumbs-up mr-2`} aria-hidden="true" />
                             <span>Like</span>
@@ -256,10 +257,10 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                     To avoid spam, please <button
                     type="button"
                     className="font-normal text-black items-center duration-200 hover:no-underline underline"
-                    onClick={() => login()}
+                    onMouseDown={() => login()}
                     >
                         login
-                        </button> with your google account.
+                        </button> with your Google account.
                     </p>
                     : null }
                 </div>
