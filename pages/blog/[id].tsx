@@ -23,14 +23,14 @@ const useCollapseState = (initialState = false) => {
 }
 
 type CProps = {
-    comment: IComment,
-    currentUser: User
+    comment: IComment;
+    currentUser: User;
 }
 
 type BProps = {
-    post: IPost,
-    likes: ILike[],
-    comments: IComment[]
+    post: IPost;
+    likes: ILike[];
+    comments: IComment[];
 }
 
 function Comment({ comment, currentUser }: CProps) {

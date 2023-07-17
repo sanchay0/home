@@ -11,6 +11,7 @@ export default function Admin() {
   const user = useAuth()
   const editorRef = useRef(null)
   const [tags, setTags] = useState([])
+  const [title, setTitle] = useState('')
 
   useEffect(() => {
     const getTags = async () => {
@@ -30,6 +31,10 @@ export default function Admin() {
     if (editorRef.current) {
       // eslint-disable-next-line no-console
       console.log(editorRef.current.getContent())
+      // eslint-disable-next-line no-console
+      console.log(title)
+      // eslint-disable-next-line no-console
+      console.log(tags)
     }
   }
 
@@ -37,9 +42,18 @@ export default function Admin() {
     setTags(names)
   }
 
+  const handleInputChange = (e) => {
+    setTitle(e.target.value)
+  }
+
   const notepad: JSX.Element = (
     <div className="container flex flex-col items-center mx-auto mt-16 max-w-7xl px-8 py-12">
-      <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Post Title" />
+      <input
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      onChange={handleInputChange}
+      autoComplete="off"
+      value={title}
+      id="username" type="text" placeholder="Post Title" />
       <div className="w-full py-2">
         <Editor 
         id="editor"
