@@ -3,8 +3,7 @@ Self-hosted personal blog.
 
 TODO:
 
-- add markdown admin support to make posts (using [TinyMCE](https://www.tiny.cloud/docs/tinymce/6/basic-setup/))
-    - Send email to subscribers when we make posts
+- Send email to subscribers when we make posts
     - Add unsubscribe button to email
 - Style tailwind for mobile
 - edit photo and publish
