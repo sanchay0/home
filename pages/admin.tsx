@@ -28,7 +28,7 @@ export default function Admin() {
   }, [])
 
   const createPost = async () => {
-    if (editorRef.current) {
+    if (editorRef.current && title && tags.length > 0) {
       const content = editorRef.current.getContent()
       try {
         await putBlog(title, "Sanchay Javeria", content, tags)
@@ -41,6 +41,9 @@ export default function Admin() {
         setTitle("")
         editorRef.current.setContent("")
       }
+    } else {
+      // eslint-disable-next-line no-alert
+      alert("Title, content and tags are required.")
     }
   }
 
