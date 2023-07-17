@@ -106,44 +106,40 @@ export async function fetchBlog(id: string): Promise<IPost> {
 }
 
 export async function putBlog(title: string, author: string, content: string, tagNames: string[]): Promise<void> {
-    try {
-        const postDocRef = await addDoc(collection(db, "blogs"), {
-            title,
-            author,
-            content,
-            createdAt: new Date(),
-        })
+    const postDocRef = await addDoc(collection(db, "blogs"), {
+        title,
+        author,
+        content,
+        createdAt: new Date(),
+    })
 
-        // Get the document reference for each tag
-        const tagRefs = await Promise.all(
-            tagNames.map(async (tagName) => {
-                const querySnapshot = await getDocs(query(collection(db, "tags"), where('name', '==', tagName)))
-                if (!querySnapshot.empty) {
-                    const tagDoc = querySnapshot.docs[0]
-                    const tagRef = doc(db, "tags", tagDoc.id)
+    // Get the document reference for each tag
+    const tagRefs = await Promise.all(
+        tagNames.map(async (tagName) => {
+            const querySnapshot = await getDocs(query(collection(db, "tags"), where('name', '==', tagName)))
+            if (!querySnapshot.empty) {
+                const tagDoc = querySnapshot.docs[0]
+                const tagRef = doc(db, "tags", tagDoc.id)
 
-                    await updateDoc(tagRef, {
-                        blogs: arrayUnion(postDocRef)
-                    })
-
-                    return tagRef
-                }
-                // Create the tag if it doesn't exist
-                const newTagDocRef = await addDoc(collection(db, "tags"), {
-                    name: tagName,
-                    blogs: [postDocRef],
+                await updateDoc(tagRef, {
+                    blogs: arrayUnion(postDocRef)
                 })
-                return doc(db, "tags", newTagDocRef.id)
-            })
-        )
 
-        // Update the 'tags' field of the post with the tag document references
-        await updateDoc(postDocRef, {
-            tags: tagRefs,
+                return tagRef
+            }
+            // Create the tag if it doesn't exist
+            const newTagDocRef = await addDoc(collection(db, "tags"), {
+                name: tagName,
+                blogs: [postDocRef],
+            })
+            return doc(db, "tags", newTagDocRef.id)
         })
-    } catch (error) {
-        throw new Error(error)
-    }
+    )
+
+    // Update the 'tags' field of the post with the tag document references
+    await updateDoc(postDocRef, {
+        tags: tagRefs,
+    })
 }
 
 // ========= Likes ========= //
