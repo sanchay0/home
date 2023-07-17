@@ -257,7 +257,7 @@ export async function fetchTag(tagId: string): Promise<ITag> {
     throw new Error(`Tag with ${tagId} does not exist.`)
 }
 
-// ========= Comments ========= //
+// ========= Subscribers ========= //
 
 export async function putSubscriberIfAbsent(subscriber: ISubscriber) {
     const subscriberRef = collection(db, "subscribers")
