@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { doc } from 'firebase/firestore'
 import { User } from 'firebase/auth'
+import xss from 'xss'
 import { db } from '../../firebase/clientApp'
 import { deleteLike, fetchBlog, fetchBlogs, fetchComments, fetchLikes, putLikeIfAbsent, putComment, putReply } from '../../utils/api'
 import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
@@ -218,7 +219,8 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                     <p className="text-black">{post.title}</p>
                     <p className="mt-5">{new Date(post.createdAt).toDateString()} <span className="mr-2 ml-2">/</span> {calculateReadingTime(post.content)} minute read</p>
                     <div className="text-neutral-500 mt-5 space-y-3">
-                    <p>{post.content}</p>
+                    {/* eslint-disable-next-line react/no-danger */}
+                    <div dangerouslySetInnerHTML={{ __html: xss(post.content) }} />
                     </div>
                 </div> : null
             }

@@ -3,38 +3,44 @@ import { Editor } from '@tinymce/tinymce-react'
 import TagsInput from 'react-tagsinput'
 import Custom404 from './404'
 import { useAuth } from '../utils/authHandler'
-import { fetchTags } from '../utils/api'
+import { fetchTags, putBlog } from '../utils/api'
 
 import 'react-tagsinput/react-tagsinput.css'
 
 export default function Admin() {
   const user = useAuth()
   const editorRef = useRef(null)
-  const [tags, setTags] = useState([])
+  const [tags, setTags] = useState<string[]>([])
   const [title, setTitle] = useState('')
 
   useEffect(() => {
     const getTags = async () => {
         try {
-          const tagNames = await fetchTags()
-          setTags(tagNames.map(tag => tag.name))
+          const data = await fetchTags()
+          setTags(data.map(tag => tag.name))
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log(error)
+          console.error(error)
         }
     }
 
     getTags()
   }, [])
 
-  const log = () => {
+  const createPost = async () => {
     if (editorRef.current) {
-      // eslint-disable-next-line no-console
-      console.log(editorRef.current.getContent())
-      // eslint-disable-next-line no-console
-      console.log(title)
-      // eslint-disable-next-line no-console
-      console.log(tags)
+      const content = editorRef.current.getContent()
+      try {
+        await putBlog(title, "Sanchay Javeria", content, tags)
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error)
+      } finally {
+        // eslint-disable-next-line no-alert
+        alert("Post created successfully!")
+        setTitle("")
+        editorRef.current.setContent("")
+      }
     }
   }
 
@@ -78,13 +84,14 @@ export default function Admin() {
           <TagsInput className="" value={tags} onChange={handleTags} />
         </div>
       </div>
-      <button className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm mt-2 px-4 py-2 duration-300 rounded-full" type="button" onClick={log}>Submit</button>
+      <button className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm mt-2 px-4 py-2 duration-300 rounded-full" type="button" onClick={createPost}>Submit</button>
     </div>
   )
 
   if (user && user.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
     return notepad
   }
+
   return (
     <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
       <Custom404 />

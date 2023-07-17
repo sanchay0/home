@@ -18,18 +18,18 @@ interface IPostRoot {
 interface ITag {
     id?: string;
     name: string;
-    posts?: IPostRoot[];
+    blogs?: DocumentReference<IPostRoot>[];
 }
 
 interface IPost extends IPostRoot {
-    tags?: ITag[];
+    tags?: DocumentReference<ITag>[];
 }
 
 interface ILike {
     id?: string;
     createdAt: timestamp;
     name: string;
-    postId: DocumentReference;
+    postId: DocumentReference<IPost>;
 }
 
 interface ICommentRoot {
@@ -41,7 +41,7 @@ interface ICommentRoot {
 
 interface IComment extends ICommentRoot {
     replies?: ICommentRoot[];
-    postId: DocumentReference;
+    postId: DocumentReference<IPost>;
 }
 
 interface HeaderProps {
