@@ -33,8 +33,8 @@ export default function Admin() {
       try {
         await putBlog(title, "Sanchay Javeria", content, tags)
         // email subscribers
-        await fetch('/api/mail', {
-          method: 'POST',
+        await fetch("/api/mail", {
+          method: "POST",
           body: JSON.stringify({
             title,
             content,

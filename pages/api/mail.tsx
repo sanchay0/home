@@ -1,6 +1,6 @@
-import mail from '@sendgrid/mail'
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '../../firebase/clientApp'
+import mail from "@sendgrid/mail"
+import { collection, getDocs } from "firebase/firestore"
+import { db } from "../../firebase/clientApp"
 
 mail.setApiKey(process.env.SENDGRID_API_KEY)
 
@@ -9,7 +9,7 @@ export default async (req, res) => {
         const body = JSON.parse(req.body)
 
         // fetch subscribers
-        const snapshot = await getDocs(collection(db, 'subscribers'))
+        const snapshot = await getDocs(collection(db, "subscribers"))
         const emails = snapshot.docs.map((doc) => doc.data().email)
         
         // TODO: Format HTML and make it pretty
@@ -23,8 +23,8 @@ export default async (req, res) => {
             const data = {
                 to: subscriber,
                 from: {
-                    name: 'Sanchay Javeria',
-                    email: 'hello@sanchayjaveria.com',
+                    name: "Sanchay Javeria",
+                    email: "hello@sanchayjaveria.com",
                 },
                 subject: body.title,
                 html: message.replace(/\r\n/g, "<br>")
@@ -33,5 +33,5 @@ export default async (req, res) => {
             mail.send(data)
         }
     }
-    res.status(200).json({ status: 'Ok' })
+    res.status(200).json({ status: "Ok" })
 }
