@@ -11,6 +11,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "@tinymce/tinymce-react": "^4.3.0",
     "@vercel/analytics": "^1.0.1",
     "feed": "^4.2.2",

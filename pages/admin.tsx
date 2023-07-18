@@ -31,6 +31,15 @@ export default function Admin() {
     if (editorRef.current && title && tags.length > 0) {
       const content = editorRef.current.getContent()
       try {
+        // email subscribers
+        fetch('/api/mail', {
+          method: 'POST',
+          body: JSON.stringify({
+            title,
+            content,
+            tags,
+          })
+        })
         await putBlog(title, "Sanchay Javeria", content, tags)
       } catch (error) {
         // eslint-disable-next-line no-console

@@ -3,7 +3,7 @@ Self-hosted personal blog.
 
 TODO:
 
-- Send email to subscribers when we make posts
+- Make subscriber email content look pretty
     - Add unsubscribe button to email
 - Style tailwind for mobile
     - Enable dark mode

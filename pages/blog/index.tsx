@@ -112,7 +112,9 @@ export default function Blogs({ sortedData }: BlogProps) {
                         </div>
                         <div className="text-sm mt-1 text-red-400">{ isValidEmail ? '' : 'Please enter a valid email' }</div>
                         {/* <div className="flex">
-                            <div className="text-xs mt-2 text-gray-400">Email <Link href="/terms">Terms</Link> & <Link href="/privacy">Privacy</Link></div>
+                            <div className="text-xs mt-2 text-gray-400">
+                                Email <Link href="/terms">Terms</Link> & <Link href="/privacy">Privacy</Link>
+                            </div>
                         </div> */}
                     </div> }
                 </div>
