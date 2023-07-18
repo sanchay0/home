@@ -94,13 +94,15 @@ export default function Blogs({ sortedData }: BlogProps) {
                     { sortedData && 
                     <div className="mt-12 md:mt-12 items-center justify-center">
                         <div className="flex">
+                            <div className="w-full">
                             <input
                                 id="post-reply"
-                                className="font-light focus:outline-none resize-none block p-2.5 w-3/4 border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
+                                className="font-light focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
                                 placeholder="To receive future updates in your inbox, enter your email"
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 value={inputValue} />
+                            </div>
                             <button
                                 type="button"
                                 className="bg-gray-100 font-light hover:bg-gray-200 hover:text-gray-500 text-gray-400 text-sm px-4 py-2 duration-300 rounded-full ml-2"
@@ -109,6 +111,9 @@ export default function Blogs({ sortedData }: BlogProps) {
                             </button>
                         </div>
                         <div className="text-sm mt-1 text-red-400">{ isValidEmail ? '' : 'Please enter a valid email' }</div>
+                        {/* <div className="flex">
+                            <div className="text-xs mt-2 text-gray-400">Email <Link href="/terms">Terms</Link> & <Link href="/privacy">Privacy</Link></div>
+                        </div> */}
                     </div> }
                 </div>
             </div>

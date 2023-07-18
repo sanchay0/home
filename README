@@ -6,4 +6,5 @@ TODO:
 - Send email to subscribers when we make posts
     - Add unsubscribe button to email
 - Style tailwind for mobile
+    - Enable dark mode
 - edit photo and publish
