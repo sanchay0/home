@@ -27,7 +27,6 @@ export default async (req, res) => {
                     email: 'hello@sanchayjaveria.com',
                 },
                 subject: body.title,
-                text: message,
                 html: message.replace(/\r\n/g, "<br>")
             }
     
