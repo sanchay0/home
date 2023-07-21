@@ -50,7 +50,7 @@ export default function Header({ links }: HeaderProps) {
             <div className="col-span-1 flex justify-center">
             {currentUser && (
                 <>
-                <span>Welcome, {currentUser.displayName.split(' ')[0]}!</span>
+                <span className="capitalize">Welcome, {currentUser.displayName.split(' ')[0]}!</span>
                 <button type="button"
                     className="ml-2 flex font-light text-black items-center text-sm duration-200 hover:no-underline underline"
                     onClick={logout}
