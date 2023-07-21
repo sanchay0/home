@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { GetStaticProps } from 'next'
@@ -36,6 +36,7 @@ export default function Blogs({ sortedData }: BlogProps) {
     const [subscribed, setSubscribed] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [isValidEmail, setIsValidEmail] = useState(true)
+    const [placeholder, setPlaceholder] = useState("To receive future updates in your inbox, enter your email")
 
     const handleSubscribe = async () => {
         if (!subscribed && inputValue) {
@@ -52,6 +53,27 @@ export default function Blogs({ sortedData }: BlogProps) {
         }
         setInputValue('')
     }
+
+    useEffect(() => {
+        function handleResize() {
+          if (window.innerWidth < 450) {
+            setPlaceholder("Enter your email to receive future updates")
+          } else {
+            setPlaceholder("To receive future updates in your inbox, enter your email")
+          }
+        }
+
+        // Initial check on component mount
+        handleResize()
+
+        // Add event listener for window resize
+        window.addEventListener('resize', handleResize)
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+          window.removeEventListener('resize', handleResize)
+        }
+      }, [])
 
     const handleInputChange = (e) => {
         setSubscribed(false)
@@ -78,34 +100,36 @@ export default function Blogs({ sortedData }: BlogProps) {
                     { sortedData && sortedData.map((post) => (
                         <div
                         key={post.id}
-                        className="grid grid-cols-3 items-start md:grid-cols-3 text-neutral-500"
+                        className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500"
                         >
-                            <p className="col-span-1 text-neutral-400">{formatDate(new Date(post.createdAt))}</p>
-                            <div className="col-span-2 md:col-span-2 w-full">
+                            <div>
+                                <p className="text-neutral-400">{formatDate(new Date(post.createdAt))}</p>
+                            </div>
+                            <div className="md:col-span-2 w-full">
                                 <Link href={`/blog/${post.id}`}>
-                                    <span className="text-black cursor-pointer duration-200 hover:no-underline underline">
+                                    <p className="text-black cursor-pointer duration-200 hover:no-underline underline">
                                     {post.title}
-                                    </span>
+                                    </p>
                                 </Link>
-                                <p>{calculateReadingTime(post.content)} minute read</p>
+                                <p className="mt-1 md:mt-0">{calculateReadingTime(post.content)} minute read</p>
                             </div>
                         </div>
                     ))}
                     { sortedData && 
-                    <div className="mt-12 md:mt-12 items-center justify-center">
-                        <div className="flex">
+                    <div className="mt-8 md:mt-12 items-center justify-center">
+                        <div className="flex flex-col md:flex-row items-center">
                             <div className="w-full">
                             <input
                                 id="post-reply"
                                 className="font-light focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
-                                placeholder="To receive future updates in your inbox, enter your email"
+                                placeholder={placeholder}
                                 onChange={handleInputChange}
                                 autoComplete="off"
                                 value={inputValue} />
                             </div>
                             <button
                                 type="button"
-                                className="bg-gray-100 font-light hover:bg-gray-200 hover:text-gray-500 text-gray-400 text-sm px-4 py-2 duration-300 rounded-full ml-2"
+                                className="bg-gray-100 font-light hover:bg-gray-200 hover:text-gray-500 text-gray-400 px-4 py-3 duration-300 rounded-full md:ml-2 mt-2 md:mt-0"
                                 onClick={handleSubscribe}>
                                 { subscribed ? 'Subscribed!' : 'Subscribe' }
                             </button>
