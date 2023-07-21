@@ -12,21 +12,10 @@ export default function MobileMenu({ links, isOpen, onClose }: ModileMenuProps) 
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div onClick={() => onClose()} className={`absolute z-10 text-5xl font-thin flex flex-col justify-center origin-top w-full top-0 ${isOpen ? '' : 'hidden'}`}>
+    <div onClick={() => onClose()} className={`absolute z-10 text-3xl font-thin flex flex-col justify-center origin-top w-full top-0 ${isOpen ? '' : 'hidden'}`}>
       <div className="bg-white flex flex-col min-h-screen items-center py-8" aria-label="mobile">
-        {currentUser && (
-          <>
-            <span className="mt-20 text-3xl capitalize">Welcome, {currentUser.displayName.split(' ')[0]}!</span>
-            <button
-              type="button"
-              className="mt-2 flex font-thin text-black underline items-center text-2xl"
-              onClick={logout}
-            >
-              (logout)
-            </button>
-          </>
-        )}
-        <ul className="mt-16">
+        { currentUser && <span className="mt-20 capitalize font-light">Welcome, {currentUser.displayName.split(' ')[0]}!</span> }
+        <ul className="mt-20">
           {links &&
             links.map((link) => (
               <li
@@ -37,6 +26,20 @@ export default function MobileMenu({ links, isOpen, onClose }: ModileMenuProps) 
               </li>
             ))}
         </ul>
+        { currentUser &&
+          <button
+            type="button"
+            className="mt-20 flex font-thin items-center"
+            onClick={logout}
+          >
+            Logout
+          </button>
+        }
+        <div className="flex fixed bottom-8">
+          <div className="text-sm mt-2 text-gray-500">
+              <Link href="/terms">Terms</Link> & <Link href="/privacy">Privacy</Link>
+          </div>
+        </div>
       </div>
     </div>
   );
