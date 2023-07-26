@@ -11,7 +11,7 @@ export default async (req, res) => {
 
         // fetch subscribers
         const snapshot = await getDocs(collection(db, "subscribers"))
-        const emails = snapshot.docs.map((doc) => ({ id: doc.id, email: doc.data().email }))
+        const subscribers = snapshot.docs.map((doc) => ({ id: doc.id, email: doc.data().email }))
 
         const emailBody = emailTemplate
             .replace("{{title}}", body.title)
@@ -19,7 +19,7 @@ export default async (req, res) => {
             .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`)
 
         // eslint-disable-next-line no-restricted-syntax
-        for (const subscriber of emails) {
+        for (const subscriber of subscribers) {
             const data = {
                 to: subscriber.email,
                 from: {
