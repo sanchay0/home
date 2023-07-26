@@ -162,6 +162,9 @@ const message = `
                                                                                  <td style="padding:50px 30px 18px 30px; line-height:36px; text-align:inherit; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content">
                                                                                     <div>
                                                                                        <div style="font-family: inherit;"><span style="font-size: 30px">{{title}}</span></div>
+                                                                                       <div>
+                                                                                          <a style="font-size:12px; line-height:20px;" href="{{link}}">Read on the blog</a>
+                                                                                       </div>
                                                                                        <div></div>
                                                                                     </div>
                                                                                  </td>
@@ -236,6 +239,7 @@ export default async (req, res) => {
         const emailBody = message
             .replace("{{title}}", body.title)
             .replace("{{content}}", body.content)
+            .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`)
 
         // eslint-disable-next-line no-restricted-syntax
         for (const subscriber of emails) {
@@ -248,7 +252,7 @@ export default async (req, res) => {
                 subject: body.title,
                 html: emailBody.replace("{{unsubscribe}}", `${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}`)
             }
-    
+
             mail.send(data)
         }
     }

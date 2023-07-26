@@ -105,7 +105,7 @@ export async function fetchBlog(id: string): Promise<IPost> {
     throw new Error(`Blog with ID ${id} does not exist.`)
 }
 
-export async function putBlog(title: string, author: string, content: string, tagNames: string[]): Promise<void> {
+export async function putBlog(title: string, author: string, content: string, tagNames: string[]): Promise<string> {
     const postDocRef = await addDoc(collection(db, "blogs"), {
         title,
         author,
@@ -140,6 +140,8 @@ export async function putBlog(title: string, author: string, content: string, ta
     await updateDoc(postDocRef, {
         tags: tagRefs,
     })
+
+    return postDocRef.id
 }
 
 // ========= Likes ========= //
