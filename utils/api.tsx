@@ -263,3 +263,7 @@ export async function putSubscriberIfAbsent(subscriber: ISubscriber) {
         await addDoc(collection(db, "subscribers"), subscriber)
     }
 }
+
+export async function deleteSubscriber(id: string): Promise<void> {
+    await deleteDoc(doc(db, "subscribers", id))
+}
