@@ -214,76 +214,80 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
             <Head>
                 <title>{post ? post.title : "Sanchay's blog post"}</title>
             </Head>
-            { post ?
-                <div className="font-light text-sm mt-16">
-                    <p className="text-black">{post.title}</p>
-                    <p className="mt-5">{new Date(post.createdAt).toDateString()} <span className="mr-2 ml-2">/</span> {calculateReadingTime(post.content)} minute read</p>
-                    <div className="text-neutral-500 mt-5 space-y-3">
-                    {/* eslint-disable-next-line react/no-danger */}
-                    <div dangerouslySetInnerHTML={{ __html: xss(post.content) }} />
+            <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
+                <div className="mx-auto max-w-2xl">
+                    { post ?
+                        <div className="font-light text-sm mt-16">
+                            <p className="text-black">{post.title}</p>
+                            <p className="mt-5">{new Date(post.createdAt).toDateString()} <span className="mr-2 ml-2">/</span> {calculateReadingTime(post.content)} minute read</p>
+                            <div className="text-gray-600 mt-5 space-y-3">
+                            {/* eslint-disable-next-line react/no-danger */}
+                            <div dangerouslySetInnerHTML={{ __html: xss(post.content) }} />
+                            </div>
+                        </div> : null
+                    }
+                    <div className="flex mt-12">
+                    { post && post.tags && <>
+                        <span className="mr-2">Labels:</span>
+                        {post.tags.map(tag => (
+                            <span key={tag.id} className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-xs px-3 py-1 duration-200 rounded-full mr-2">
+                                <Link href={`/blog/labels/${tag.id}`}>{tag.name}</Link>
+                            </span>
+                        ))}
+                        </>
+                    }
                     </div>
-                </div> : null
-            }
-            <div className="flex mt-12">
-            { post && post.tags && <>
-                <span className="mr-2">Labels:</span>
-                {post.tags.map(tag => (
-                    <span key={tag.id} className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-xs px-3 py-1 duration-200 rounded-full mr-2">
-                        <Link href={`/blog/labels/${tag.id}`}>{tag.name}</Link>
-                    </span>
-                ))}
-                </>
-            }
+                    { likes && comments ? 
+                        <>
+                        <div className="flex justify-between items-center mt-8">
+                            <span>{ comments.length > 0 ? `${comments.length} comment(s)` : null}</span>
+                            <div className="flex items-center">
+                                <span>{likes.length > 0 ? `${likes.length} like(s)` : null}</span>
+                                <span className="mr-2 ml-2">{likes.length > 0 ? "•" : null}</span>
+                                <button type="button"
+                                className={`transition-colors duration-300 ${liked ? 'text-black font-medium' : ''}`}
+                                onClick={registerLike}
+                                tabIndex={0}
+                                onBlur={() => setShouldPrompt(false)}
+                                >
+                                    <i className={`${liked ? 'fas' : 'far'} fa-thumbs-up mr-2`} aria-hidden="true" />
+                                    <span>Like</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="mt-2 text-center flex justify-end">
+                        { shouldPrompt ? 
+                            <p className="text-xs">
+                            To avoid spam, please <button
+                            type="button"
+                            className="font-normal text-black items-center duration-200 hover:no-underline underline"
+                            onMouseDown={() => login()}
+                            >
+                                login
+                                </button> with your Google account.
+                            </p>
+                            : null }
+                        </div>
+                        </> : null
+                    }
+                    { comments ? 
+                        <>
+                        <div className="flex mt-w items-center">
+                            <CustomTextarea id="post" width="w-full" callback={commentCallback} value={userComment} />
+                            <button type="button"
+                                className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2"
+                                onClick={registerComment}
+                                >
+                                Post
+                            </button>
+                        </div>
+                        { comments.sort(
+                            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+                        ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)}
+                        </> : null
+                    }
+                </div>
             </div>
-            { likes && comments ? 
-                <>
-                <div className="flex justify-between items-center mt-8">
-                    <span>{ comments.length > 0 ? `${comments.length} comment(s)` : null}</span>
-                    <div className="flex items-center">
-                        <span>{likes.length > 0 ? `${likes.length} like(s)` : null}</span>
-                        <span className="mr-2 ml-2">{likes.length > 0 ? "•" : null}</span>
-                        <button type="button"
-                        className={`transition-colors duration-300 ${liked ? 'text-black font-medium' : ''}`}
-                        onClick={registerLike}
-                        tabIndex={0}
-                        onBlur={() => setShouldPrompt(false)}
-                        >
-                            <i className={`${liked ? 'fas' : 'far'} fa-thumbs-up mr-2`} aria-hidden="true" />
-                            <span>Like</span>
-                        </button>
-                    </div>
-                </div>
-                <div className="mt-2 text-center flex justify-end">
-                { shouldPrompt ? 
-                    <p className="text-xs">
-                    To avoid spam, please <button
-                    type="button"
-                    className="font-normal text-black items-center duration-200 hover:no-underline underline"
-                    onMouseDown={() => login()}
-                    >
-                        login
-                        </button> with your Google account.
-                    </p>
-                    : null }
-                </div>
-                </> : null
-            }
-            { comments ? 
-                <>
-                <div className="flex mt-w items-center">
-                    <CustomTextarea id="post" width="w-full" callback={commentCallback} value={userComment} />
-                    <button type="button"
-                        className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2"
-                        onClick={registerComment}
-                        >
-                        Post
-                    </button>
-                </div>
-                { comments.sort(
-                    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-                ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)}
-                </> : null
-            }
         </>
     )
 }
