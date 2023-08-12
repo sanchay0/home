@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import React from 'react'
 
 export default function App() {
@@ -13,9 +12,7 @@ export default function App() {
         <div className="flex items-center space-x-5">
           <div className="flex-shrink-0">
             <div className="relative">
-              <div className="rounded-full border border-white/10 h-16 lg:h-24 lg:w-24 w-16">
-                <Image alt="image" width={100} height={100} src="/black.svg" />
-              </div>
+              <img className="h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10" src="/photo.png" alt="headshot" />
               <span aria-hidden="true" className="rounded-full absolute inset-0 shadow-inner" />
             </div>
           </div>
