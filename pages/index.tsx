@@ -1,5 +1,7 @@
 import Head from 'next/head'
+import Image from 'next/image'
 import React from 'react'
+import Photo from '../public/photo.png'
 
 export default function App() {
 
@@ -11,8 +13,8 @@ export default function App() {
       <div className="md:flex md:items-center md:justify-between md:space-x-5">
         <div className="flex items-center space-x-5">
           <div className="flex-shrink-0">
-            <div className="relative">
-              <img className="h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10" src="/photo.png" alt="headshot" />
+            <div className="relative h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10">
+              <Image src={Photo} alt="headshot" />
               <span aria-hidden="true" className="rounded-full absolute inset-0 shadow-inner" />
             </div>
           </div>
