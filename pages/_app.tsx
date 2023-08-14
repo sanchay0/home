@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
     <main className="flex-1 overflow-y-visible">
       <div className="mx-auto max-w-7xl px-8 py-12">
         <Header links={headerLinks} />
-        <div className={`mx-auto ${(currentPage !== "/admin" && currentPage !== "/blog/[id]") ? "max-w-xl" : "max-w-2xl"} lg:pt-24`}>
+        <div className={`mx-auto max-w-xl ${(currentPage !== "/admin" && currentPage !== "/blog/[id]") ? "" : "md:max-w-2xl"} lg:pt-24`}>
           <Component {...pageProps} />
         </div>
       </div>

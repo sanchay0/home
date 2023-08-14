@@ -221,7 +221,7 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                 <div className="font-light text-sm mt-16">
                     <p className="text-black">{post.title}</p>
                     <p className="mt-5">{new Date(post.createdAt).toDateString()} <span className="mr-2 ml-2">/</span> {calculateReadingTime(post.content)} minute read</p>
-                    <div className="text-gray-600 mt-5 space-y-3">
+                    <div className="mt-5 space-y-3">
                     {/* eslint-disable-next-line react/no-danger */}
                     <div dangerouslySetInnerHTML={{ __html: post.content }} />
                     </div>
