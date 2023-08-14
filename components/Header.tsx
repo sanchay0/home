@@ -32,7 +32,7 @@ export default function Header({ links }: HeaderProps) {
         <div className={`${genericHamburgerLine} ${isOpen ? "opacity-0" : "opacity-50 group-hover:opacity-100"}`} />
       </button>
 
-      <div className="invisible md:visible grid grid-cols-3 items-center mt-10">
+      <div className="invisible md:visible grid grid-cols-3 items-center">
             <div className="col-span-1" />
             <div className="col-span-1 flex justify-center">
             <ul className="flex">

@@ -5,7 +5,6 @@ import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { doc } from 'firebase/firestore'
 import { User } from 'firebase/auth'
-import xss from 'xss'
 import { db } from '../../firebase/clientApp'
 import { deleteLike, fetchBlog, fetchBlogs, fetchComments, fetchLikes, putLikeIfAbsent, putComment, putReply } from '../../utils/api'
 import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
@@ -38,16 +37,18 @@ function Comment({ comment, currentUser }: CProps) {
     const { collapsed, toggleCollapse } = useCollapseState(false)
     const { collapsed: collapsedButton, toggleCollapse: toggleCollapseButton } = useCollapseState(true)
     const [userReply, setUserReply] = useState('')
+    const [replyAs, setReplyAs] = useState('')
     const [replies, setReplies] = useState<ICommentRoot[]>(comment.replies)
 
-    const replyCallback = (value: string) => {
+    const replyCallback = (value: string, name: string) => {
         setUserReply(value)
+        setReplyAs(name)
     }
 
     const registerReply = async () => {
         if (userReply) {
             const newReply: ICommentRoot = {
-                name: currentUser.displayName,
+                name: replyAs || currentUser.displayName,
                 content: userReply,
                 createdAt: new Date(),
             }
@@ -80,7 +81,7 @@ function Comment({ comment, currentUser }: CProps) {
                 replies.sort(
                     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
                 ).map(reply => (
-                    <article key={`${comment.id}-${reply.id}`} className="pt-3 pb-3 pl-6 ml-6 lg:ml-6">
+                    <article key={`${comment.id}-${reply.id || Math.floor(Math.random() * 100)}`} className="pt-3 pb-3 pl-6 ml-6 lg:ml-6">
                         <footer className="flex justify-between items-center">
                             <div className="flex items-center">
                                 <p className="inline-flex items-center mr-3 text-sm text-gray-900">{reply.name}</p>
@@ -152,6 +153,7 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
     const [liked, setLiked] = useState(false)
     const [comments, setComments] = useState<IComment[]>(postComments)
     const [userComment, setUserComment] = useState('')
+    const [commentAs, setCommentAs] = useState('')
     const [shouldPrompt, setShouldPrompt] = useState(false)
 
     const router = useRouter()
@@ -164,8 +166,9 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
         }
     }, [likes, currentUser])
 
-    const commentCallback = (value: string) => {
+    const commentCallback = (value: string, name: string) => {
         setUserComment(value)
+        setCommentAs(name)
     }
 
     const registerComment = async () => {
@@ -173,7 +176,7 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
             const newComment: IComment = {
                 content: userComment,
                 createdAt: new Date(),
-                name: currentUser.displayName,
+                name: commentAs || currentUser.displayName,
                 postId: doc(db, "blogs", `${id}`)
             }
             putComment(newComment)
@@ -214,15 +217,15 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
             <Head>
                 <title>{post ? post.title : "Sanchay's blog post"}</title>
             </Head>
-            <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
-                <div className="mx-auto max-w-2xl">
+            {/* <div className="mx-auto max-w-7xl px-8 py-12 lg:pt-24">
+                <div className="mx-auto max-w-2xl"> */}
                     { post ?
                         <div className="font-light text-sm mt-16">
                             <p className="text-black">{post.title}</p>
                             <p className="mt-5">{new Date(post.createdAt).toDateString()} <span className="mr-2 ml-2">/</span> {calculateReadingTime(post.content)} minute read</p>
                             <div className="text-gray-600 mt-5 space-y-3">
                             {/* eslint-disable-next-line react/no-danger */}
-                            <div dangerouslySetInnerHTML={{ __html: xss(post.content) }} />
+                            <div dangerouslySetInnerHTML={{ __html: post.content }} />
                             </div>
                         </div> : null
                     }
@@ -286,8 +289,8 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                         ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)}
                         </> : null
                     }
-                </div>
-            </div>
+                {/* </div>
+            </div> */}
         </>
     )
 }
