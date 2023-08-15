@@ -5,7 +5,7 @@ export default function Header({ links }: HeaderProps) {
   const currentUser = useAuth()
 
   return (
-    <div className="hidden md:grid grid-cols-3 items-center">
+    <div className="hidden lg:grid grid-cols-3 items-center">
       <div className="col-span-1" />
         <div className="col-span-1 flex justify-center">
           <ul className="flex">
