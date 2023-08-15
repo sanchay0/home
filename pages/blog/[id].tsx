@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { doc } from 'firebase/firestore'
 import { User } from 'firebase/auth'
+import xss, { escapeAttrValue } from 'xss'
 import { db } from '../../firebase/clientApp'
 import { deleteLike, fetchBlog, fetchBlogs, fetchComments, fetchLikes, putLikeIfAbsent, putComment, putReply } from '../../utils/api'
 import { calculateReadingTime, formatFirestoreDate } from '../../utils/helpers'
@@ -220,10 +221,18 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
             { post ?
                 <div className="font-light text-sm mt-16">
                     <p className="text-black">{post.title}</p>
-                    <p className="mt-5">{new Date(post.createdAt).toDateString()} <span className="mr-2 ml-2">/</span> {calculateReadingTime(post.content)} minute read</p>
+                    <p className="mt-5 italic">{new Date(post.createdAt).toDateString()} <span className="mr-1 ml-1">/</span> {calculateReadingTime(post.content)} minute read</p>
                     <div className="mt-5 space-y-3">
                     {/* eslint-disable-next-line react/no-danger */}
-                    <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                    <div dangerouslySetInnerHTML={{ __html: xss(post.content, {
+                        // allow 'class' attribute on anchor tags
+                        // eslint-disable-next-line consistent-return
+                        onTagAttr: (tag, name, value) => {
+                            if (tag === "a" && name === "class") {
+                                return `${name}="${escapeAttrValue(value)}"`
+                            }
+                        }
+                    }) }} />
                     </div>
                 </div> : null
             }
