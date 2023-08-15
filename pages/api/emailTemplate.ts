@@ -113,7 +113,7 @@ const emailTemplate = `
                      <table width="100%" role="content-container" class="outer" align="center" cellpadding="0" cellspacing="0" border="0">
                         <tr>
                            <td width="100%">
-                              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                              <table bgcolor="#f6f6f6" width="100%" cellpadding="0" cellspacing="0" border="0">
                                  <tr>
                                     <td>
                                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:600px;" align="center">
@@ -201,9 +201,6 @@ const emailTemplate = `
                                                       </tr>
                                                    </tbody>
                                                 </table>
-                                                <div data-role="module-unsubscribe" class="module" role="module" data-type="unsubscribe" style="color:#444444; font-size:12px; line-height:20px; padding:16px 16px 16px 16px; text-align:Center;" data-muid="4e838cf3-9892-4a6d-94d6-170e474d21e5">
-                                                   <p style="font-size:12px; line-height:20px;"><a class="Unsubscribe--unsubscribeLink" href="{{unsubscribe}}" target="_blank" style="">Unsubscribe</a></p>
-                                                </div>
                                              </td>
                                           </tr>
                                        </table>
@@ -216,6 +213,9 @@ const emailTemplate = `
                   </td>
                </tr>
             </table>
+            <div data-role="module-unsubscribe" class="module" role="module" data-type="unsubscribe" style="color:#444444; font-size:12px; line-height:20px; padding:16px 16px 16px 16px; text-align:Center;" data-muid="4e838cf3-9892-4a6d-94d6-170e474d21e5">
+               <p style="font-size:12px; line-height:20px;"><a class="Unsubscribe--unsubscribeLink" href="{{unsubscribe}}" target="_blank" style="">Unsubscribe</a></p>
+            </div>
          </div>
       </center>
    </body>
