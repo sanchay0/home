@@ -20,6 +20,7 @@ export const getStaticProps: GetStaticProps = async () => {
             props: {
                 sortedData: JSON.parse(JSON.stringify(sortedBlogs)),
             },
+            revalidate: 60,
         }
     } catch (error) {
         // eslint-disable-next-line no-console
