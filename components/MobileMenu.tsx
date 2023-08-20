@@ -15,7 +15,7 @@ export default function MobileMenu({ links, isOpen, onClose }: ModileMenuProps) 
     <div onClick={() => onClose()} className={`fixed z-10 w-full text-2xl font-light flex flex-col justify-center ${isOpen ? '' : 'hidden'}`}>
       <div className="bg-white flex flex-col min-h-screen items-center py-8" aria-label="mobile">
         { currentUser && <span className="mt-20 capitalize font-light">Welcome, {currentUser.displayName.split(' ')[0]}!</span> }
-        <ul className="mt-20">
+        <ul className="mt-20 list-none">
           {links &&
             links.map((link) => (
               <li

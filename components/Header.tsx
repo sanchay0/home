@@ -8,7 +8,7 @@ export default function Header({ links }: HeaderProps) {
     <div className="hidden lg:grid grid-cols-3 items-center">
       <div className="col-span-1" />
         <div className="col-span-1 flex justify-center">
-          <ul className="flex">
+          <ul className="flex list-none">
               {links &&
               links.map((link) => (
                   <li

@@ -145,7 +145,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             likes: JSON.parse(JSON.stringify(likes)),
             comments: JSON.parse(JSON.stringify(comments)),
         },
-        revalidate: 60,
+        revalidate: 10,
     }
 }
 
