@@ -231,6 +231,9 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                         onTagAttr: (tag, name, value) => {
                             if (tag === "a" && name === "class") {
                                 return `${name}="${escapeAttrValue(value)}"`
+                            } 
+                            if (tag === "img" && name === "style") {
+                                return `${name}="${escapeAttrValue(value)}"`
                             }
                         }
                     }) }} />
