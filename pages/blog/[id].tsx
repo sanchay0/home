@@ -269,7 +269,17 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                         </button>
                     </div>
                 </div>
-                <div className="mt-2 text-center flex justify-end">
+                { comments.length > 0 ?
+                <>
+                <div className="mb-4">
+                {
+                    comments.sort(
+                        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+                    ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)
+                }
+                </div>
+                </> : null }
+                <div className="text-center flex justify-end">
                 { shouldPrompt ?
                     <p className="text-xs">
                     To avoid spam, please <button
@@ -282,11 +292,7 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                     </p>
                     : null }
                 </div>
-                </> : null
-            }
-            { comments ?
-                <>
-                <div className="flex mt-w items-center">
+                <div className="flex mt-w items-center mt-2 mb-2">
                     <CustomTextarea id="post" width="w-full" callback={commentCallback} value={userComment} />
                     <button type="button"
                         className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2"
@@ -295,9 +301,6 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                         Post
                     </button>
                 </div>
-                { comments.sort(
-                    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-                ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)}
                 </> : null
             }
         </>
