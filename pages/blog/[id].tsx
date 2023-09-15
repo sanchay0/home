@@ -252,55 +252,55 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
             }
             </div>
             { likes && comments ?
-                <>
-                <div className="flex justify-between items-center mt-8">
-                    <span>{ comments.length > 0 ? `${comments.length} comment(s)` : null}</span>
-                    <div className="flex items-center">
-                        <span>{likes.length > 0 ? `${likes.length} like(s)` : null}</span>
-                        <span className="mr-2 ml-2">{likes.length > 0 ? "•" : null}</span>
-                        <button type="button"
-                        className={`transition-colors duration-300 ${liked ? 'text-black font-medium' : ''}`}
-                        onClick={registerLike}
-                        tabIndex={0}
-                        onBlur={() => setShouldPrompt(false)}
+                <div className="space-y-3 mt-8">
+                    <div className="flex justify-between items-center">
+                        <span>{ comments.length > 0 ? `${comments.length} comment(s)` : null}</span>
+                        <div className="flex items-center">
+                            <span>{likes.length > 0 ? `${likes.length} like(s)` : null}</span>
+                            <span className="mr-2 ml-2">{likes.length > 0 ? "•" : null}</span>
+                            <button type="button"
+                            className={`transition-colors duration-300 ${liked ? 'text-black font-medium' : ''}`}
+                            onClick={registerLike}
+                            tabIndex={0}
+                            onBlur={() => setShouldPrompt(false)}
+                            >
+                                <i className={`${liked ? 'fas' : 'far'} fa-thumbs-up mr-2`} aria-hidden="true" />
+                                <span>Like</span>
+                            </button>
+                        </div>
+                    </div>
+                    { comments.length > 0 ?
+                        <div>
+                        {
+                            comments.sort(
+                                (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+                            ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)
+                        }
+                        </div> : null
+                    }
+                    <div className="text-center flex justify-end">
+                    { shouldPrompt ?
+                        <p className="text-xs">
+                        To avoid spam, please <button
+                        type="button"
+                        className="font-normal text-black items-center duration-200 hover:no-underline underline"
+                        onMouseDown={() => login()}
                         >
-                            <i className={`${liked ? 'fas' : 'far'} fa-thumbs-up mr-2`} aria-hidden="true" />
-                            <span>Like</span>
+                            login
+                            </button> with your Google account.
+                        </p>
+                        : null }
+                    </div>
+                    <div className="flex items-center">
+                        <CustomTextarea id="post" width="w-full" callback={commentCallback} value={userComment} />
+                        <button type="button"
+                            className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2"
+                            onClick={registerComment}
+                            >
+                            Post
                         </button>
                     </div>
-                </div>
-                { comments.length > 0 ?
-                    <div className="mb-4">
-                    {
-                        comments.sort(
-                            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-                        ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)
-                    }
-                    </div> : null
-                }
-                <div className="text-center flex justify-end">
-                { shouldPrompt ?
-                    <p className="text-xs">
-                    To avoid spam, please <button
-                    type="button"
-                    className="font-normal text-black items-center duration-200 hover:no-underline underline"
-                    onMouseDown={() => login()}
-                    >
-                        login
-                        </button> with your Google account.
-                    </p>
-                    : null }
-                </div>
-                <div className="flex mt-w items-center mt-2 mb-2">
-                    <CustomTextarea id="post" width="w-full" callback={commentCallback} value={userComment} />
-                    <button type="button"
-                        className="font-light bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm px-4 py-2 duration-300 rounded-full ml-2"
-                        onClick={registerComment}
-                        >
-                        Post
-                    </button>
-                </div>
-                </> : null
+                </div> : null
             }
         </>
     )
