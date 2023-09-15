@@ -270,15 +270,14 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                     </div>
                 </div>
                 { comments.length > 0 ?
-                <>
-                <div className="mb-4">
-                {
-                    comments.sort(
-                        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-                    ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)
+                    <div className="mb-4">
+                    {
+                        comments.sort(
+                            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+                        ).map(comment => <Comment key={comment.id} comment={comment} currentUser={currentUser} />)
+                    }
+                    </div> : null
                 }
-                </div>
-                </> : null }
                 <div className="text-center flex justify-end">
                 { shouldPrompt ?
                     <p className="text-xs">
