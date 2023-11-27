@@ -254,7 +254,7 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
             { likes && comments ?
                 <div className="space-y-3 mt-8">
                     <div className="flex justify-between items-center">
-                        <span>{ comments.length > 0 ? `${comments.length} comment(s)` : null}</span>
+                        <span>{ comments.length > 0 ? `${comments.length + Object.values(comments).flatMap(comment => comment.replies).reduce((total) => total + 1, 0)}  comment(s)` : null}</span>
                         <div className="flex items-center">
                             <span>{likes.length > 0 ? `${likes.length} like(s)` : null}</span>
                             <span className="mr-2 ml-2">{likes.length > 0 ? "•" : null}</span>
