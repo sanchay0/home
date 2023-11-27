@@ -67,7 +67,7 @@ function Comment({ comment, currentUser }: CProps) {
                     <p className="text-sm text-gray-600">{formatFirestoreDate(comment.createdAt)}</p>
                 </div>
             </footer>
-            <p className="mt-2">{comment.content}</p>
+            <p className="mt-2 break-words">{comment.content}</p>
             {replies && replies.length > 0 ?
                 <div className="flex mt-2 items-center duration-200">
                     <button type="button" tabIndex={0} onClick={toggleCollapse} className="font-light text-sm px-2 py-1 ml-2">
@@ -89,7 +89,7 @@ function Comment({ comment, currentUser }: CProps) {
                                 <p className="text-sm text-gray-600">{formatFirestoreDate(reply.createdAt)}</p>
                             </div>
                         </footer>
-                        <p className="mt-2">{reply.content}</p>
+                        <p className="mt-2 break-words">{reply.content}</p>
                     </article>
                 ))
             }
@@ -223,7 +223,7 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                 <div className="font-light text-sm mt-16">
                     <p className="text-black">{post.title}</p>
                     <p className="mt-5 italic">{new Date(post.createdAt).toDateString()} <span className="mr-1 ml-1">/</span> {calculateReadingTime(post.content)} minute read</p>
-                    <div className="mt-5 space-y-3">
+                    <div className="mt-5 space-y-3 break-words">
                     {/* eslint-disable-next-line react/no-danger */}
                     <div dangerouslySetInnerHTML={{ __html: xss(post.content, {
                         // allow 'class' attribute on anchor tags
