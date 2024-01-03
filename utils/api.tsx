@@ -1,4 +1,4 @@
-import { DocumentReference, collection, addDoc, doc, getDoc, getDocs, deleteDoc, query, where, updateDoc, arrayUnion } from 'firebase/firestore'
+import { DocumentReference, collection, addDoc, doc, getDoc, getDocs, deleteDoc, query, where, updateDoc, arrayUnion, setDoc } from 'firebase/firestore'
 import { db } from "../firebase/clientApp"
 
 // ========= Blogs ========= //
@@ -106,7 +106,8 @@ export async function fetchBlog(id: string): Promise<IPost> {
 }
 
 export async function putBlog(title: string, author: string, content: string, tagNames: string[]): Promise<string> {
-    const postDocRef = await addDoc(collection(db, "blogs"), {
+    const postId = title.replace(/\s+/g, '-').toLowerCase()
+    await setDoc(doc(collection(db, "blogs"), postId), {
         title,
         author,
         content,
@@ -141,7 +142,7 @@ export async function putBlog(title: string, author: string, content: string, ta
         tags: tagRefs,
     })
 
-    return postDocRef.id
+    return postId
 }
 
 // ========= Likes ========= //
