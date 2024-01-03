@@ -107,7 +107,8 @@ export async function fetchBlog(id: string): Promise<IPost> {
 
 export async function putBlog(title: string, author: string, content: string, tagNames: string[]): Promise<string> {
     const postId = title.replace(/\s+/g, '-').toLowerCase()
-    await setDoc(doc(collection(db, "blogs"), postId), {
+    const postDocRef = doc(collection(db, "blogs"), postId)
+    await setDoc(postDocRef, {
         title,
         author,
         content,
