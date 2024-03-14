@@ -23,7 +23,7 @@ export default function Contact() {
                         <div><p className="dark:text-neutral-400 text-neutral-400">LinkedIn</p></div>
                         <div className="md:col-span-2 w-full">
                             <p className="dark:text-white text-black">
-                            <a title="LinkedIn" className="text-black duration-200 hover:no-underline underline after:content-['_↗']" href="https://www.linkedin.com/in/javeria2/" target="_blank" rel="noopener noreferrer">javeria2</a>
+                            <a title="LinkedIn" className="text-black duration-200 hover:no-underline underline after:content-['_↗']" href="https://www.linkedin.com/in/sanchay0/" target="_blank" rel="noopener noreferrer">sanchay0</a>
                                 </p>
                         </div>
                     </div>
