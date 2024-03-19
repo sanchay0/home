@@ -226,13 +226,13 @@ export default function Blog({ post, likes: postLikes, comments: postComments }:
                     <div className="mt-5 space-y-3 break-words">
                     {/* eslint-disable-next-line react/no-danger */}
                     <div dangerouslySetInnerHTML={{ __html: xss(post.content, {
-                        // allow 'class' attribute on anchor tags
+                        // allow 'class' attribute on anchor tags and custom style
                         // eslint-disable-next-line consistent-return
                         onTagAttr: (tag, name, value) => {
                             if (tag === "a" && name === "class") {
                                 return `${name}="${escapeAttrValue(value)}"`
                             } 
-                            if (tag === "img" && name === "style") {
+                            if (name === "style") {
                                 return `${name}="${escapeAttrValue(value)}"`
                             }
                         }
