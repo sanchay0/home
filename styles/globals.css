@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Times New Roman', Times, serif, sans-serif;
   --home-fonts-default: var(--font-family);
   --home-fonts-mono: Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
   --scrollbarWidth: 0px;
@@ -61,4 +61,11 @@ i {
 
 #nprogress .bar {
   background: #000 !important;
+}
+
+blockquote {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  border-left: 2px solid #DFE6E9;
 }
