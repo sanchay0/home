@@ -117,7 +117,7 @@ export default function Blogs({ sortedData }: BlogProps) {
                         </div>
                     ))}
                     { sortedData && 
-                    <div className="mt-8 md:mt-12 items-center justify-center">
+                    <div className="mt-8 md:mt-12 mb-8 md:mb-12 items-center justify-center">
                         <div className="flex flex-col md:flex-row items-center">
                             <div className="w-full">
                             <input
