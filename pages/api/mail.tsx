@@ -8,6 +8,7 @@ mail.setApiKey(process.env.SENDGRID_API_KEY)
 export default async (req, res) => {
     if (req.body) {
         const body = JSON.parse(req.body)
+        console.log("Sending emails...")
 
         // fetch subscribers
         const snapshot = await getDocs(collection(db, "subscribers"))
@@ -20,8 +21,9 @@ export default async (req, res) => {
 
         // eslint-disable-next-line no-restricted-syntax
         for (const subscriber of subscribers) {
+            console.log("Sending email to: " + subscriber.email)
             const data = {
-                to: subscriber.email,
+                to: "sanchayjaveria@gmail.com",
                 from: {
                     name: "Sanchay Javeria",
                     email: "hello@sanchayjaveria.com",
