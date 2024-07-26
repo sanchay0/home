@@ -7,7 +7,7 @@ export async function getServerSideProps({ res }) {
     const siteUrl: string = process.env.NEXT_PUBLIC_URL
 
     const feedOptions: FeedOptions = {
-        title: 'Sanchay\'s blog posts | RSS Feed',
+        title: 'Sanchay\'s blog posts',
         description: 'Welcome!',
         language: 'en',
         id: siteUrl,
