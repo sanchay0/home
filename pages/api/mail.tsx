@@ -21,7 +21,7 @@ export default async (req, res) => {
 
         // eslint-disable-next-line no-restricted-syntax
         for (const subscriber of subscribers) {
-            console.log("Sending email to: " + subscriber.email)
+            console.log(`Sending email to: ${subscriber.email}`)
             const data = {
                 to: "sanchayjaveria@gmail.com",
                 from: {
