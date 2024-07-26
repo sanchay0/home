@@ -21,7 +21,7 @@ export default async (req, res) => {
 
         // eslint-disable-next-line no-restricted-syntax
         for (const subscriber of subscribers) {
-            console.log(`Sending email to: ${subscriber.email}`)
+            console.log(`Sending email to: ${subscriber.email} with API key ${process.env.SENDGRID_API_KEY}`)
             const data = {
                 to: "sanchayjaveria@gmail.com",
                 from: {
@@ -32,7 +32,14 @@ export default async (req, res) => {
                 html: emailBody.replace("{{unsubscribe}}", `${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}`)
             }
 
-            mail.send(data)
+            mail
+              .send(data)
+              .then(() => {
+                console.log('Email sent!')
+              })
+              .catch((error) => {
+                console.error(error)
+              })
         }
     }
     res.status(200).json({ status: "Ok" })
