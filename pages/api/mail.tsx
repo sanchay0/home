@@ -29,7 +29,8 @@ export default async (req, res) => {
                     email: "hello@sanchayjaveria.com",
                 },
                 subject: body.title,
-                html: emailBody.replace("{{unsubscribe}}", `${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}`)
+                text: 'and easy to do anywhere, even with Node.js',
+                html: '<strong>and easy to do anywhere, even with Node.js</strong>'
             }
 
             mail
