@@ -14,10 +14,10 @@ export default async (req, res) => {
         const snapshot = await getDocs(collection(db, "subscribers"))
         const subscribers = snapshot.docs.map((doc) => ({ id: doc.id, email: doc.data().email }))
 
-        const emailBody = emailTemplate
-            .replace("{{title}}", body.title)
-            .replace("{{content}}", body.content)
-            .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`)
+        // const emailBody = emailTemplate
+        //     .replace("{{title}}", body.title)
+        //     .replace("{{content}}", body.content)
+        //     .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`)
 
         // eslint-disable-next-line no-restricted-syntax
         for (const subscriber of subscribers) {
