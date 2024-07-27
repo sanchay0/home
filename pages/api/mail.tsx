@@ -1,7 +1,6 @@
 import mail from "@sendgrid/mail"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "../../firebase/clientApp"
-import emailTemplate from './emailTemplate'
 
 mail.setApiKey(process.env.SENDGRID_API_KEY)
 
@@ -13,11 +12,6 @@ export default async (req, res) => {
         // fetch subscribers
         const snapshot = await getDocs(collection(db, "subscribers"))
         const subscribers = snapshot.docs.map((doc) => ({ id: doc.id, email: doc.data().email }))
-
-        // const emailBody = emailTemplate
-        //     .replace("{{title}}", body.title)
-        //     .replace("{{content}}", body.content)
-        //     .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`)
 
         // eslint-disable-next-line no-restricted-syntax
         for (const subscriber of subscribers) {
