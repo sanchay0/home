@@ -12,16 +12,7 @@ export default function Privacy() {
       <p className="mt-2">
         We use Your Personal data to provide and improve the Service. By using
         the Service, You agree to the collection and use of information in
-        accordance with this Privacy Policy. This Privacy Policy has been
-        created with the help of the{" "}
-        <a
-          href="https://www.privacypolicies.com/privacy-policy-generator/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Privacy Policy Generator
-        </a>
-        .
+        accordance with this Privacy Policy. .
       </p>
       <div className="font-bold mt-2">Interpretation and Definitions</div>
       <div className="mt-2 font-semibold">Interpretation</div>

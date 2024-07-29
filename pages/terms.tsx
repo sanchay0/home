@@ -8,9 +8,10 @@ export default function Terms() {
       </h1>
       <div className="mt-2">
         Please read these terms of use (&quot;terms of use&quot;,
-        &quot;agreement&quot;) carefully before using [website] website
-        (“website”, &quot;service&quot;) operated by Sanchay Javeria
-        (&quot;us&quot;, &apos;we&quot;, &quot;our&quot;).
+        &quot;agreement&quot;) carefully before using
+        https://www.sanchayjaveria.com/ website (“website”, &quot;service&quot;)
+        operated by Sanchay Javeria (&quot;us&quot;, &apos;we&quot;,
+        &quot;our&quot;).
       </div>
       <div className="font-semibold mt-2">Conditions of use</div>
       <div className="mt-2">
