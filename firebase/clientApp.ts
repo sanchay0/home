@@ -1,8 +1,13 @@
-import { Analytics, getAnalytics, isSupported } from 'firebase/analytics'
-import { Firestore, getFirestore } from 'firebase/firestore'
-import { FirebaseStorage, getStorage } from 'firebase/storage'
-import { FirebaseApp, FirebaseOptions, initializeApp } from 'firebase/app'
-import { Auth, getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth'
+import { Analytics, getAnalytics, isSupported } from "firebase/analytics";
+import { Firestore, getFirestore } from "firebase/firestore";
+import { FirebaseStorage, getStorage } from "firebase/storage";
+import { FirebaseApp, FirebaseOptions, initializeApp } from "firebase/app";
+import {
+  Auth,
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,23 +17,19 @@ const firebaseConfig: FirebaseOptions = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-}
+};
 
 // Initialize Firebase
-const app: FirebaseApp = initializeApp(firebaseConfig)
-const analytics: Promise<Analytics> = isSupported().then(yes => yes ? getAnalytics(app) : null)
-const db: Firestore = getFirestore(app)
-const storage: FirebaseStorage = getStorage(app)
+const app: FirebaseApp = initializeApp(firebaseConfig);
+const analytics: Promise<Analytics> = isSupported().then((yes) =>
+  yes ? getAnalytics(app) : null,
+);
+const db: Firestore = getFirestore(app);
+const storage: FirebaseStorage = getStorage(app);
 
 // auth
-const auth: Auth = getAuth(app)
-auth.useDeviceLanguage()
-setPersistence(auth, browserLocalPersistence)
+const auth: Auth = getAuth(app);
+auth.useDeviceLanguage();
+setPersistence(auth, browserLocalPersistence);
 
-export {
-    app, 
-    analytics,
-    db,
-    storage,
-    auth
-}
+export { app, analytics, db, storage, auth };

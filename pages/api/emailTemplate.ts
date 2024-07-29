@@ -220,6 +220,6 @@ const emailTemplate = `
       </center>
    </body>
 </html>
-`
+`;
 
-export default emailTemplate
+export default emailTemplate;
