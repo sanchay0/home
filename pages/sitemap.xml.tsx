@@ -17,7 +17,7 @@ export async function getServerSideProps({ res }) {
               .map(
                 ({ id }) => `
                     <url>
-                        <loc>${`${siteUrl}/${id.replace("&", "&amp;")}`}</loc>
+                        <loc>${`${siteUrl}/blog/${id.replace("&", "&amp;")}`}</loc>
                     </url>  
                 `,
               )
