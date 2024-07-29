@@ -275,8 +275,8 @@ export default function Blog({
             {calculateReadingTime(post.content)} minute read
           </p>
           <div className="mt-5 space-y-3 break-words">
-            {/* eslint-disable-next-line react/no-danger */}
             <div
+              /* eslint-disable-next-line react/no-danger */
               dangerouslySetInnerHTML={{
                 __html: xss(post.content, {
                   // allow 'class' attribute on anchor tags and custom style
