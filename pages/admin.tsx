@@ -46,6 +46,8 @@ export default function Admin() {
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
+        // eslint-disable-next-line no-alert
+        alert(error);
       } finally {
         // eslint-disable-next-line no-alert
         alert("Post created successfully!");
