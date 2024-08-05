@@ -9,8 +9,12 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !auth.currentUser) {
+    if (!authHeader) {
       return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (!auth.currentUser) {
+      return res.status(401).json({ message: "No user" });
     }
 
     const idToken = authHeader.split("Bearer ")[1];
