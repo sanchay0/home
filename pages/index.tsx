@@ -12,7 +12,7 @@ export default function App() {
       <div className="md:flex md:items-center md:justify-between md:space-x-5">
         <div className="flex items-center space-x-5">
           <div className="flex-shrink-0">
-            <div className="relative h-16 w-16 lg:h-24 lg:w-24 rounded-full border border-white/10">
+            <div className="relative h-16 w-16 lg:h-20 lg:w-20 rounded-full border border-white/10">
               <Image src={Photo} alt="headshot" />
               <span
                 aria-hidden="true"
