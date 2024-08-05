@@ -1,37 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { collection, getDocs } from "firebase/firestore";
 import { Resend } from "resend";
-import { auth, db } from "../../firebase/clientApp";
+import { db } from "../../firebase/clientApp";
 import emailTemplate from "./emailTemplate";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !auth.currentUser) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const idToken = authHeader.split("Bearer ")[1];
-    if (!idToken) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const decodedToken = await auth.currentUser.getIdToken();
-    if (
-      decodedToken !== idToken ||
-      auth.currentUser.email !== process.env.NEXT_PUBLIC_ADMIN_EMAIL
-    ) {
-      return res.status(403).json({ message: "Forbidden" });
-    }
-
     const body = JSON.parse(req.body);
 
     // fetch subscribers
-    const snapshot = await getDocs(
-      collection(db, process.env.NEXT_PUBLIC_SUBSCRIBERS_DB),
-    );
+    const snapshot = await getDocs(collection(db, "subscribers"));
     const subscribers = snapshot.docs.map((doc) => ({
       id: doc.id,
       email: doc.data().email,
