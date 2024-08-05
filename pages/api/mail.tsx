@@ -4,7 +4,7 @@ import { Resend } from "resend";
 import { db } from "../../firebase/clientApp";
 import emailTemplate from "./emailTemplate";
 
-const resend = new Resend("re_QX4ohn5N_LnQMErvCmPwofwnPL6YSbpf8");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
