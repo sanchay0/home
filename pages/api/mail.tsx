@@ -24,7 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    const body = JSON.parse(req.body);
+    const {body} = req;
 
     // fetch subscribers
     const snapshot = await getDocs(
