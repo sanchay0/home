@@ -28,3 +28,11 @@ export const validateEmail = (email: string) =>
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     );
+
+// convert base64 string to json
+export const base64ToObject = (base64String: string) => {
+  const bytes = Uint8Array.from(atob(base64String), (c) => c.charCodeAt(0));
+  const jsonString = new TextDecoder().decode(bytes);
+  const obj = JSON.parse(jsonString);
+  return obj;
+};
