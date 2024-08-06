@@ -30,6 +30,7 @@ export default function Admin() {
   const createPost = async () => {
     if (editorRef.current && title && tags.length > 0) {
       const content = editorRef.current.getContent();
+      const idToken = await user.getIdToken();
       try {
         putBlog(title, "Sanchay Javeria", content, tags).then((blogId) => {
           // email subscribers
@@ -41,6 +42,10 @@ export default function Admin() {
               content,
               tags,
             }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${idToken}`,
+            },
           });
         });
       } catch (error) {
