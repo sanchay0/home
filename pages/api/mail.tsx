@@ -24,12 +24,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    const {body} = req;
+    const { body } = req;
 
     // fetch subscribers
-    const snapshot = await getDocs(
-      collection(db, process.env.NEXT_PUBLIC_SUBSCRIBERS_DB),
-    );
+    const snapshot = await getDocs(collection(db, "subscribers"));
     const subscribers = snapshot.docs.map((doc) => ({
       id: doc.id,
       email: doc.data().email,
