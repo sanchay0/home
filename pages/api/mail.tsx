@@ -38,37 +38,38 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .replace("{{content}}", body.content)
       .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`);
 
-    const emailPromises = subscribers.map(async (subscriber) => {
-      try {
-        const { data, error } = await resend.emails.send({
-          to: [subscriber.email],
-          from: "Sanchay Javeria <hello@sanchayjaveria.com>",
-          reply_to: "hello@sanchayjaveria.com",
-          subject: body.title,
-          html: emailBody.replace(
-            "{{unsubscribe}}",
-            `${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}`,
-          ),
-        });
+    const sendEmailWithDelay = async (subscriber, delay) => {
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          try {
+            const { data, error } = await resend.emails.send({
+              to: [subscriber.email],
+              from: "Sanchay Javeria <hello@sanchayjaveria.com>",
+              reply_to: "hello@sanchayjaveria.com",
+              subject: body.title,
+              html: emailBody.replace(
+                "{{unsubscribe}}",
+                ${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}
+              ),
+            });
+            if (error) {
+              console.error(Error sending email to ${subscriber.email}:, error);
+              resolve({ email: subscriber.email, error });
+            } else {
+              console.log(Email sent to ${subscriber.email}:, data);
+              resolve({ email: subscriber.email, data });
+            }
+          } catch (err) {
+            console.error(Unexpected error sending email to ${subscriber.email}:, err);
+            resolve({ email: subscriber.email, error: err });
+          }
+        }, delay);
+      });
+    };
 
-        if (error) {
-          // eslint-disable-next-line no-console
-          console.error(`Error sending email to ${subscriber.email}:`, error);
-          return { email: subscriber.email, error };
-        }
-
-        // eslint-disable-next-line no-console
-        console.log(`Email sent to ${subscriber.email}:`, data);
-        return { email: subscriber.email, data };
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(
-          `Unexpected error sending email to ${subscriber.email}:`,
-          err,
-        );
-        return { email: subscriber.email, error: err };
-      }
-    });
+    const emailPromises = subscribers.map((subscriber, index) =>
+      sendEmailWithDelay(subscriber, index * 1000)
+    );
 
     const results = await Promise.all(emailPromises);
 
