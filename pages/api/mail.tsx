@@ -7,6 +7,12 @@ import emailTemplate from "./emailTemplate";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+interface EmailResult {
+    email: string;
+    data?: any;
+    error?: any;
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const authHeader = req.headers.authorization;
@@ -38,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .replace("{{content}}", body.content)
       .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`);
 
-    const sendEmailWithDelay = async (subscriber, delay) => {
+    const sendEmailWithDelay = async (subscriber: { id: string, email: string }, delay: number): Promise<EmailResult> => {
       return new Promise((resolve) => {
         setTimeout(async () => {
           try {
@@ -74,7 +80,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       sendEmailWithDelay(subscriber, index * 1000)
     );
 
-    const results = await Promise.all(emailPromises);
+    const results: EmailResult[] = await Promise.all(emailPromises);
 
     const errors = results.filter((result) => result.error);
     if (errors.length > 0) {
