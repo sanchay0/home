@@ -49,18 +49,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               subject: body.title,
               html: emailBody.replace(
                 "{{unsubscribe}}",
-                ${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}
+                `${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}`
               ),
             });
             if (error) {
-              console.error(Error sending email to ${subscriber.email}:, error);
+              // eslint-disable-next-line no-console
+              console.error(`Error sending email to ${subscriber.email}:`, error);
               resolve({ email: subscriber.email, error });
             } else {
-              console.log(Email sent to ${subscriber.email}:, data);
+              // eslint-disable-next-line no-console
+              console.log(`Email sent to ${subscriber.email}:`, data);
               resolve({ email: subscriber.email, data });
             }
           } catch (err) {
-            console.error(Unexpected error sending email to ${subscriber.email}:, err);
+            // eslint-disable-next-line no-console
+            console.error(`Unexpected error sending email to ${subscriber.email}:`, err);
             resolve({ email: subscriber.email, error: err });
           }
         }, delay);
