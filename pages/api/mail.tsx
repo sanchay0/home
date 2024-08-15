@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .replace("{{content}}", body.content)
       .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`);
 
-    const sendEmailWithDelay = async (subscriber: { id: string, email: string }, delay: number): Promise<EmailResult> => {
+    const sendEmailWithDelay = async (subscriber: { id: string, email: string }, delay: number): Promise<EmailResult> =>
       return new Promise((resolve) => {
         setTimeout(async () => {
           try {
@@ -74,7 +74,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           }
         }, delay);
       });
-    };
 
     const emailPromises = subscribers.map((subscriber, index) =>
       sendEmailWithDelay(subscriber, index * 1000)
