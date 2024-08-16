@@ -8,9 +8,9 @@ import emailTemplate from "./emailTemplate";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface EmailResult {
-    email: string;
-    data?: any;
-    error?: any;
+  email: string;
+  data?: any;
+  error?: any;
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -44,7 +44,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       .replace("{{content}}", body.content)
       .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`);
 
-    const sendEmailWithDelay = async (subscriber: { id: string, email: string }, delay: number): Promise<EmailResult> =>
+    const sendEmailWithDelay = async (
+      subscriber: { id: string; email: string },
+      delay: number,
+    ): Promise<EmailResult> =>
       new Promise((resolve) => {
         setTimeout(async () => {
           try {
@@ -55,12 +58,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               subject: body.title,
               html: emailBody.replace(
                 "{{unsubscribe}}",
-                `${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}`
+                `${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}`,
               ),
             });
             if (error) {
               // eslint-disable-next-line no-console
-              console.error(`Error sending email to ${subscriber.email}:`, error);
+              console.error(
+                `Error sending email to ${subscriber.email}:`,
+                error,
+              );
               resolve({ email: subscriber.email, error });
             } else {
               // eslint-disable-next-line no-console
@@ -69,14 +75,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
           } catch (err) {
             // eslint-disable-next-line no-console
-            console.error(`Unexpected error sending email to ${subscriber.email}:`, err);
+            console.error(
+              `Unexpected error sending email to ${subscriber.email}:`,
+              err,
+            );
             resolve({ email: subscriber.email, error: err });
           }
         }, delay);
       });
 
     const emailPromises = subscribers.map((subscriber, index) =>
-      sendEmailWithDelay(subscriber, index * 1000)
+      sendEmailWithDelay(subscriber, index * 1000),
     );
 
     const results: EmailResult[] = await Promise.all(emailPromises);
