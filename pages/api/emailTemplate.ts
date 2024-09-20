@@ -126,7 +126,7 @@ const emailTemplate = `
                                                       </td>
                                                    </tr>
                                                 </table>
-                                                <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" style="padding:30px 20px 30px 20px;" bgcolor="#f6f6f6" data-distribution="1">
+                                                <table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" style="padding: 0px 20px 50px 20px;" bgcolor="#f6f6f6" data-distribution="1">
                                                    <tbody>
                                                       <tr role="module-content">
                                                          <td height="100%" valign="top">
@@ -153,11 +153,11 @@ const emailTemplate = `
                                                                         <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="948e3f3f-5214-4721-a90e-625a47b1c957" data-mc-module-version="2019-10-22">
                                                                            <tbody>
                                                                               <tr>
-                                                                                 <td style="padding:50px 30px 18px 30px; line-height:36px; text-align:inherit; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content">
+                                                                                 <td style="padding:50px 30px 10px 30px; line-height:36px; text-align:inherit; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content">
                                                                                     <div>
                                                                                        <div style="font-family: inherit;"><span style="font-size: 30px">{{title}}</span></div>
                                                                                        <div>
-                                                                                          <a style="font-size:12px; line-height:20px;" href="{{link}}">Read on the blog</a>
+                                                                                          <a style="font-size:14px; line-height:20px;" href="{{link}}">Read on the blog</a>
                                                                                        </div>
                                                                                        <div></div>
                                                                                     </div>
