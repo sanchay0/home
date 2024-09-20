@@ -130,7 +130,7 @@ const emailTemplate = `
                                                    <tbody>
                                                       <tr role="module-content">
                                                          <td height="100%" valign="top">
-                                                            <table width="540" style="width:540px; border-spacing:0; border-collapse:collapse; margin:0px 10px 0px 10px;" cellpadding="0" cellspacing="0" align="left" border="0" bgcolor="" class="column column-0">
+                                                            <table width="580" style="width:580px; border-spacing:0; border-collapse:collapse; margin:0px 10px 0px 10px;" cellpadding="0" cellspacing="0" align="left" border="0" bgcolor="" class="column column-0">
                                                                <tbody>
                                                                   <tr>
                                                                      <td style="padding:0px;margin:0px;border-spacing:0;">
@@ -153,7 +153,7 @@ const emailTemplate = `
                                                                         <table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="948e3f3f-5214-4721-a90e-625a47b1c957" data-mc-module-version="2019-10-22">
                                                                            <tbody>
                                                                               <tr>
-                                                                                 <td style="padding:50px 30px 10px 30px; line-height:36px; text-align:inherit; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content">
+                                                                                 <td style="padding:50px 30px 0px 30px; line-height:36px; text-align:inherit; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content">
                                                                                     <div>
                                                                                        <div style="font-family: inherit;"><span style="font-size: 30px">{{title}}</span></div>
                                                                                        <div>
