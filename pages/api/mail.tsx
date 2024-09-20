@@ -85,7 +85,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
     const emailPromises = subscribers.map((subscriber, index) =>
-      sendEmailWithDelay(subscriber, index * 1000),
+      sendEmailWithDelay(subscriber, index * 2000),
     );
 
     const results: EmailResult[] = await Promise.all(emailPromises);
