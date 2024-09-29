@@ -134,7 +134,7 @@ export default function Blogs({ sortedData }: BlogProps) {
                   <div className="w-full">
                     <input
                       id="post-reply"
-                      className="font-light focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
+                      className="font-light text-base	md:text-sm focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
                       placeholder={placeholder}
                       onChange={handleInputChange}
                       autoComplete="off"
@@ -143,7 +143,7 @@ export default function Blogs({ sortedData }: BlogProps) {
                   </div>
                   <button
                     type="button"
-                    className="bg-gray-100 font-light hover:bg-gray-200 hover:text-gray-500 text-gray-400 px-4 py-3 duration-300 rounded-full md:ml-2 mt-2 md:mt-0"
+                    className="bg-gray-100 font-light text-base md:text-sm hover:bg-gray-200 hover:text-gray-500 text-gray-400 px-4 py-3 duration-300 rounded-full md:ml-2 mt-2 md:mt-0"
                     onClick={handleSubscribe}
                   >
                     {subscribed ? "Subscribed!" : "Subscribe"}
