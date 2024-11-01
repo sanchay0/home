@@ -124,7 +124,10 @@ export async function putBlog(
   content: string,
   tagNames: string[],
 ): Promise<string> {
-  const postId = title.replace(/[^\w\s-]|_/g, "").replace(/\s+/g, "-").toLowerCase();
+  const postId = title
+    .replace(/[^\w\s-]|_/g, "")
+    .replace(/\s+/g, "-")
+    .toLowerCase();
   const postDocRef = doc(collection(db, "blogs"), postId);
   await setDoc(postDocRef, {
     title,
