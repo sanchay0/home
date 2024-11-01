@@ -23,7 +23,7 @@ export default function MobileMenu({
       className={`fixed z-10 w-full text-xl font-light lg:hidden ${isOpen ? "animate-slide-in" : `animate-slide-out ${isFirstRender ? "hidden" : ""}`}`}
     >
       <div
-        className="bg-white min-h-screen grid grid-cols-1 place-content-start gap-y-16 px-8 py-28 text-right w-10/12 ml-auto shadow-lg"
+        className="bg-white min-h-screen grid grid-cols-1 place-content-start gap-y-16 px-8 py-28 text-right w-10/12 ml-auto shadow-md"
         aria-label="mobile"
       >
         {currentUser && (
