@@ -10,25 +10,17 @@ export default function MobileMenuContainer({ links }: HeaderProps) {
     <>
       <button
         type="button"
-        className={`flex lg:hidden ${isOpen ? "fixed" : "absolute"} top-0 right-0 z-40 flex-col h-12 w-12 justify-center items-center group mt-4 mr-4`}
+        className={`flex lg:hidden ${isOpen ? "fixed" : "absolute"} top-0 right-0 z-40 flex-col h-10 w-10 justify-center items-center group mt-4 mr-4`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <div
-          className={`${genericHamburgerLine} ${
-            isOpen
-              ? "rotate-45 translate-y-2.5 opacity-50 group-hover:opacity-100"
-              : "opacity-50 group-hover:opacity-100"
-          }`}
+          className={`${genericHamburgerLine} ${isOpen ? "rotate-45 translate-y-2.5" : ""}`}
         />
         <div
-          className={`${genericHamburgerLine} ${
-            isOpen
-              ? "-rotate-45 opacity-50 group-hover:opacity-100"
-              : "opacity-50 group-hover:opacity-100"
-          }`}
+          className={`${genericHamburgerLine} ${isOpen ? "-rotate-45" : ""}`}
         />
         <div
-          className={`${genericHamburgerLine} ${isOpen ? "opacity-0" : "opacity-50 group-hover:opacity-100"}`}
+          className={`${genericHamburgerLine} ${isOpen ? "opacity-0" : ""}`}
         />
       </button>
       <MobileMenu
