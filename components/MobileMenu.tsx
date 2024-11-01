@@ -4,12 +4,14 @@ import { logout, useAuth } from "../utils/authHandler";
 type ModileMenuProps = {
   links: IHeader[];
   isOpen: any;
+  isFirstRender: any;
   onClose: any;
 };
 
 export default function MobileMenu({
   links,
   isOpen,
+  isFirstRender,
   onClose,
 }: ModileMenuProps) {
   const currentUser = useAuth();
@@ -18,10 +20,10 @@ export default function MobileMenu({
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
       onClick={() => onClose()}
-      className={`fixed z-10 w-full text-xl font-light lg:hidden ${isOpen ? "" : "hidden"}`}
+      className={`fixed z-10 w-full text-xl font-light lg:hidden ${isOpen ? "animate-slide-in" : `animate-slide-out ${isFirstRender ? "hidden" : ""}`}`}
     >
       <div
-        className="bg-white min-h-screen grid grid-cols-1 place-content-start gap-y-16 px-8 py-28 text-right"
+        className="bg-white min-h-screen grid grid-cols-1 place-content-start gap-y-16 px-8 py-28 text-right w-10/12 ml-auto shadow-lg"
         aria-label="mobile"
       >
         {currentUser && (
