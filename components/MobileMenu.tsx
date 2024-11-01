@@ -21,7 +21,7 @@ export default function MobileMenu({
       className={`fixed z-10 w-full text-xl font-light lg:hidden ${isOpen ? "" : "hidden"}`}
     >
       <div
-        className="bg-white min-h-screen grid place-content-start gap-y-16 px-8 py-16"
+        className="bg-white min-h-screen grid grid-cols-1 place-content-start gap-y-16 px-8 py-28 text-right"
         aria-label="mobile"
       >
         {currentUser && (
@@ -41,7 +41,7 @@ export default function MobileMenu({
         {currentUser && (
           <button
             type="button"
-            className="flex font-light text-gray-800 items-center"
+            className="flex font-light text-gray-800 items-center justify-end"
             onClick={logout}
           >
             Logout

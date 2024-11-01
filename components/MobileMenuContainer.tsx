@@ -10,7 +10,7 @@ export default function MobileMenuContainer({ links }: HeaderProps) {
     <>
       <button
         type="button"
-        className={`flex lg:hidden ${isOpen ? "fixed" : "absolute"} top-0 right-0 z-40 flex-col h-10 w-10 justify-center items-center group mt-4 mr-4`}
+        className={`flex lg:hidden ${isOpen ? "fixed" : "absolute"} top-0 right-0 z-40 flex-col h-12 w-12 justify-center items-center group mt-4 mr-4`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <div
