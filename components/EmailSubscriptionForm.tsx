@@ -6,6 +6,7 @@ import { putSubscriberIfAbsent } from "../utils/api";
 function EmailSubscriptionForm({
   initialPlaceholder = "To receive future updates in your inbox, enter your email",
   mobilePlaceholder = "Enter your email to receive future updates",
+  compactWidth = true,
 }) {
   const [subscribed, setSubscribed] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -44,11 +45,13 @@ function EmailSubscriptionForm({
 
   return (
     <>
-      <div className="text-sm mt-8 md:mt-12 mb-8 md:mb-12">
-        <div className="grid grid-cols-3 gap-2">
+      <div
+        className={`text-sm mt-8 md:mt-12 mb-8 md:mb-12 ${compactWidth ? "w-4/5 mx-auto" : ""}`}
+      >
+        <div className="grid grid-cols-5 gap-5 md:gap-2">
           <input
             id="post-reply"
-            className="col-span-3 md:col-span-2 font-light focus:outline-none resize-none w-full border-b border-white focus:border-gray-600 placeholder-gray-400"
+            className="col-span-5 md:col-span-4 font-light focus:outline-none resize-none w-full border-b border-white focus:border-gray-600 placeholder-gray-400"
             placeholder={placeholder}
             onChange={handleInputChange}
             autoComplete="off"
@@ -56,7 +59,7 @@ function EmailSubscriptionForm({
           />
           <button
             type="button"
-            className="w-3/5 col-span-1 md:col-span-1 col-start-2 md:col-start-auto bg-gray-100 font-light hover:bg-gray-200 hover:text-gray-500 text-gray-400 py-3 duration-300 rounded-full"
+            className="col-span-3 col-start-2 md:col-span-1 md:col-start-auto bg-gray-100 font-light hover:bg-gray-200 hover:text-gray-500 text-gray-400 py-3 duration-300 rounded-full"
             onClick={handleSubscribe}
           >
             {subscribed ? "Subscribed!" : "Subscribe"}

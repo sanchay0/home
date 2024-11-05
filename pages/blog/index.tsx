@@ -73,7 +73,7 @@ export default function Blogs({ sortedData }: BlogProps) {
                   </div>
                 </div>
               ))}
-            {sortedData && <EmailSubscriptionForm />}
+            {sortedData && <EmailSubscriptionForm compactWidth={false} />}
           </div>
         </div>
       </div>
