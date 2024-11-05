@@ -393,7 +393,7 @@ export default function Blog({
       ) : null}
       {post && (
         <div className="mt-20">
-          <EmailSubscriptionForm columnWidth={6} />
+          <EmailSubscriptionForm />
         </div>
       )}
     </>
