@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { GetStaticProps } from "next";
-import {
-  calculateReadingTime,
-  formatDate,
-  validateEmail,
-} from "../../utils/helpers";
-import { fetchBlogs, putSubscriberIfAbsent } from "../../utils/api";
+import { calculateReadingTime, formatDate } from "../../utils/helpers";
+import { fetchBlogs } from "../../utils/api";
+import EmailSubscriptionForm from "../../components/EmailSubscriptionForm";
 
 type BlogProps = {
   sortedData: IPost[];
@@ -38,57 +34,6 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default function Blogs({ sortedData }: BlogProps) {
-  const [subscribed, setSubscribed] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const [isValidEmail, setIsValidEmail] = useState(true);
-  const [placeholder, setPlaceholder] = useState(
-    "To receive future updates in your inbox, enter your email",
-  );
-
-  const handleSubscribe = async () => {
-    if (!subscribed && inputValue) {
-      if (!validateEmail(inputValue)) {
-        setIsValidEmail(false);
-      } else {
-        setIsValidEmail(true);
-        const subscriber: ISubscriber = {
-          email: inputValue,
-        };
-        putSubscriberIfAbsent(subscriber);
-        setSubscribed(true);
-      }
-    }
-    setInputValue("");
-  };
-
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth < 450) {
-        setPlaceholder("Enter your email to receive future updates");
-      } else {
-        setPlaceholder(
-          "To receive future updates in your inbox, enter your email",
-        );
-      }
-    }
-
-    // Initial check on component mount
-    handleResize();
-
-    // Add event listener for window resize
-    window.addEventListener("resize", handleResize);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const handleInputChange = (e) => {
-    setSubscribed(false);
-    setInputValue(e.target.value);
-  };
-
   return (
     <>
       <Head>
@@ -128,37 +73,7 @@ export default function Blogs({ sortedData }: BlogProps) {
                   </div>
                 </div>
               ))}
-            {sortedData && (
-              <div className="mt-8 md:mt-12 mb-8 md:mb-12 items-center justify-center">
-                <div className="flex flex-col md:flex-row items-center">
-                  <div className="w-full">
-                    <input
-                      id="post-reply"
-                      className="font-light text-base	md:text-sm focus:outline-none resize-none block p-2.5 w-full border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400"
-                      placeholder={placeholder}
-                      onChange={handleInputChange}
-                      autoComplete="off"
-                      value={inputValue}
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    className="bg-gray-100 font-light text-base md:text-sm hover:bg-gray-200 hover:text-gray-500 text-gray-400 px-4 py-3 duration-300 rounded-full md:ml-2 mt-2 md:mt-0"
-                    onClick={handleSubscribe}
-                  >
-                    {subscribed ? "Subscribed!" : "Subscribe"}
-                  </button>
-                </div>
-                <div className="text-sm mt-1 text-red-400">
-                  {isValidEmail ? "" : "Please enter a valid email"}
-                </div>
-                {/* <div className="flex">
-                            <div className="text-xs mt-2 text-gray-400">
-                                Email <Link href="/terms">Terms</Link> & <Link href="/privacy">Privacy</Link>
-                            </div>
-                        </div> */}
-              </div>
-            )}
+            {sortedData && <EmailSubscriptionForm />}
           </div>
         </div>
       </div>

@@ -46,6 +46,7 @@
   },
   "plugins": ["react", "react-hooks", "import", "@typescript-eslint"],
   "rules": {
+    "react/prop-types": "off",
     // NextJs specific fix: suppress errors for missing 'import React' in files for nextjs
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],

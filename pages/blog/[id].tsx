@@ -20,6 +20,7 @@ import {
 import { calculateReadingTime, formatFirestoreDate } from "../../utils/helpers";
 import CustomTextarea from "../../components/CustomTextarea";
 import { login, useAuth } from "../../utils/authHandler";
+import EmailSubscriptionForm from "../../components/EmailSubscriptionForm";
 
 // Custom hook to manage collapse state
 const useCollapseState = (initialState = false) => {
@@ -390,6 +391,11 @@ export default function Blog({
           </div>
         </div>
       ) : null}
+      {post && (
+        <div className="mt-20">
+          <EmailSubscriptionForm columnWidth={6} />
+        </div>
+      )}
     </>
   );
 }

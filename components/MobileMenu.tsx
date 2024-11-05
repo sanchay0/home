@@ -49,10 +49,6 @@ export default function MobileMenu({
             Logout
           </button>
         )}
-        <div className="text-sm mt-2 text-gray-500">
-          <Link href="/terms">Terms</Link> &{" "}
-          <Link href="/privacy">Privacy</Link>
-        </div>
       </div>
     </div>
   );
