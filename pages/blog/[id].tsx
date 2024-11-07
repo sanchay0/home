@@ -303,7 +303,7 @@ export default function Blog({
             {post.tags.map((tag) => (
               <span
                 key={tag.id}
-                className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-xs px-3 py-1 duration-200 rounded-full mr-2"
+                className="bg-gray-100 hover:bg-gray-200 text-gray-500 text-xs text-center duration-200 rounded-full p-2 mr-1"
               >
                 <Link href={`/blog/labels/${tag.id}`}>{tag.name}</Link>
               </span>

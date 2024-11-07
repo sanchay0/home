@@ -121,7 +121,7 @@ export default function MyTextarea({ id, width, callback, value }: IProps) {
         rows={1}
         className={`overlay-textarea focus:outline-none ${
           !isLoggedIn && isFocused ? "pointer-events-none" : ""
-        } font-light resize-none block w-full p-2.5 border-b border-white focus:border-gray-600 mt-2 placeholder-gray-400`}
+        } font-light resize-none block w-full p-2.5 border-b border-gray-400 mt-2 placeholder-gray-400`}
         placeholder="Write a comment"
         value={value}
         onFocus={handleFocus}
