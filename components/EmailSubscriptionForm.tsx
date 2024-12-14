@@ -27,7 +27,7 @@ function EmailSubscriptionForm() {
   };
 
   return (
-    <div className="mt-8 md:mt-12 mb-8 md:mb-12 w-full">
+    <div className="mt-8 md:mt-12 mb-8 md:mb-12 md:w-4/5 md:mx-auto w-full">
       <form className="flex rounded-full bg-slate-800 px-4 py-2 ring-1 ring-gray-400">
         <input
           type="email"
