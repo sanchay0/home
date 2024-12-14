@@ -3,7 +3,7 @@ import Link from "next/link";
 import { validateEmail } from "../utils/helpers";
 import { putSubscriberIfAbsent } from "../utils/api";
 
-function EmailSubscriptionForm({ compactWidth = true }) {
+function EmailSubscriptionForm() {
   const [subscribed, setSubscribed] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
@@ -27,9 +27,7 @@ function EmailSubscriptionForm({ compactWidth = true }) {
   };
 
   return (
-    <div
-      className={`mt-8 md:mt-12 mb-8 md:mb-12 ${compactWidth ? "w-4/5 mx-auto" : "w-full"}`}
-    >
+    <div className="mt-8 md:mt-12 mb-8 md:mb-12 w-full">
       <form className="flex rounded-full bg-slate-800 px-4 py-2 ring-1 ring-gray-400">
         <input
           type="email"
