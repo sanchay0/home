@@ -5,7 +5,6 @@ import Head from "next/head";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { doc } from "firebase/firestore";
 import { User } from "firebase/auth";
-import xss, { escapeAttrValue } from "xss";
 import { db } from "../../firebase/clientApp";
 import {
   deleteLike,
@@ -278,20 +277,7 @@ export default function Blog({
           <div className="mt-5 space-y-3 break-words">
             <div
               /* eslint-disable-next-line react/no-danger */
-              dangerouslySetInnerHTML={{
-                __html: xss(post.content, {
-                  // allow 'class' attribute on anchor tags and custom style
-                  // eslint-disable-next-line consistent-return
-                  onTagAttr: (tag, name, value) => {
-                    if (tag === "a" && name === "class") {
-                      return `${name}="${escapeAttrValue(value)}"`;
-                    }
-                    if (name === "style") {
-                      return `${name}="${escapeAttrValue(value)}"`;
-                    }
-                  },
-                }),
-              }}
+              dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </div>
         </div>
