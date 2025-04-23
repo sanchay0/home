@@ -300,3 +300,20 @@ export async function putSubscriberIfAbsent(subscriber: ISubscriber) {
 export async function deleteSubscriber(id: string): Promise<void> {
   await deleteDoc(doc(db, "subscribers", id));
 }
+
+// ========= Quotes ========= //
+
+export async function fetchQuotes(): Promise<IQuote[]> {
+  const response = await getDocs(collection(db, "quotes"));
+  const quotes = response.docs.map((quote) => {
+    const data = quote.data();
+    return {
+      id: quote.id,
+      content: data.content,
+      author: data.author,
+      createdAt: data.createdAt,
+    };
+  });
+
+  return quotes;
+}
