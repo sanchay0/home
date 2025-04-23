@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-export default function Contact() {
+export default function Quotes() {
   return (
     <>
       <Head>
