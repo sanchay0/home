@@ -49,9 +49,6 @@ function EmailSubscriptionForm() {
       <div className="mt-4 text-sm text-red-400">
         {isValidEmail ? "" : "Please enter a valid email address."}
       </div>
-      <div className="mt-4 font-light text-gray-400 text-center">
-        <Link href="/terms">Terms</Link> & <Link href="/privacy">Privacy</Link>
-      </div>
     </div>
   );
 }
