@@ -25,6 +25,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
   const headerLinks: IHeader[] = pageProps?.headerLinks || [
     { href: "/", label: "Blog" },
     { href: "/about", label: "About" },
+    { href: "/quotes", label: "Quotes" },
     { href: "/contact", label: "Contact" },
   ];
 
