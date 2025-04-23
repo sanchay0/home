@@ -12,19 +12,17 @@ type BlogProps = {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const fetchedBlogs = await fetchBlogs();
-    const sortedBlogs = fetchedBlogs.sort(
-      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
-    );
+    const sortedBlogs = fetchedBlogs
+      .map((post) => ({ ...post, createdAt: new Date(post.createdAt) }))
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
     return {
       props: {
         sortedData: JSON.parse(JSON.stringify(sortedBlogs)),
       },
-      revalidate: 10,
+      revalidate: 5,
     };
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
+  } catch {
     return {
       props: {
         sortedData: [],
@@ -41,39 +39,41 @@ export default function Blogs({ sortedData }: BlogProps) {
       </Head>
       <div className="grid gap-12 md:gap-24 mt-16">
         <div className="font-light text-sm">
-          <div className="flex justify-between">
-            <div>
-              <span className="text-black">Blog</span>
-            </div>
-            <Link href="/rss.xml">
-              <i className="fas fa-rss hover:text-black transition-colors duration-300" />
+          <div className="flex justify-between items-center">
+            <span className="text-black">Blog</span>
+            <Link href="/rss.xml" aria-label="RSS Feed">
+              <span>
+                <i className="fas fa-rss hover:text-black transition-colors duration-300" />
+                <span className="sr-only">RSS Feed</span>
+              </span>
             </Link>
           </div>
           <div className="grid gap-6 mt-3">
-            {sortedData &&
-              sortedData.map((post) => (
-                <div
-                  key={post.id}
-                  className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500"
-                >
-                  <div>
-                    <p className="text-neutral-400">
-                      {formatDate(new Date(post.createdAt))}
-                    </p>
-                  </div>
-                  <div className="md:col-span-2 w-full">
-                    <Link href={`/blog/${post.id}`}>
-                      <p className="text-black cursor-pointer duration-200 hover:no-underline underline">
-                        {post.title}
-                      </p>
-                    </Link>
-                    <p className="mt-1 md:mt-0">
-                      {calculateReadingTime(post.content)} minute read
-                    </p>
-                  </div>
+            {sortedData.map(({ id, createdAt, title, content }) => (
+              <div
+                key={id}
+                className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500"
+              >
+                <div>
+                  <p className="text-neutral-400">
+                    {formatDate(new Date(createdAt))}
+                  </p>
                 </div>
-              ))}
-            {sortedData && <EmailSubscriptionForm />}
+                <div className="md:col-span-2 w-full">
+                  <Link href={`/blog/${id}`}>
+                    <span className="text-black cursor-pointer duration-200 hover:no-underline underline">
+                      {title}
+                    </span>
+                  </Link>
+                  <p className="mt-1 md:mt-0">
+                    {calculateReadingTime(content)} minute read
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-12">
+            <EmailSubscriptionForm />
           </div>
         </div>
       </div>
