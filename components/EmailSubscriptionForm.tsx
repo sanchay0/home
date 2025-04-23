@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Link from "next/link";
 import { validateEmail } from "../utils/helpers";
 import { putSubscriberIfAbsent } from "../utils/api";
 
