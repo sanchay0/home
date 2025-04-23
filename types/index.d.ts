@@ -52,3 +52,10 @@ interface ISubscriber {
   id?: string;
   email: string;
 }
+
+interface IQuote {
+  id?: string;
+  content: string;
+  author: string;
+  createdAt: Date;
+}
