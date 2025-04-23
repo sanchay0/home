@@ -4,42 +4,67 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { fetchBlogsByTag, fetchTag } from "../../../utils/api";
 import { calculateReadingTime, formatDate } from "../../../utils/helpers";
+import EmailSubscriptionForm from "../../../components/EmailSubscriptionForm";
 
 export default function Labels() {
-  const [sortedData, setSortedData] = useState<IPost[]>(null);
-  const [tag, setTag] = useState<ITag>(null);
+  const [posts, setPosts] = useState<IPost[]>([]);
+  const [tag, setTag] = useState<ITag | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const router = useRouter();
-  const { id } = router.query;
+  const { id } = useRouter().query;
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        let fetchedBlogs: IPost[];
-        if (id) {
-          fetchedBlogs = await fetchBlogsByTag(`${id}`);
-          const fetchedTag: ITag = await fetchTag(`${id}`);
-          setTag(fetchedTag);
-        }
+    if (!id) return;
+    setLoading(true);
 
-        const sortedBlogs = fetchedBlogs.sort(
-          (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
-        );
+    Promise.all([fetchBlogsByTag(`${id}`), fetchTag(`${id}`)])
+      .then(([blogs, tagData]) => {
+        const sortedBlogs = blogs
+          .map((post: any) => ({
+            ...post,
+            createdAt: new Date(post.createdAt),
+          }))
+          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
-        setSortedData(sortedBlogs);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      }
-    };
-
-    getData();
+        setPosts(sortedBlogs);
+        setTag(tagData);
+        setError(null);
+      })
+      .catch(() => setError("Failed to load posts."))
+      .finally(() => setLoading(false));
   }, [id]);
+
+  let body;
+  if (loading) {
+    body = <span>Loading...</span>;
+  } else if (error) {
+    body = <span>{error}</span>;
+  } else if (posts.length === 0) {
+    body = <span>No posts found.</span>;
+  } else {
+    body = posts.map(({ id: postId, createdAt, title, content }) => (
+      <div
+        key={postId}
+        className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500"
+      >
+        <p className="text-neutral-400">{formatDate(createdAt)}</p>
+        <div className="md:col-span-2 w-full">
+          <Link href={`/blog/${postId}`}>
+            <span className="text-black cursor-pointer duration-200 hover:no-underline underline">
+              {title}
+            </span>
+          </Link>
+          <p>{calculateReadingTime(content)} minute read</p>
+        </div>
+      </div>
+    ));
+  }
 
   return (
     <>
       <Head>
-        <title>Blog - {tag ? tag.name : "tag"}</title>
+        <title>Blog - {tag?.name || "tag"}</title>
       </Head>
       <div className="grid gap-12 md:gap-24 mt-16">
         <div className="font-light text-sm">
@@ -53,26 +78,9 @@ export default function Labels() {
               )}
             </div>
           </div>
-          <div className="grid gap-6 mt-3">
-            {sortedData &&
-              sortedData.map((post) => (
-                <div
-                  key={post.id}
-                  className="grid grid-cols-1 items-start md:grid-cols-3 text-neutral-500"
-                >
-                  <p className="text-neutral-400">
-                    {formatDate(post.createdAt)}
-                  </p>
-                  <div className="md:col-span-2 w-full">
-                    <Link href={`/blog/${post.id}`}>
-                      <span className="text-black cursor-pointer duration-200 hover:no-underline underline">
-                        {post.title}
-                      </span>
-                    </Link>
-                    <p>{calculateReadingTime(post.content)} minute read</p>
-                  </div>
-                </div>
-              ))}
+          <div className="grid gap-6 mt-3">{body}</div>
+          <div className="mt-12">
+            <EmailSubscriptionForm />
           </div>
         </div>
       </div>
