@@ -22,7 +22,7 @@ export default function Quotes() {
     });
   }, []);
 
-  if (loading) return null;
+  if (loading) return <div>Loading...</div>;
 
   return (
     <>
