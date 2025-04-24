@@ -4,6 +4,7 @@ import { fetchQuotes } from "../../utils/api";
 
 export default function Quotes() {
   const [quotes, setQuotes] = useState<IQuote[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchQuotes().then((data) => {
@@ -17,8 +18,11 @@ export default function Quotes() {
             a.createdAt.getTime() - b.createdAt.getTime(),
         );
       setQuotes(sorted);
+      setLoading(false);
     });
   }, []);
+
+  if (loading) return null;
 
   return (
     <>
