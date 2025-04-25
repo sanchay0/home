@@ -1,29 +1,31 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { GetStaticProps } from "next";
 import { fetchQuotes } from "../../utils/api";
 
-export default function Quotes() {
-  const [quotes, setQuotes] = useState<IQuote[]>([]);
-  const [loading, setLoading] = useState(true);
+interface QuotesProps {
+  quotes: IQuote[];
+}
 
-  useEffect(() => {
-    fetchQuotes().then((data) => {
-      const sorted = data
-        .map((q: any) => ({
-          ...q,
-          createdAt: q.createdAt.toDate(),
-        }))
-        .sort(
-          (a: IQuote, b: IQuote) =>
-            a.createdAt.getTime() - b.createdAt.getTime(),
-        );
-      setQuotes(sorted);
-      setLoading(false);
-    });
-  }, []);
+export const getStaticProps: GetStaticProps = async () => {
+  const data = await fetchQuotes();
+  const quotes = data
+    .map((q: any) => ({
+      ...q,
+      createdAt: q.createdAt.toDate().toISOString(),
+    }))
+    .sort(
+      (a: IQuote, b: IQuote) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
+  return {
+    props: {
+      quotes,
+    },
+    revalidate: 5,
+  };
+};
 
-  if (loading) return null;
-
+export default function Quotes({ quotes }: QuotesProps) {
   return (
     <>
       <Head>
