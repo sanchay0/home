@@ -25,6 +25,12 @@ export async function getServerSideProps({ res }) {
             <url>
                 <loc>${`${siteUrl}/contact`}</loc>
             </url>
+            <url>
+                <loc>${`${siteUrl}/quotes`}</loc>
+            </url>
+            <url>
+                <loc>${`${siteUrl}/about`}</loc>
+            </url>
         </urlset>
     `;
 
