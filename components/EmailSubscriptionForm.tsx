@@ -45,9 +45,6 @@ function EmailSubscriptionForm() {
           {subscribed ? "Subscribed!" : "Subscribe"}
         </button>
       </form>
-      <div className="mt-4 text-sm text-red-400">
-        {isValidEmail ? "" : "Please enter a valid email address."}
-      </div>
       <div className="mt-4 text-sm">
         {!isValidEmail && (
           <span className="text-red-400">Please enter a valid email address.</span>
