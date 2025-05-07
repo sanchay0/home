@@ -47,7 +47,7 @@ export default function Comment({ comment, currentUser }: CommentProps) {
           </p>
         </div>
       </footer>
-      <p className="mt-2 break-words">{comment.content}</p>
+      <p className="mt-2 break-words whitespace-pre-line">{comment.content}</p>
       {replies.length > 0 && (
         <div className="flex mt-2 items-center duration-200">
           <button
@@ -83,7 +83,7 @@ export default function Comment({ comment, currentUser }: CommentProps) {
                   </p>
                 </div>
               </footer>
-              <p className="mt-2 break-words">{reply.content}</p>
+              <p className="mt-2 break-words whitespace-pre-line">{reply.content}</p>
             </article>
           ))}
       {showReplyForm && (
