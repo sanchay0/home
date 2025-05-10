@@ -41,6 +41,14 @@ const emailTemplate = `
         "
         >Read on the blog</a
       >
+
+      <div style="margin-bottom: 22px">
+        <span style="font-size: 14px; color: #888; margin-right: 8px"
+          >Labels:</span
+        >
+        {{tagLink}}
+      </div>
+
       <div style="font-size: 16px; color: #222; margin-bottom: 30px">
         {{content}}
       </div>
