@@ -43,9 +43,6 @@ const emailTemplate = `
       >
 
       <div style="margin-bottom: 22px">
-        <span style="font-size: 14px; color: #888; margin-right: 8px"
-          >Labels:</span
-        >
         {{tags}}
       </div>
 
