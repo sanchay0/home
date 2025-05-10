@@ -40,7 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }));
 
     const emailBody = emailTemplate
-      .replace("{{title}}", body.title)
+      .replace(/{{title}}/g, body.title)
       .replace("{{content}}", body.content)
       .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`);
 
