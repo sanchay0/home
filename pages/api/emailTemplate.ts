@@ -14,10 +14,12 @@ const emailTemplate = `
       padding: 0;
     "
   >
+    <div style="height: 30px; line-height: 30px; font-size: 0">&nbsp;</div>
+
     <div
       style="
         max-width: 600px;
-        margin: 30px auto;
+        margin: 0 auto;
         background: #fff;
         padding: 32px;
         border-radius: 8px;
@@ -43,18 +45,23 @@ const emailTemplate = `
         {{content}}
       </div>
     </div>
+
+    <div style="height: 24px; line-height: 24px; font-size: 0">&nbsp;</div>
+
     <div
       style="
         font-size: 12px;
         text-align: center;
-        margin: 20px 0 20px 0;
+        margin: 0;
         color: #888;
+        padding-bottom: 24px;
       "
     >
       <a href="{{unsubscribe}}" style="color: #888" target="_blank"
         >Unsubscribe</a
       >
     </div>
+    <div style="height: 24px; line-height: 24px; font-size: 0">&nbsp;</div>
   </body>
 </html>
 `;
