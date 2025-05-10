@@ -42,12 +42,12 @@ const emailTemplate = `
         >Read on the blog</a
       >
 
-      <div style="margin-bottom: 22px">
-        {{tags}}
+      <div style="font-size: 16px; color: #222; margin-bottom: 22px">
+        {{content}}
       </div>
 
-      <div style="font-size: 16px; color: #222; margin-bottom: 30px">
-        {{content}}
+      <div style="margin-bottom: 22px">
+        {{tags}}
       </div>
     </div>
 
