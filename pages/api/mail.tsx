@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    const { body } = req;
+    const { tags, title, content, id } = req.body;
 
     // fetch subscribers
     const snapshot = await getDocs(collection(db, "admin_email"));
@@ -39,10 +39,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       email: doc.data().email,
     }));
 
+    const tagsHtml =
+      tags && tags.length
+        ? `<span style="font-size:13px; color:#888; margin-right:8px;">Labels:</span>${tags
+            .map(
+              (tag) =>
+                `<span style="display:inline-block; background:#eaeaea; color:#555; padding:2px 10px; margin-right:5px; border-radius:14px; font-size:13px;">${tag}</span>`,
+            )
+            .join("")}`
+        : "";
+
     const emailBody = emailTemplate
-      .replace(/{{title}}/g, body.title)
-      .replace("{{content}}", body.content)
-      .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${body.id}`);
+      .replace("{{title}}", title)
+      .replace("{{content}}", content)
+      .replace("{{link}}", `${process.env.NEXT_PUBLIC_URL}/blog/${id}`)
+      .replace("{{tags}}", tagsHtml);
 
     const sendEmailWithDelay = async (
       subscriber: { id: string; email: string },
@@ -55,7 +66,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               to: [subscriber.email],
               from: "Sanchay Javeria <hello@sanchayjaveria.com>",
               reply_to: "hello@sanchayjaveria.com",
-              subject: body.title,
+              subject: title,
               html: emailBody.replace(
                 "{{unsubscribe}}",
                 `${process.env.NEXT_PUBLIC_URL}/unsubscribe/${subscriber.id}`,
