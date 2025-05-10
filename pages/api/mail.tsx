@@ -33,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { body } = req;
 
     // fetch subscribers
-    const snapshot = await getDocs(collection(db, "admin_email"));
+    const snapshot = await getDocs(collection(db, "subscribers"));
     const subscribers = snapshot.docs.map((doc) => ({
       id: doc.id,
       email: doc.data().email,
