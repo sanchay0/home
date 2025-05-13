@@ -7,12 +7,6 @@ import emailTemplate from "./emailTemplate";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-interface EmailResult {
-  email: string;
-  data?: any;
-  error?: any;
-}
-
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const authHeader = req.headers.authorization;
