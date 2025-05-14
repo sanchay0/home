@@ -47,10 +47,14 @@ function EmailSubscriptionForm() {
       </form>
       <div className="mt-4 text-sm">
         {!isValidEmail && (
-          <span className="text-red-400">Please enter a valid email address.</span>
+          <span className="text-red-400">
+            Please enter a valid email address.
+          </span>
         )}
         {subscribed && isValidEmail && (
-          <span className="text-green-500">You have subscribed successfully!</span>
+          <span className="text-green-500">
+            You have subscribed successfully!
+          </span>
         )}
       </div>
     </div>
