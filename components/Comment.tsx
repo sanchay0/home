@@ -83,7 +83,9 @@ export default function Comment({ comment, currentUser }: CommentProps) {
                   </p>
                 </div>
               </footer>
-              <p className="mt-2 break-words whitespace-pre-line">{reply.content}</p>
+              <p className="mt-2 break-words whitespace-pre-line">
+                {reply.content}
+              </p>
             </article>
           ))}
       {showReplyForm && (
