@@ -10,7 +10,7 @@ interface CommentProps {
 }
 
 export default function Comment({ comment, currentUser }: CommentProps) {
-  const [showReplies, setShowReplies] = useState(false);
+  const [showReplies, setShowReplies] = useState(true);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [userReply, setUserReply] = useState("");
   const [replyAs, setReplyAs] = useState("");
