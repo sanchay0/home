@@ -59,7 +59,7 @@ export default function Quotes({ quotes }: QuotesProps) {
                   <p className="italic text-black dark:text-white mb-2">
                     &ldquo;{content}&rdquo;
                   </p>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-gray-500 dark:text-gray-400">
                     — {author}
                   </span>
                 </div>
